@@ -1,6 +1,5 @@
 package com.accademy.harvin.harvinacademy;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
@@ -114,7 +115,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         Log.d("done","done");
-        replaceFragment(new StudyFragment());
+        int pos=tb.getSelectedTabPosition();
+        Log.d("done",""+pos);
+        switch (pos){
+            case 0:
+                replaceFragment(new StudyFragment(),pos);
+                Log.d("done2",""+pos);
+
+                break;
+            case 1:
+                replaceFragment(new StudyFragment(),pos);
+                Log.d("done2",""+pos);
+
+                break;
+            case 2:
+                replaceFragment(new StudyFragment(),pos);
+                Log.d("done2",""+pos);
+
+                break;
+            case 3:
+                replaceFragment(new StudyFragment(),pos);
+                Log.d("done2",""+pos);
+                break;
+
+
+
+        }
+
     }
 
     @Override
@@ -126,10 +153,13 @@ public class MainActivity extends AppCompatActivity
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
-    public void replaceFragment(StudyFragment sf){
+    public void replaceFragment(StudyFragment sf,int pos){
+        Bundle pos1=new Bundle();
+        pos1.putInt("key",pos);
+        sf.setArguments(pos1);
         FragmentManager fragmentManager= getSupportFragmentManager();
         FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction();
-        mFragmentTranscation.add(R.id.fragment_container,sf);
+        mFragmentTranscation.replace(R.id.fragment_container,sf);
         mFragmentTranscation.commit();
     }
 }

@@ -2,14 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accademy.harvin.harvinacademy.StudyFragment">
+    tools:context="com.accademy.harvin.harvinacademy.fragment.StudyFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:textSize="60dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

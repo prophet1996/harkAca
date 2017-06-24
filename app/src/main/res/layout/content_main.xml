@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/fragment_container"
         android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/mainTablayout"
         ></FrameLayout>
 
     <android.support.design.widget.TabLayout
