@@ -1,8 +1,13 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
+    private static TabLayout tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        /*Starting the code */
+        tb=(TabLayout)findViewById(R.id.mainTablayout);
+        tb.addOnTabSelectedListener(this);
+        
     }
 
     @Override
@@ -98,4 +110,27 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Log.d("done","done");
+        replaceFragment(new StudyFragment());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+    public void replaceFragment(StudyFragment sf){
+        FragmentManager fragmentManager= getSupportFragmentManager();
+        FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction();
+        mFragmentTranscation.add(R.id.fragment_container,sf);
+        mFragmentTranscation.commit();
+    }
 }
+
