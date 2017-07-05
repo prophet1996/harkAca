@@ -6,8 +6,10 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.accademy.harvin.harvinacademy.adapters.SubjectAdapter;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 
 public class CourseActivity extends AppCompatActivity {
@@ -17,6 +19,8 @@ public class CourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        Bundle b= getIntent().getExtras();
+        Log.d("intent data",b.getString(SubjectAdapter.CHAPTER_KEY));
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

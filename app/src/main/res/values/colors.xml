@@ -6,4 +6,5 @@
     <color name="colorAccent">#ffffff</color>
     <color name="colorAccentDark">#eae9e9</color>
     <color name="mainBackground">#dfdede</color>
+    <color name="transparentcolor">#00000000</color>
 </resources>

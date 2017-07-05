@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     tools:context="com.accademy.harvin.harvinacademy.CourseActivity">
     <android.support.v7.widget.Toolbar
@@ -11,12 +12,13 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/appbartheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_margin="10dp"
-        android:layout_height="wrap_content"
+
+        android:layout_height="match_parent"
         android:id="@+id/fragment_container"
 
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar"

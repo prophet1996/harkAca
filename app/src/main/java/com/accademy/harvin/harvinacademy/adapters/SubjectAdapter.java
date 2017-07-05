@@ -1,17 +1,19 @@
 package com.accademy.harvin.harvinacademy.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.accademy.harvin.harvinacademy.CourseActivity;
 import com.accademy.harvin.harvinacademy.R;
-import com.accademy.harvin.harvinacademy.model.Subject;
+import com.accademy.harvin.harvinacademy.model.Chapter;
 
 import java.util.List;
 
@@ -20,10 +22,15 @@ import java.util.List;
  */
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
-    private List<Subject> subjectList;
+     final static String SUBJECT_KEY="subject";
+    public final static String CHAPTER_KEY="subject";
 
-    public SubjectAdapter(List<Subject> subjectList, Context context) {
-        this.subjectList = subjectList;
+     PopupMenu popup;
+
+    private List<Chapter> chapterList;
+
+    public SubjectAdapter(List<Chapter> chapterList, Context context) {
+        this.chapterList = chapterList;
         this.context = context;
     }
 
@@ -32,24 +39,39 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     @Override
     public SubjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list,parent,false);
-
+        v.setPadding(10,10,10,10);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SubjectAdapter.ViewHolder holder, int position) {
-        Subject list=subjectList.get(position);
-        holder.id.setText(""+list.getSub_id());
-        holder.desc.setText(list.getSub_desc());
-        holder.sub.setText(list.getSub_name());
+    public void onBindViewHolder(final SubjectAdapter.ViewHolder holder, int position) {
+        final Chapter list= chapterList.get(position);
+        final int tab_pos=position;
+        holder.id.setText(""+list.getChapter_id());
+        holder.desc.setText(list.getChapter_desc());
+        holder.sub.setText(list.getChapter_name());
         holder.chapter.setText("Chapter");
-        final PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+        holder.chapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,CourseActivity.class);
+                i.putExtra(SUBJECT_KEY,tab_pos);
+                i.putExtra(CHAPTER_KEY,list.getChapter_name());
+                context.startActivity(i);
+            }
+        });
+
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //inflating menu from xml resource
+                popup = new PopupMenu(context, holder.buttonViewOption);
                 popup.inflate(R.menu.options_menu);
+                popup.dismiss();
+                popup.show();
+
+
                 //adding click listener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -70,8 +92,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
                 });
                 //displaying the popup
                 popup.show();
+                popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+                        popup=null;
+                    }
+                });
             }
         });
+
 
 
 
@@ -79,7 +108,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return subjectList.size();
+        return chapterList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
