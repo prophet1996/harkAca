@@ -6,10 +6,9 @@
     android:background="@color/colorAccent"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="32dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -18,7 +17,7 @@
         android:layout_height="100dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_gravity="center_horizontal"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+       />
 
     <TextView
         android:layout_width="match_parent"
@@ -41,10 +40,11 @@
         android:text="vishwa.malikventures.com" />
 <ListView
     android:layout_width="match_parent"
-    android:choiceMode="singleChoice"
     android:id="@+id/drawer_list_view"
     android:divider="@color/transparentcolor"
-    android:layout_height="wrap_content"/>
+    android:scrollbars="none"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_height="400dp"/>
 
 
 

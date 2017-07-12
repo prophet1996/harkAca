@@ -5,6 +5,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,31 +38,36 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
         DrawerItemHolder drawerHolder;
-        if(view==null){
-            LayoutInflater inflater=LayoutInflater.from(context);
-            drawerHolder= new DrawerItemHolder();
-            view=inflater.inflate(R.layout.custom_drawer_item,parent,false);
-            drawerHolder.icon=(ImageView)view.findViewById(R.id.drawer_icon);
-            drawerHolder.ItemName=(TextView) view.findViewById(R.id.drawer_itemName);
-            view.setTag(drawerHolder);
-        }
-        else {
-            drawerHolder=(DrawerItemHolder) view.getTag();
-        }
-        DrawerItem dItem = (DrawerItem) this.drawerItemList.get(position);
+        View view = convertView;
+if(view==null){
+        LayoutInflater inflater=LayoutInflater.from(context);
+
+        drawerHolder= new DrawerItemHolder();
+view=inflater.inflate(R.layout.custom_drawer_item,parent,false);
+    drawerHolder.icon=(ImageView)view.findViewById(R.id.drawer_icon);
+    drawerHolder.ItemName=(TextView) view.findViewById(R.id.drawer_itemName);
+view.setTag(drawerHolder);
+
+}else {
+    drawerHolder=(DrawerItemHolder)view.getTag();
+}
+        DrawerItem dItem =  this.drawerItemList.get(position);
+        Log.d("adapter drawer","position"+position);
 
         drawerHolder.icon.setImageDrawable(view.getResources().getDrawable(
                 dItem.getImgResId()));
         drawerHolder.ItemName.setText(dItem.getItemName());
+        Log.d("adapter drawer","Name"+dItem.getItemName());
 
         return view;
     }
 
     @Override
     public int getCount() {
+        Log.d("adapter drawer",drawerItemList.size()+"");
         return drawerItemList.size();
+
     }
     private class DrawerItemHolder{
         ImageView icon;

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
     private static TabLayout tb;
 private static View navHeader;
-    private DrawerLayout drawer;
+    private NavigationView navigationView;
     private ListView mDrawerList;
 
     private static ImageView mProfilePhoto;
@@ -54,14 +54,18 @@ private static View navHeader;
 
 
 
-        dataList = new ArrayList<DrawerItem>();
+        dataList = new ArrayList<>();
         adddrawerItems();
 
         customDrawerAdapter= new CustomDrawerAdapter(MainActivity.this,R.layout.custom_drawer_item,dataList);
-         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList=(ListView)drawer.findViewById(R.id.drawer_list_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        mDrawerList=(ListView)headerView.findViewById(R.id.drawer_list_view);
         mDrawerList.setAdapter(customDrawerAdapter);
-        drawer.setDrawerElevation(4);
+
+        DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -89,10 +93,13 @@ private static View navHeader;
                 startActivity(i);
             }
         });
-
+    
 
         /*Starting the code */
         tb=(TabLayout)findViewById(R.id.mainTablayout);
+        TabLayout.Tab tabp=tb.newTab();
+        tabp.setText("ENGLISH");
+        tb.addTab(tabp);
         tb.addOnTabSelectedListener(this);
 
         replaceFragment(new StudyFragment(),0);
@@ -150,8 +157,7 @@ private static View navHeader;
         } else if (id == R.id.nav_send) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -210,12 +216,12 @@ private static View navHeader;
     }
     private void adddrawerItems(){
         dataList.add(new DrawerItem("Home", R.drawable.ic_action_home));
-        dataList.add(new DrawerItem("Exams", R.drawable.ic_map_black__1));
-        dataList.add(new DrawerItem("Assignment", R.drawable.ic_import_contacts_black__1));
-        dataList.add(new DrawerItem("Report", R.drawable.ic_content_paste_black__1));
-        dataList.add(new DrawerItem("Profile", R.drawable.ic_person_black__1));
-        dataList.add(new DrawerItem("Classroom", R.drawable.ic_people_black__1));
-        dataList.add(new DrawerItem("Setting", R.drawable.ic_settings_black__1));
+        dataList.add(new DrawerItem("Exams", R.drawable.ic_map_black_1));
+        dataList.add(new DrawerItem("Assignment", R.drawable.ic_import_contacts_black_1));
+        dataList.add(new DrawerItem("Report", R.drawable.ic_content_paste_black_1));
+        dataList.add(new DrawerItem("Profile", R.drawable.ic_person_black_1));
+        dataList.add(new DrawerItem("Classroom", R.drawable.ic_people_black_1));
+        dataList.add(new DrawerItem("Settings", R.drawable.ic_settings_black_1));
           }
 }
 
