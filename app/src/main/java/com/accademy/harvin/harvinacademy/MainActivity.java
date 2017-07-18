@@ -2,34 +2,43 @@ package com.accademy.harvin.harvinacademy;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.adapters.CustomDrawerAdapter;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
+import com.accademy.harvin.harvinacademy.model.Subjects;
+import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
+import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.toggle;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
@@ -37,9 +46,11 @@ public class MainActivity extends AppCompatActivity
 private static View navHeader;
     private NavigationView navigationView;
     private ListView mDrawerList;
-
+    private List<String> mSubjectList=null;
+    private Subjects mSubjects;
     private static ImageView mProfilePhoto;
     List<DrawerItem> dataList;
+    TabLayout.Tab tab_dynamic;
     CustomDrawerAdapter customDrawerAdapter;
 
     private static String ImageURL="http://www.rd.com/wp-content/uploads/sites/2/2016/02/02-train-cat-treats.jpg";
@@ -97,12 +108,74 @@ private static View navHeader;
 
         /*Starting the code */
         tb=(TabLayout)findViewById(R.id.mainTablayout);
-        TabLayout.Tab tabp=tb.newTab();
-        tabp.setText("ENGLISH");
-        tb.addTab(tabp);
         tb.addOnTabSelectedListener(this);
+        mSubjectList= new ArrayList<>();
+        getSubjectListFromServer();
 
-        replaceFragment(new StudyFragment(),0);
+
+
+
+    }
+
+    private  void getSubjectListFromServer() {
+        Log.d("getting subjects","first");
+        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(Constants.BASE_URL)
+                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+        RetrofitInterface client=retrofit.create(RetrofitInterface.class);
+        Observable<Subjects> call =client.getSubjectList();
+        call
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Subjects>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d("getting subjects","on subscribe");
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Subjects subjects) {
+                        mSubjects=subjects;
+                        Log.d("getting subjects","on next");
+                        Log.d("getting subjects","!!!!!"+subjects.getSubjects().get(0).getId());
+                        if(mSubjectList!=null)
+                        for (int i=0;i<subjects.getSubjects().size();i++)
+                        mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
+                            addTabs();
+
+                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1)));
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("getting subjects","on error");
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        Log.d("getting subjects","on complete");
+
+                    }
+                });
+
+
+
+    }
+
+    private void addTabs() {
+
+
+       for (int i=0;i<mSubjectList.size();i++){
+       tab_dynamic=tb.newTab();
+        tab_dynamic.setText(mSubjectList.get(i));
+       tb.addTab(tab_dynamic);}
+
 
     }
 
@@ -169,22 +242,22 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         Log.d("done",""+pos);
         switch (pos){
             case 0:
-                replaceFragment(new StudyFragment(),pos);
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
                 Log.d("done2",""+pos);
 
                 break;
             case 1:
-                replaceFragment(new StudyFragment(),pos);
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
                 Log.d("done2",""+pos);
 
                 break;
             case 2:
-                replaceFragment(new StudyFragment(),pos);
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
                 Log.d("done2",""+pos);
 
                 break;
             case 3:
-                replaceFragment(new StudyFragment(),pos);
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
                 Log.d("done2",""+pos);
                 break;
 
@@ -205,10 +278,8 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
     }
 
 
-    public void replaceFragment(StudyFragment sf,int pos){
-        Bundle pos1=new Bundle();
-        pos1.putInt("key",pos);
-        sf.setArguments(pos1);
+    public void replaceFragment(StudyFragment sf){
+
         FragmentManager fragmentManager= getSupportFragmentManager();
         FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
         mFragmentTranscation.replace(R.id.fragment_container,sf);

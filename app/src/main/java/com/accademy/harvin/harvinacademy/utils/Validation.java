@@ -20,7 +20,7 @@ public class Validation {
     }
     public static boolean validateEmail(String email){
 
-        if(TextUtils.isEmpty(email)|| !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if(TextUtils.isEmpty(email)){
             return false;
         }
         else return true;

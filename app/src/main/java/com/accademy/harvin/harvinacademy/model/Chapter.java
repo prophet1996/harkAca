@@ -1,29 +1,91 @@
+
 package com.accademy.harvin.harvinacademy.model;
 
-/**
- * Created by ishank on 24/6/17.
- */
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Chapter {
-    private int chapter_id;
-    private String chapter_desc;
-    private String chapter_name;
 
-    public Chapter(int chapter_id, String chapter_desc, String chapter_name) {
-        this.chapter_id = chapter_id;
-        this.chapter_desc = chapter_desc;
-        this.chapter_name = chapter_name;
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("chapterName")
+    @Expose
+    private String chapterName;
+    @SerializedName("chapterDescription")
+    @Expose
+    private String chapterDescription;
+    @SerializedName("__v")
+    @Expose
+    private Integer v;
+    @SerializedName("topics")
+    @Expose
+    private List<Topic> topics = null;
+
+    public String getId() {
+        return id;
     }
 
-    public int getChapter_id() {
-        return chapter_id;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getChapter_desc() {
-        return chapter_desc;
+    public Chapter withId(String id) {
+        this.id = id;
+        return this;
     }
 
-    public String getChapter_name() {
-        return chapter_name;
+    public String getChapterName() {
+        return chapterName;
     }
+
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
+
+    public Chapter withChapterName(String chapterName) {
+        this.chapterName = chapterName;
+        return this;
+    }
+
+    public String getChapterDescription() {
+        return chapterDescription;
+    }
+
+    public void setChapterDescription(String chapterDescription) {
+        this.chapterDescription = chapterDescription;
+    }
+
+    public Chapter withChapterDescription(String chapterDescription) {
+        this.chapterDescription = chapterDescription;
+        return this;
+    }
+
+    public Integer getV() {
+        return v;
+    }
+
+    public void setV(Integer v) {
+        this.v = v;
+    }
+
+    public Chapter withV(Integer v) {
+        this.v = v;
+        return this;
+    }
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
+
+    public Chapter withTopics(List<Topic> topics) {
+        this.topics = topics;
+        return this;
+    }
+
 }

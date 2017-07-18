@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,8 @@ import android.widget.TextView;
 
 import com.accademy.harvin.harvinacademy.CourseActivity;
 import com.accademy.harvin.harvinacademy.R;
-import com.accademy.harvin.harvinacademy.model.Chapter;
+import com.accademy.harvin.harvinacademy.model.ChapterOld;
+import com.accademy.harvin.harvinacademy.model.Subject;
 
 import java.util.List;
 
@@ -22,15 +24,16 @@ import java.util.List;
  */
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
-     final static String SUBJECT_KEY="subject";
-    public final static String CHAPTER_KEY="subject";
+
 
      PopupMenu popup;
 
-    private List<Chapter> chapterList;
+    private Subject mSubject;
 
-    public SubjectAdapter(List<Chapter> chapterList, Context context) {
-        this.chapterList = chapterList;
+    public SubjectAdapter(Subject mSubject, Context context) {
+        Log.d("adapter", "done");
+
+        this.mSubject=mSubject;
         this.context = context;
     }
 
@@ -39,25 +42,25 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     @Override
     public SubjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list,parent,false);
-        v.setPadding(10,10,10,10);
+
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final SubjectAdapter.ViewHolder holder, int position) {
-        final Chapter list= chapterList.get(position);
-        final int tab_pos=position;
-        holder.id.setText(""+list.getChapter_id());
-        holder.desc.setText(list.getChapter_desc());
-        holder.sub.setText(list.getChapter_name());
+
+
+        holder.id.setText(""+(position+1));
+        holder.desc.setText(mSubject.getChapters().get(position).getChapterDescription());
+        holder.chapter_name.setText(mSubject.getChapters().get(position).getChapterName());
         holder.chapter.setText("Chapter");
         holder.chapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,CourseActivity.class);
-                i.putExtra(SUBJECT_KEY,tab_pos);
-                i.putExtra(CHAPTER_KEY,list.getChapter_name());
-                context.startActivity(i);
+               // Intent i = new Intent(context,CourseActivity.class);
+                //i.putExtra(SUBJECT_KEY,tab_pos);
+                //i.putExtra(CHAPTER_KEY,list.getChapter_name());
+                //context.startActivity(i);
             }
         });
 
@@ -108,19 +111,19 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return chapterList.size();
+        return mSubject.getChapters().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView id;
-        public TextView sub;
+        public TextView chapter_name;
         public TextView desc;
         public TextView chapter;//remains the same
         public TextView buttonViewOption;
         public ViewHolder(View itemView) {
             super(itemView);
             id=(TextView)itemView.findViewById(R.id.chapter_no);
-            sub=(TextView)itemView.findViewById(R.id.chapter_title);
+            chapter_name=(TextView)itemView.findViewById(R.id.chapter_title);
             desc=(TextView)itemView.findViewById(R.id.chapter_description);
             chapter=(TextView)itemView.findViewById(R.id.chapter);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);

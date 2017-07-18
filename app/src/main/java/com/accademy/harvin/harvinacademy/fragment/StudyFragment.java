@@ -1,12 +1,10 @@
 package com.accademy.harvin.harvinacademy.fragment;
 
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,26 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.adapters.SubjectAdapter;
-import com.accademy.harvin.harvinacademy.model.Chapter;
-
-import java.util.ArrayList;
+import com.accademy.harvin.harvinacademy.model.Subject;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class StudyFragment extends Fragment {
-    private static int SUBJECT_ID[] = {0, 1, 2, 3};
-    private static int subject;
 
-    String chape;
-    private ArrayList<Chapter> list;
+    private static StudyFragment mStudyFragment;
+
+    private static Subject mSubject;
+    private static Context mContext;
+
+
     //recyclerview objects
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private static RecyclerView.Adapter adapter;
     public StudyFragment() {
         // Required empty public constructor
     }
@@ -41,7 +38,7 @@ public class StudyFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = new ArrayList<>();
+
 
 
     }
@@ -53,18 +50,16 @@ public class StudyFragment extends Fragment {
         Log.d("done", "done");
         View v = inflater.inflate(R.layout.fragment_study, container, false);
 
-        Bundle bundle = getArguments();
-        subject = bundle.getInt("key");
-        Log.d("done1", "" + subject);
+
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(container.getContext());
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setPadding(10,10,10,10);
-        loadRecyclerViewItem(subject);
 
-        adapter = new SubjectAdapter(list, container.getContext());
+
+
 
 
 
@@ -76,18 +71,12 @@ public class StudyFragment extends Fragment {
     }
 
 
-    private void loadRecyclerViewItem(int pos) {
-        //you can fetch the data from server or some apis
-        //for this tutorial I am adding some dummy data directly
-        for (int i = 1; i <= 14; i++) {
-            Chapter myList = new Chapter(i,
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi molestie nisi dui.",
-                    "Dummy Heading " + pos
-            );
-            list.add(myList);
+    public static StudyFragment getInstance(Subject mSubject){
 
-        }
-        Log.d("done","done"+list.get(1));
-
+           StudyFragment mStudyFragment= new StudyFragment();
+        Log.d("done2",""+mSubject.getSubjectName());
+        adapter = new SubjectAdapter(mSubject, mContext);
+        mStudyFragment.mSubject=mSubject;
+        return mStudyFragment;
     }
 }

@@ -19,9 +19,8 @@ public class CourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-        Bundle b= getIntent().getExtras();
-        Log.d("intent data",b.getString(SubjectAdapter.CHAPTER_KEY));
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mStudyFragment= new StudyFragment();
