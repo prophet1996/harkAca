@@ -71,9 +71,8 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
         paint.setDither(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(Color.parseColor("#BAB399"));
-        canvas.drawCircle(finalBitmap.getWidth() / 2 + 0.7f,
-                finalBitmap.getHeight() / 2 + 0.7f,
-                finalBitmap.getWidth() / 2 + 0.1f, paint);
+
+
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.OVERLAY));
         canvas.drawBitmap(finalBitmap, rect, rect, paint);
 
@@ -98,7 +97,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
                 finalBitmap.getHeight());
 
         Point point0_draw = new Point(0, 0);
-        Point point1_draw = new Point(0, height*4/6);
+        Point point1_draw = new Point(0, height*2/6);
         Point point2_draw = new Point(width/2, height);
         Point point3_draw = new Point(width, height*4/6);
         Point point4_draw = new Point(width, 0);
@@ -107,14 +106,21 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
 
 
         Path path = new Path();
-
-        path.moveTo(point0_draw.x,point0_draw.y);
-        path.lineTo(point1_draw.x, point1_draw.y);
-        path.lineTo(point2_draw.x, point2_draw.y);
-        path.lineTo(point3_draw.x, point3_draw.y);
-        path.lineTo(point4_draw.x, point4_draw.y);
-        path.lineTo(point0_draw.x, point0_draw.y);
-
+//
+//        path.lineTo(point1_draw.x, point1_draw.y);
+//        path.moveTo(point0_draw.x,point0_draw.y);
+//        path.lineTo(point2_draw.x, point2_draw.y);
+//        path.lineTo(point3_draw.x, point3_draw.y);
+//        path.lineTo(point4_draw.x, point4_draw.y);
+//        path.lineTo(point0_draw.x, point0_draw.y);
+        final RectF oval2=new RectF();
+     path.moveTo(0,0);
+//        path.lineTo(0,height*3/7);
+//        path.lineTo(width,height*3/7);
+//        path.lineTo(width,0);
+//        path.lineTo(0,0);
+      oval2.set(0+(width/25.0f),(3/40.0f)*height,width-(width/25.0f),height);
+       path.arcTo(oval2,0,180,true);
 
 
 
@@ -131,7 +137,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
        canvas.drawArc(oval,0,180,true,paint);
        canvas.drawPath(path,paint);
 
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.OVERLAY));
         canvas.drawBitmap(finalBitmap, rect, rect, paint);
         return output;
 

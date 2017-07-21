@@ -22,7 +22,6 @@ import com.accademy.harvin.harvinacademy.model.Subject;
  */
 public class StudyFragment extends Fragment {
 
-    private static StudyFragment mStudyFragment;
 
     private static Subject mSubject;
     private static Context mContext;
@@ -30,7 +29,7 @@ public class StudyFragment extends Fragment {
 
     //recyclerview objects
     private RecyclerView recyclerView;
-    private static RecyclerView.Adapter adapter;
+    private static RecyclerView.Adapter mSubjectAdapter;
     public StudyFragment() {
         // Required empty public constructor
     }
@@ -38,9 +37,6 @@ public class StudyFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -49,34 +45,21 @@ public class StudyFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("done", "done");
         View v = inflater.inflate(R.layout.fragment_study, container, false);
-
-
-
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(container.getContext());
-
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setPadding(10,10,10,10);
-
-
-
-
-
-
-        recyclerView.setAdapter(adapter);
-
-
-
+        recyclerView.setAdapter(mSubjectAdapter);
         return v;
     }
 
 
-    public static StudyFragment getInstance(Subject mSubject){
-
-           StudyFragment mStudyFragment= new StudyFragment();
+    public static StudyFragment getInstance(Subject mSubject,Context mContext){
+        StudyFragment mStudyFragment= new StudyFragment();
         Log.d("done2",""+mSubject.getSubjectName());
-        adapter = new SubjectAdapter(mSubject, mContext);
+        mSubjectAdapter = new SubjectAdapter(mSubject, mContext);
         mStudyFragment.mSubject=mSubject;
+        mStudyFragment.mContext=mContext;
         return mStudyFragment;
     }
 }

@@ -2,6 +2,7 @@ package com.accademy.harvin.harvinacademy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 
@@ -14,10 +15,11 @@ import android.widget.TextView;
 
 import com.accademy.harvin.harvinacademy.CourseActivity;
 import com.accademy.harvin.harvinacademy.R;
-import com.accademy.harvin.harvinacademy.model.ChapterOld;
 import com.accademy.harvin.harvinacademy.model.Subject;
+import com.google.gson.Gson;
 
-import java.util.List;
+import static android.content.Context.MODE_PRIVATE;
+import static com.accademy.harvin.harvinacademy.utils.Constants.SUBJECT_KEY;
 
 /**
  * Created by ishank on 24/6/17.
@@ -29,6 +31,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
      PopupMenu popup;
 
     private Subject mSubject;
+    private Gson  GSON= new Gson();
+    private Context context;
+
 
     public SubjectAdapter(Subject mSubject, Context context) {
         Log.d("adapter", "done");
@@ -37,17 +42,16 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         this.context = context;
     }
 
-    private Context context;
 
     @Override
     public SubjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.chapter_list,parent,false);
 
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final SubjectAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final SubjectAdapter.ViewHolder holder, final int position) {
 
 
         holder.id.setText(""+(position+1));
@@ -57,10 +61,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         holder.chapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent i = new Intent(context,CourseActivity.class);
+                SharedPreferences mPrefs=context.getSharedPreferences(SUBJECT_KEY,MODE_PRIVATE);
+                SharedPreferences.Editor mPrefsEditor=mPrefs.edit();
+                mPrefsEditor.putString(SUBJECT_KEY,GSON.toJson(mSubject.getChapters().get(position)));
+                mPrefsEditor.commit();
+                Intent i = new Intent(context,CourseActivity.class);
                 //i.putExtra(SUBJECT_KEY,tab_pos);
-                //i.putExtra(CHAPTER_KEY,list.getChapter_name());
-                //context.startActivity(i);
+                //i.putExtra(CHAPTER_KEY,chapter_list.getChapter_name());
+                context.startActivity(i);
             }
         });
 

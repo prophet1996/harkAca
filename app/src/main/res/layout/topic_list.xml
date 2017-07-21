@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/unit"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/topic_no"
+            android:layout_alignRight="@+id/topic_no"
+            android:text="UNIT" />
+
+        <TextView
+            android:id="@+id/topic_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.1"
+            android:textSize="30dp"
+            android:layout_alignLeft="@+id/text1"
+            android:layout_alignStart="@+id/text1"
+            android:layout_alignBottom="@+id/topic_name" />
+
+        <TextView
+            android:id="@+id/topic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/topic_no"
+            android:textSize="15dp"
+            android:text="Introduction to Relations"
+            android:textColor="#000000" />
+
+
+
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/frame"
+    android:layout_alignParentEnd="true"
+    android:layout_centerVertical="true"
+    >
+
+    <ProgressBar
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/progress_bar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/download_pdf"
+                android:layout_margin="5dp"
+                android:background="@mipmap/ic_download"
+                android:layout_gravity="center"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                />
+</FrameLayout>
+
+
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -9,4 +9,5 @@ public class Constants {
     public static final String BASE_URL = "http://harvinacademy.herokuapp.com/student/";
     public static final String TOKEN = "token";
     public static final String EMAIL = "email";
+    public static final String SUBJECT_KEY="subject";
 }

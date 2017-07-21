@@ -31,6 +31,7 @@ import com.google.gson.annotations.SerializedName;public class Topic {
 
     public Topic withId(String id) {
         this.id = id;
+
         return this;
     }
 

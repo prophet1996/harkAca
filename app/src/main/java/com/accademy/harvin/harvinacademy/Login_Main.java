@@ -103,7 +103,7 @@ public class Login_Main extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull UserTest userTest) {
-                        Log.d(TAG, "onNext(" + userTest.getUsername().toString() + ")");
+
 
                         done = true;
                         logindone();

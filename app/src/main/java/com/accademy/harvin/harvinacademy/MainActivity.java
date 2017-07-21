@@ -146,7 +146,7 @@ private static View navHeader;
                         mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
                             addTabs();
 
-                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1)));
+                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1),MainActivity.this));
 
                     }
 
@@ -174,6 +174,7 @@ private static View navHeader;
        for (int i=0;i<mSubjectList.size();i++){
        tab_dynamic=tb.newTab();
         tab_dynamic.setText(mSubjectList.get(i));
+
        tb.addTab(tab_dynamic);}
 
 
@@ -242,22 +243,22 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         Log.d("done",""+pos);
         switch (pos){
             case 0:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
                 Log.d("done2",""+pos);
 
                 break;
             case 1:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
                 Log.d("done2",""+pos);
 
                 break;
             case 2:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
                 Log.d("done2",""+pos);
 
                 break;
             case 3:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos)));
+                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
                 Log.d("done2",""+pos);
                 break;
 
