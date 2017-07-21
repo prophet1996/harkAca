@@ -99,6 +99,10 @@ public class CourseActivity extends AppCompatActivity {
             if(intent.getAction().equals(MESSAGE_PROGRESS)){
 
                 DownloadedPdf download = intent.getParcelableExtra("download");
+                if(download.getProgress()==100)
+                {
+
+                }
                 Toast.makeText(CourseActivity.this,"downloading files now",Toast.LENGTH_SHORT).show();
             }
         }

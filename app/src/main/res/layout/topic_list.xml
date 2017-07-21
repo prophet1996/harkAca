@@ -64,7 +64,9 @@
         android:indeterminate="false"
         android:progressDrawable="@drawable/progress_bar"
         android:layout_width="35dp"
+        android:id="@+id/downloading_progress"
         android:layout_height="35dp"
+        android:visibility="invisible"
         android:layout_gravity="center" />
 
             <Button

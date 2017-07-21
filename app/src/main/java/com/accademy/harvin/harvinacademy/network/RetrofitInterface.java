@@ -10,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Streaming;
 
 
 /**
@@ -25,8 +27,9 @@ public interface RetrofitInterface {
     Observable<UserTest> register(@Body UserTest usertest);
     @GET("subjects")
     Observable<Subjects> getSubjectList();
-    @GET("files/abc")
-    Call<ResponseBody> downloadfile();
+    @Streaming
+    @GET("files/{name}")
+    Call<ResponseBody> downloadfile(@Path("name")String file);
 
 
 

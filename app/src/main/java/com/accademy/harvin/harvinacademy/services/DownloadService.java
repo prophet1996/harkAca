@@ -39,6 +39,8 @@ public class DownloadService extends IntentService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private int totalFileSize;
+    private int downloadingtopicPosition;
+    private String downloadingtopicname;
 
 
     public DownloadService() {
@@ -47,11 +49,13 @@ public class DownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        downloadingtopicPosition=intent.getIntExtra("topic",0);
+        downloadingtopicname=intent.getStringExtra("topic");
         notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder=new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_download)
-                .setContentTitle("Download")
+                .setContentTitle(downloadingtopicname)
                 .setContentText("Downloading PDF")
                 .setAutoCancel(true);
 
@@ -65,7 +69,7 @@ public class DownloadService extends IntentService {
                 .build();
 
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
-        Call<ResponseBody> request=client.downloadfile();
+        Call<ResponseBody> request=client.downloadfile(downloadingtopicname);
 
         try{
             Log.d("download","retorfit1");
@@ -85,7 +89,7 @@ public class DownloadService extends IntentService {
         byte data[]= new byte[1024*4];
         long fileSize=body.contentLength();
         InputStream bis=new BufferedInputStream(body.byteStream(),1024*8);
-        File outputfile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"file1.pdf");
+        File outputfile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),downloadingtopicname+".pdf");
         OutputStream output= null;
         try {
             output = new FileOutputStream(outputfile);
@@ -144,6 +148,8 @@ public class DownloadService extends IntentService {
 
         Intent intent = new Intent(CourseActivity.MESSAGE_PROGRESS);
         intent.putExtra("download",download);
+        intent.putExtra("topic",downloadingtopicPosition);
+        Log.d("send intent","sendingdownloadcomplete intent");
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
     }
 
