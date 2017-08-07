@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.accademy.harvin.harvinacademy.fragment.FaceBookPostFragement">
+
+    <!-- TODO: Update blank fragment layout -->
+<android.support.v7.widget.RecyclerView
+    android:layout_width="wrap_content"
+    android:id="@+id/facebookpost_horizontal_recyclerview"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"/>
+</FrameLayout>

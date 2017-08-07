@@ -1,6 +1,7 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
@@ -23,6 +26,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 public class UserProfile extends AppCompatActivity {
     private ImageView mProfilePhoto;
     private ImageView custommageView;
+    private Button deleteUser;
     private static String ImageURL="http://www.rd.com/wp-content/uploads/sites/2/2016/02/02-train-cat-treats.jpg";
     @SuppressLint("NewApi")
     @Override
@@ -34,7 +38,8 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mProfilePhoto=(ImageView)findViewById(R.id.profilephotoact);
-        custommageView=(CustomImageView)findViewById(R.id.custommageView);
+
+        deleteUser=(Button)findViewById(R.id.delete_user);
 
         Glide
                 .with(this)   // pass Context
@@ -42,13 +47,21 @@ public class UserProfile extends AppCompatActivity {
                 .error(R.drawable.solidfill)// pass the image url// optional scaletype
                 .placeholder(R.drawable.ic_menu_camera) // optional placeholder
                                       .bitmapTransform(new CircleTransform(this))
-                .into(mProfilePhoto); // the ImageView to which the image is to be loaded
+                .into(mProfilePhoto); // the ImageView to which the image is to be
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences= UserProfile.this.getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.remove("username");
+                editor.remove("password");
+                editor.commit();
+                Log.d("login","removed");
 
-        Bitmap Icon1=BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher);
+            }
+        });
 
-       if(Icon1!=null){
-           Log.d("onCreate","icon not null");
-       }custommageView.setImageBitmap(Icon1);
+
 
 
     }

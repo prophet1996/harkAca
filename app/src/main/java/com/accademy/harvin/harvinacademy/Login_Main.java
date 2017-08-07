@@ -1,6 +1,9 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -30,22 +34,42 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Login_Main extends AppCompatActivity {
     private static final String TAG = "RxAndroidSamples";
+    private static final int REQUEST_REGISTER=100;
 
     private Observable<UserTest> call=null;
 
 
     Button b1;
     TextView username;
+    TextView mRegister;
     TextView password;
     boolean done = false;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login__main);
-        b1 = (Button) findViewById(R.id.register);
+        b1 = (Button) findViewById(R.id.login);
         username = (TextView) findViewById(R.id.et_username);
         password = (TextView) findViewById(R.id.et_password);
+        mRegister=(TextView) findViewById(R.id.register);
+
+        mRegister.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+            //    Intent i= new Intent(Login_Main.this,RegsterStudent.class);
+          //      startActivityForResult(i,REQUEST_REGISTER);
+            }
+        });
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +84,13 @@ public class Login_Main extends AppCompatActivity {
 
             }
         });
+        SharedPreferences sharedPreferences=Login_Main.this.getPreferences(MODE_PRIVATE);
+        if(sharedPreferences.getString("username","z")!="z"&&sharedPreferences.getString("password","z")!="z"){
+            Log.d("login","from saved");
+            done=true;
+            logindone();
+        }
+
 
     }
 
@@ -80,8 +111,11 @@ public class Login_Main extends AppCompatActivity {
 
     private void sendRequest(UserTest user) {
         HttpLoggingInterceptor loggin= new HttpLoggingInterceptor();
+        int cachesize=10*1024*1024;
+        Cache cache=new Cache(getCacheDir(),cachesize);
         loggin.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .cache(cache)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -103,9 +137,8 @@ public class Login_Main extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull UserTest userTest) {
-
-
                         done = true;
+                        saveuser();
                         logindone();
                     }
 
@@ -130,10 +163,19 @@ public class Login_Main extends AppCompatActivity {
             finish();
         }
     }
+    private void saveuser(){
+        SharedPreferences sharedPref = Login_Main.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPref.edit();
+        editor.putString("password",password.getText().toString());
+        editor.putString("username",username.getText().toString());
+        Log.d("login","saved");
+        editor.commit();
+    }
     private void showSnackBarMessage(String message){
         Toast.makeText(Login_Main.this,message,Toast.LENGTH_SHORT).show();
 
     }
+
 
     @Override
     protected void onDestroy() {

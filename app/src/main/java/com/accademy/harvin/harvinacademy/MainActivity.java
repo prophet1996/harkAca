@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.accademy.harvin.harvinacademy.adapters.CustomDrawerAdapter;
+import com.accademy.harvin.harvinacademy.adapters.FacebookPostAdapter;
+import com.accademy.harvin.harvinacademy.fragment.FaceBookPostFragement;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
 import com.accademy.harvin.harvinacademy.model.Subjects;
@@ -36,6 +38,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -43,7 +47,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
     private static TabLayout tb;
-private static View navHeader;
+    private static View navHeader;
     private NavigationView navigationView;
     private ListView mDrawerList;
     private List<String> mSubjectList=null;
@@ -59,7 +63,7 @@ private static View navHeader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -104,14 +108,11 @@ private static View navHeader;
                 startActivity(i);
             }
         });
-    
-
-        /*Starting the code */
         tb=(TabLayout)findViewById(R.id.mainTablayout);
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();
         getSubjectListFromServer();
-
+        replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
 
 
 
@@ -119,8 +120,15 @@ private static View navHeader;
 
     private  void getSubjectListFromServer() {
         Log.d("getting subjects","first");
+        int cachesize=10*1024*1024;
+        Cache cache=new Cache(getCacheDir(),cachesize);
+        OkHttpClient okHttpClient= new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(Constants.BASE_URL)
+                                .client(okHttpClient)
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
@@ -133,51 +141,34 @@ private static View navHeader;
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         Log.d("getting subjects","on subscribe");
-
                     }
-
                     @Override
                     public void onNext(@NonNull Subjects subjects) {
                         mSubjects=subjects;
-                        Log.d("getting subjects","on next");
-                        Log.d("getting subjects","!!!!!"+subjects.getSubjects().get(0).getId());
                         if(mSubjectList!=null)
                         for (int i=0;i<subjects.getSubjects().size();i++)
-                        mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
-                            addTabs();
-
+                            mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
+                        addTabs();
                         replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1),MainActivity.this));
-
                     }
-
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("getting subjects","on error");
-
                     }
 
                     @Override
                     public void onComplete() {
-
                         Log.d("getting subjects","on complete");
-
                     }
                 });
-
-
-
     }
 
     private void addTabs() {
-
-
-       for (int i=0;i<mSubjectList.size();i++){
-       tab_dynamic=tb.newTab();
-        tab_dynamic.setText(mSubjectList.get(i));
-
-       tb.addTab(tab_dynamic);}
-
-
+        for (int i=0;i<mSubjectList.size();i++){
+            tab_dynamic=tb.newTab();
+            tab_dynamic.setText(mSubjectList.get(i));
+            tb.addTab(tab_dynamic);
+       }
     }
 
     @Override
@@ -208,7 +199,6 @@ private static View navHeader;
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -218,17 +208,17 @@ private static View navHeader;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.home_drawer) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.exams_drawer) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.assignments_drawer) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.test_drawer) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.share_drawer) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.report_drawer) {
 
         }
 DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
@@ -285,6 +275,12 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
         mFragmentTranscation.replace(R.id.fragment_container,sf);
         mFragmentTranscation.commit();
+    }
+    public void replaceFacebookPosts(FaceBookPostFragement fb){
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
+        fragmentTransaction.replace(R.id.facebook_posts_frame,fb);
+        fragmentTransaction.commit();
     }
     private void adddrawerItems(){
         dataList.add(new DrawerItem("Home", R.drawable.ic_action_home));

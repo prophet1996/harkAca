@@ -6,27 +6,27 @@
     <group android:checkableBehavior="single"
         >
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/home_drawer"
 
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/exams_drawer"
 
             android:title="Exams" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/assignments_drawer"
 
             android:title="Assignments" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/test_drawer"
 
-            android:title="Tools" />
+            android:title="Tests" />
         <item
-            android:id="@+id/nav_share"
+            android:id="@+id/share_drawer"
 
             android:title="Share" />
         <item
-            android:id="@+id/nav_send"
+            android:id="@+id/report_drawer"
 
             android:title="Reports" />
     </group>

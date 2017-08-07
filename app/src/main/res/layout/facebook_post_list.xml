@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="20dp"
+
+    >
+<FrameLayout
+     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ImageView
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:background="@color/colorPrimary"
+    android:layout_centerInParent="true"
+    android:id="@+id/facebook_post_imageview"
+    />
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#000000"
+        android:orientation="vertical"
+       android:alpha="0.5"
+
+        >
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="title of post"
+            android:id="@+id/facebook_post_title"
+            android:textColor="#ffffff"
+
+            android:ellipsize="end"
+            />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="content of the post"
+            android:textColor="#ffffff"
+            android:id="@+id/facebook_post_desc"
+            android:maxLines="2"
+            android:ellipsize="end"
+
+
+            />
+
+    </LinearLayout>
+</FrameLayout>
+</android.support.v7.widget.CardView>

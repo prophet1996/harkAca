@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.accademy.harvin.harvinacademy.Login_Main">
     <ImageView
         android:id="@+id/image_harvin"
@@ -39,6 +40,7 @@
                 >
                 <EditText
                     android:id="@+id/et_username"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text1"
@@ -65,12 +67,23 @@
                     android:inputType="textPassword" />
 
             </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/register"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register"
+                android:text="Haven't registered yet?"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="italic"
+                android:layout_below="@+id/login"
+                android:layout_margin="10dp"
+                android:id="@+id/register"
+                android:layout_centerInParent="true"
+                />
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
                 android:layout_margin="4dp"
                 android:layout_centerInParent="true"
                 android:layout_below="@+id/ti_password"

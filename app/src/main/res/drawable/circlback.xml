@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval"
 
-    >    <solid android:color="@color/transparentcolor"/>
+    >
+    <size android:height="24dp"
+        android:width="24dp"/>
+    <solid android:color="@color/cardview_light_background"/>
 <corners android:radius="100dp" />
 </shape>
