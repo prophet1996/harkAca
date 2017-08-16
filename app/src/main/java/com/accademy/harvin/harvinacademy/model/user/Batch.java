@@ -1,27 +1,24 @@
 
-package com.accademy.harvin.harvinacademy.model;
+package com.accademy.harvin.harvinacademy.model.user;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Chapter {
+public class Batch {
 
     @SerializedName("_id")
     @Expose
     private String id;
-    @SerializedName("chapterName")
+    @SerializedName("batchName")
     @Expose
-    private String chapterName;
-    @SerializedName("chapterDescription")
-    @Expose
-    private String chapterDescription;
+    private String batchName;
     @SerializedName("__v")
     @Expose
     private Integer v;
-    @SerializedName("topics")
+    @SerializedName("subjects")
     @Expose
-    private List<Topic> topics = null;
+    private List<String> subjects = null;
 
     public String getId() {
         return id;
@@ -31,18 +28,13 @@ public class Chapter {
         this.id = id;
     }
 
-
-    public String getChapterName() {
-        return chapterName;
+    public String getBatchName() {
+        return batchName;
     }
 
-
-
-    public String getChapterDescription() {
-        return chapterDescription;
+    public void setBatchName(String batchName) {
+        this.batchName = batchName;
     }
-
-
 
     public Integer getV() {
         return v;
@@ -52,12 +44,12 @@ public class Chapter {
         this.v = v;
     }
 
-
-
-    public List<Topic> getTopics() {
-        return topics;
+    public List<String> getSubjects() {
+        return subjects;
     }
 
-
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
+    }
 
 }

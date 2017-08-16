@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "552975167412",
+    "firebase_url": "https://harvinacademy-5942a.firebaseio.com",
+    "project_id": "harvinacademy-5942a",
+    "storage_bucket": "harvinacademy-5942a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552975167412:android:c29360c8bce4f8f3",
+        "android_client_info": {
+          "package_name": "com.accademy.harvin.harvinacademy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552975167412-rc1n3fcggt5o42m943nn6n3cgksq2p12.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.accademy.harvin.harvinacademy",
+            "certificate_hash": "101ac4a97e1e77ae6cec9333dd3b44743c5123fc"
+          }
+        },
+        {
+          "client_id": "552975167412-0qcbqpq4ikgccslct9m8nnv46lj7i4sa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo_jCjxmejBZ4wt8MfsRhj52Dtp_Cv7z0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552975167412-0qcbqpq4ikgccslct9m8nnv46lj7i4sa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

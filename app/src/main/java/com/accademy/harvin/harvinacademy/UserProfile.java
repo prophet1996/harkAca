@@ -33,9 +33,6 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mProfilePhoto=(ImageView)findViewById(R.id.profilephotoact);
 
@@ -46,7 +43,7 @@ public class UserProfile extends AppCompatActivity {
                 .load(ImageURL)
                 .error(R.drawable.solidfill)// pass the image url// optional scaletype
                 .placeholder(R.drawable.ic_menu_camera) // optional placeholder
-                                      .bitmapTransform(new CircleTransform(this))
+
                 .into(mProfilePhoto); // the ImageView to which the image is to be
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override

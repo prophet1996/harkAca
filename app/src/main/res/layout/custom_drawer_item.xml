@@ -12,17 +12,17 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:id="@+id/relativeLayout_inner_drawer"
-    android:layout_alignParentLeft="true"
-    android:layout_margin="10dp"
+    android:layout_alignParentStart="true"
+    android:layout_margin="8dp"
 
     android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/drawer_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-android:layout_alignParentLeft="true"
-                android:layout_marginStart="60dp"
-                android:layout_marginLeft="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="65dp"
+
                 />
 
             <TextView

@@ -29,37 +29,19 @@ import com.google.gson.annotations.SerializedName;public class Topic {
         this.id = id;
     }
 
-    public Topic withId(String id) {
-        this.id = id;
 
-        return this;
-    }
 
     public String getTopicName() {
         return topicName;
     }
 
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
-    }
 
-    public Topic withTopicName(String topicName) {
-        this.topicName = topicName;
-        return this;
-    }
 
     public String getTopicDescription() {
         return topicDescription;
     }
 
-    public void setTopicDescription(String topicDescription) {
-        this.topicDescription = topicDescription;
-    }
 
-    public Topic withTopicDescription(String topicDescription) {
-        this.topicDescription = topicDescription;
-        return this;
-    }
 
     public Integer getV() {
         return v;
@@ -69,22 +51,11 @@ import com.google.gson.annotations.SerializedName;public class Topic {
         this.v = v;
     }
 
-    public Topic withV(Integer v) {
-        this.v = v;
-        return this;
-    }
 
     public List<File> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
-        this.files = files;
-    }
 
-    public Topic withFiles(List<File> files) {
-        this.files = files;
-        return this;
-    }
 
 }

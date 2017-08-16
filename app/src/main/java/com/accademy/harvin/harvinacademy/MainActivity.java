@@ -1,7 +1,9 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -17,9 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.adapters.CustomDrawerAdapter;
-import com.accademy.harvin.harvinacademy.adapters.FacebookPostAdapter;
 import com.accademy.harvin.harvinacademy.fragment.FaceBookPostFragement;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
@@ -27,6 +29,7 @@ import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
+
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -53,7 +56,8 @@ public class MainActivity extends AppCompatActivity
     private List<String> mSubjectList=null;
     private Subjects mSubjects;
     private static ImageView mProfilePhoto;
-    List<DrawerItem> dataList;
+    private static boolean addedTabs=false;
+    List<DrawerItem> dataList = new ArrayList<>();;
     TabLayout.Tab tab_dynamic;
     CustomDrawerAdapter customDrawerAdapter;
 
@@ -63,17 +67,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        dataList = new ArrayList<>();
         adddrawerItems();
 
         customDrawerAdapter= new CustomDrawerAdapter(MainActivity.this,R.layout.custom_drawer_item,dataList);
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
 
         mDrawerList=(ListView)headerView.findViewById(R.id.drawer_list_view);
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity
                 .into(mProfilePhoto); // the ImageView to which the image is to be loaded
 
 
-        Log.d("imageView",""+mProfilePhoto);
         mProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();
         getSubjectListFromServer();
+        if(!addedTabs) {
+            addTabs();
+
+        }
         replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
 
 
@@ -133,7 +137,9 @@ public class MainActivity extends AppCompatActivity
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
-        Observable<Subjects> call =client.getSubjectList();
+        String username=getUsername();
+        Log.d("getting subjects",username);
+        Observable<Subjects> call =client.getSubjectList(username);
         call
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -149,11 +155,14 @@ public class MainActivity extends AppCompatActivity
                         for (int i=0;i<subjects.getSubjects().size();i++)
                             mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
                         addTabs();
+                        addedTabs=true;
                         replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1),MainActivity.this));
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("getting subjects","on error");
+                        e.printStackTrace();
+
                     }
 
                     @Override
@@ -167,7 +176,11 @@ public class MainActivity extends AppCompatActivity
         for (int i=0;i<mSubjectList.size();i++){
             tab_dynamic=tb.newTab();
             tab_dynamic.setText(mSubjectList.get(i));
-            tb.addTab(tab_dynamic);
+            try{
+                tb.addTab(tab_dynamic);
+            }
+            catch (NullPointerException np){np.printStackTrace();
+                Toast.makeText(MainActivity.this,"Can't connect right now please try again later..",Toast.LENGTH_LONG);}
        }
     }
 
@@ -206,21 +219,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.home_drawer) {
-            // Handle the camera action
-        } else if (id == R.id.exams_drawer) {
-
-        } else if (id == R.id.assignments_drawer) {
-
-        } else if (id == R.id.test_drawer) {
-
-        } else if (id == R.id.share_drawer) {
-
-        } else if (id == R.id.report_drawer) {
-
-        }
 DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -289,7 +288,16 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         dataList.add(new DrawerItem("Report", R.drawable.ic_content_paste_black_1));
         dataList.add(new DrawerItem("Profile", R.drawable.ic_person_black_1));
         dataList.add(new DrawerItem("Classroom", R.drawable.ic_people_black_1));
-        dataList.add(new DrawerItem("Settings", R.drawable.ic_settings_black_1));
+
           }
+
+    public String getUsername() {
+        String username;
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+            username = sharedPreferences.getString("username", "z");
+
+        return username;
+    }
 }
 

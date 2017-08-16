@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -66,8 +67,8 @@ public class Login_Main extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-            //    Intent i= new Intent(Login_Main.this,RegsterStudent.class);
-          //      startActivityForResult(i,REQUEST_REGISTER);
+                Intent i= new Intent(Login_Main.this,RegisterActivity.class);
+              startActivityForResult(i,REQUEST_REGISTER);
             }
         });
 
@@ -164,7 +165,7 @@ public class Login_Main extends AppCompatActivity {
         }
     }
     private void saveuser(){
-        SharedPreferences sharedPref = Login_Main.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Login_Main.this);
         SharedPreferences.Editor editor=sharedPref.edit();
         editor.putString("password",password.getText().toString());
         editor.putString("username",username.getText().toString());
@@ -182,5 +183,19 @@ public class Login_Main extends AppCompatActivity {
         super.onDestroy();
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_REGISTER){
+            if(resultCode==RESULT_OK){
+                done=true;
+                logindone();
+            }
+            else {
+                Toast.makeText(this,"Something went wrong please try again..",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

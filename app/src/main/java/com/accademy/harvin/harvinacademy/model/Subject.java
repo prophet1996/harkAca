@@ -28,23 +28,11 @@ public class Subject {
         this.id = id;
     }
 
-    public Subject withId(String id) {
-        this.id = id;
-        return this;
-    }
 
     public String getSubjectName() {
         return subjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public Subject withSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-        return this;
-    }
 
     public Integer getV() {
         return v;
@@ -54,22 +42,11 @@ public class Subject {
         this.v = v;
     }
 
-    public Subject withV(Integer v) {
-        this.v = v;
-        return this;
-    }
+
 
     public List<Chapter> getChapters() {
         return chapters;
     }
 
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
-
-    public Subject withChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-        return this;
-    }
 
 }
