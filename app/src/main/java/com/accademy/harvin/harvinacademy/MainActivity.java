@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.adapters.CustomDrawerAdapter;
@@ -31,6 +32,8 @@ import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
 
 import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     private List<String> mSubjectList=null;
     private Subjects mSubjects;
     private static ImageView mProfilePhoto;
+    private static TextView mProfilename;
+    private static TextView mProfileusername;
     private static boolean addedTabs=false;
     List<DrawerItem> dataList = new ArrayList<>();;
     TabLayout.Tab tab_dynamic;
@@ -100,7 +105,8 @@ public class MainActivity extends AppCompatActivity
                 .bitmapTransform(new CircleTransform(this))
                 .into(mProfilePhoto); // the ImageView to which the image is to be loaded
 
-
+        mProfileusername=(TextView)navHeader.findViewById(R.id.navbar_usernaame);
+        mProfileusername.setText(getUsername());
         mProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,7 +288,6 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         fragmentTransaction.commit();
     }
     private void adddrawerItems(){
-        dataList.add(new DrawerItem("Home", R.drawable.ic_action_home));
         dataList.add(new DrawerItem("Exams", R.drawable.ic_map_black_1));
         dataList.add(new DrawerItem("Assignment", R.drawable.ic_import_contacts_black_1));
         dataList.add(new DrawerItem("Report", R.drawable.ic_content_paste_black_1));

@@ -23,15 +23,15 @@ import retrofit2.http.Streaming;
 public interface RetrofitInterface {
 
 
-    @POST("login")
+    @POST("student/login")
     Observable<UserTest> login(@Body UserTest userTest);
-    @POST("signup")
+    @POST("student/signup")
     Observable<User> register(@Body Profile mProfile);
-    @GET("{username}/subjects")
+    @GET("student/{username}/subjects")
     Observable<Subjects> getSubjectList(@Path("username")String username);
     @Streaming
     @GET("files/{name}")
-    Call<ResponseBody> downloadfile(@Path("name")String file);
+    Call<ResponseBody> downloadfile(@Path("name")String topicid);
 
 
 

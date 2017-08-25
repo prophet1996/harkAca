@@ -1,10 +1,12 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -40,10 +42,12 @@ public class Login_Main extends AppCompatActivity {
     private Observable<UserTest> call=null;
 
 
+
     Button b1;
     TextView username;
     TextView mRegister;
     TextView password;
+    ProgressDialog progressDoalog;
     boolean done = false;
 
 
@@ -52,11 +56,15 @@ public class Login_Main extends AppCompatActivity {
         super.onStart();
 
 
+
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(Login_Main.this);
+
         setContentView(R.layout.activity_login__main);
         b1 = (Button) findViewById(R.id.login);
         username = (TextView) findViewById(R.id.et_username);
@@ -71,12 +79,18 @@ public class Login_Main extends AppCompatActivity {
               startActivityForResult(i,REQUEST_REGISTER);
             }
         });
+        if(sharedPreferences.getString("username","z").equals("z")&&sharedPreferences.getString("password","z").equals("z")){
+
+        }else{
+            Log.d("login","from saved");
+            done=true;
+            logindone();
+        }
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("button clicked", "OK");
-
                 login();
 
 
@@ -85,13 +99,17 @@ public class Login_Main extends AppCompatActivity {
 
             }
         });
-        SharedPreferences sharedPreferences=Login_Main.this.getPreferences(MODE_PRIVATE);
-        if(sharedPreferences.getString("username","z")!="z"&&sharedPreferences.getString("password","z")!="z"){
-            Log.d("login","from saved");
-            done=true;
-            logindone();
-        }
 
+
+    }
+
+    private void showdailog() {
+        progressDoalog =new ProgressDialog(Login_Main.this);
+        progressDoalog.setIndeterminate(true);
+        progressDoalog.setMessage("Loggin in....");
+        progressDoalog.setTitle("Harvin Academy Login");
+        progressDoalog.setCancelable(false);
+        progressDoalog.show();
 
     }
 
@@ -105,12 +123,18 @@ public class Login_Main extends AppCompatActivity {
             showSnackBarMessage("Something went wrong..");
             err=1;
         }
-        if(err==0)
-        sendRequest(new UserTest(username.getText().toString(), password.getText().toString()));
+        if(err==0){
+           //Client side filter done
+            //start the dialog
+            showdailog();
+
+            sendRequest(new UserTest(username.getText().toString(), password.getText().toString()));
+
+        }
 
     }
 
-    private void sendRequest(UserTest user) {
+    private void sendRequest(final UserTest user) {
         HttpLoggingInterceptor loggin= new HttpLoggingInterceptor();
         int cachesize=10*1024*1024;
         Cache cache=new Cache(getCacheDir(),cachesize);
@@ -138,14 +162,28 @@ public class Login_Main extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull UserTest userTest) {
+
+                        if(user.getUsername().equals(userTest.getUsername()))
+                        {
                         done = true;
                         saveuser();
-                        logindone();
+                        logindone();}
+                        else {progressDoalog.dismiss();
+                            Toast.makeText(Login_Main.this,"Wrong username / Password",Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.e(TAG, "onError()", e);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                       progressDoalog.dismiss();
+                            Toast.makeText(Login_Main.this,"cant login check your internet",Toast.LENGTH_SHORT).show();
+                        }
+                    },1000);
+
                     }
 
                     @Override
@@ -158,6 +196,12 @@ public class Login_Main extends AppCompatActivity {
 
     private void logindone() {
         if (done) {
+            try{
+            progressDoalog.dismiss();}
+            catch (NullPointerException e){
+                e.printStackTrace();
+
+            }
             Toast.makeText(this, "hi", Toast.LENGTH_LONG).show();
             Intent i= new Intent(Login_Main.this,MainActivity.class);
             startActivity(i);

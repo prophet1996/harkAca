@@ -41,6 +41,7 @@ public class DownloadService extends IntentService {
     private int totalFileSize;
     private int downloadingtopicPosition;
     private String downloadingtopicname;
+    private String downloadingtopicid;
 
 
     public DownloadService() {
@@ -49,8 +50,13 @@ public class DownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        downloadingtopicPosition=intent.getIntExtra("topic",0);
-        downloadingtopicname=intent.getStringExtra("topic");
+        downloadingtopicPosition=intent.getIntExtra("topicno",-1);
+        Log.d("download1",downloadingtopicPosition+"");
+        downloadingtopicname=intent.getStringExtra("topicname");
+        Log.d("download1",downloadingtopicname);
+        downloadingtopicid=intent.getStringExtra("topicid");
+        Log.d("download2",downloadingtopicid);
+
         notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder=new NotificationCompat.Builder(this)
@@ -69,7 +75,7 @@ public class DownloadService extends IntentService {
                 .build();
 
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
-        Call<ResponseBody> request=client.downloadfile(downloadingtopicname);
+        Call<ResponseBody> request=client.downloadfile(downloadingtopicid);
 
         try{
             Log.d("download","retorfit1");
@@ -88,6 +94,7 @@ public class DownloadService extends IntentService {
         int count;
         byte data[]= new byte[1024*4];
         long fileSize=body.contentLength();
+        Log.d("download2",fileSize+"");
         InputStream bis=new BufferedInputStream(body.byteStream(),1024*8);
         File outputfile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),downloadingtopicname+".pdf");
         OutputStream output= null;
@@ -106,7 +113,7 @@ public class DownloadService extends IntentService {
 
         while((count=bis.read(data))!=-1){
             total+=count;
-
+            Log.d("download",data.toString());
             totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
 
             double current = Math.round(total / (Math.pow(1024, 2)));

@@ -42,9 +42,11 @@ public class ChapterFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_chapter,container,false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.topic_recycler_view);
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(container.getContext());
+        linearLayoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(mTopicAdapter);
 
+
+        mRecyclerView.setAdapter(mTopicAdapter);
 
         return v;
     }

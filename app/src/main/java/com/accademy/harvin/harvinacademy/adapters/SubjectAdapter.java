@@ -58,19 +58,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         holder.desc.setText(mSubject.getChapters().get(position).getChapterDescription());
         holder.chapter_name.setText(mSubject.getChapters().get(position).getChapterName());
         holder.chapter.setText("Chapter");
-        holder.chapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences mPrefs=context.getSharedPreferences(SUBJECT_KEY,MODE_PRIVATE);
-                SharedPreferences.Editor mPrefsEditor=mPrefs.edit();
-                mPrefsEditor.putString(SUBJECT_KEY,GSON.toJson(mSubject.getChapters().get(position)));
-                mPrefsEditor.commit();
-                Intent i = new Intent(context,CourseActivity.class);
-                //i.putExtra(SUBJECT_KEY,tab_pos);
-                //i.putExtra(CHAPTER_KEY,chapter_list.getChapter_name());
-                context.startActivity(i);
-            }
-        });
+        holder.chapter.setOnClickListener(gotchapteractivityListener(position));
+        holder.chapter_name.setOnClickListener(gotchapteractivityListener(position));
+        holder.id.setOnClickListener(gotchapteractivityListener(position));
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +105,23 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
 
 
+    }
+
+    private View.OnClickListener gotchapteractivityListener(final int position) {
+
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences mPrefs=context.getSharedPreferences(SUBJECT_KEY,MODE_PRIVATE);
+                SharedPreferences.Editor mPrefsEditor=mPrefs.edit();
+                mPrefsEditor.putString(SUBJECT_KEY,GSON.toJson(mSubject.getChapters().get(position)));
+                mPrefsEditor.commit();
+                Intent i = new Intent(context,CourseActivity.class);
+                //i.putExtra(SUBJECT_KEY,tab_pos);
+                //i.putExtra(CHAPTER_KEY,chapter_list.getChapter_name());
+                context.startActivity(i);
+            }
+        };
     }
 
     @Override

@@ -59,6 +59,7 @@ public class FaceBookPostFragement extends Fragment {
 
        mRecyclerView.setAdapter(mFaceBookPostAdapter);
        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.scrollToPosition(mFaceBookPostAdapter.getItemCount()-1);
         return v;
     }
     public static FaceBookPostFragement getInstance(Context mContext){

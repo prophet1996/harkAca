@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ti_username"
                 app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@android:color/black">
+                app:passwordToggleTint="@color/cardview_dark_background">
 
                 <EditText
                     android:id="@+id/re_password"
@@ -85,6 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ti_password"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/cardview_dark_background"
                   >
 
                 <EditText

@@ -34,6 +34,7 @@ public class CourseActivity extends AppCompatActivity {
 
 
     private Chapter mChapter;
+    private boolean downloadable=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class CourseActivity extends AppCompatActivity {
         int result = ContextCompat.checkSelfPermission(CourseActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (result == PackageManager.PERMISSION_GRANTED){
-
+            downloadable=true;
             return true;
 
         } else {
@@ -125,5 +126,6 @@ public class CourseActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CourseActivity.PERMISSION_REQUEST_CODE);
 
     }
+
 
 }

@@ -2,7 +2,6 @@ package com.accademy.harvin.harvinacademy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.accademy.harvin.harvinacademy.MainActivity;
 import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
-import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
+import com.accademy.harvin.harvinacademy.ReportActivity;
+import com.accademy.harvin.harvinacademy.UserProfile;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
 
 import java.util.List;
@@ -68,24 +68,30 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                 switch (position){
                     case 0:
 
-                        Log.d("done2",""+position);
-
-                        break;
-                    case 1:
-
                         Intent i=new Intent(context,McqActivity.class);
                         context.startActivity(i);
 
                         break;
+                    case 1:
+                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
+
+
+                        break;
                     case 2:
 
+                        i=new Intent(context,ReportActivity.class);
+                        context.startActivity(i);
 
 
                         break;
                     case 3:
 
-
+                        i=new Intent(context,UserProfile.class);
+                        context.startActivity(i);
                         break;
+
+                    case 4:
+                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
 
 
 

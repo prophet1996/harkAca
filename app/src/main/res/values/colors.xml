@@ -9,4 +9,5 @@
     <color name="transparentcolor">#00000000</color>
     <color name="fontcolorquestion">#757575</color>
     <color name="warningcolor">#ff1723</color>
+    <color name="navbarcolor">#212121</color>
 </resources>

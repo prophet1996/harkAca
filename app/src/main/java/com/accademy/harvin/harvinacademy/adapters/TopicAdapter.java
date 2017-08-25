@@ -1,11 +1,15 @@
 package com.accademy.harvin.harvinacademy.adapters;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +20,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.CourseActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.Chapter;
 import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
@@ -35,11 +41,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     private Context mContext;
     private Chapter mChapter;
     private boolean downloading_progress[];
+    private boolean downloadable=false;
 
     public TopicAdapter( Chapter mChapter,Context mContext) {
         this.mContext = mContext;
         this.mChapter = mChapter;
         downloading_progress= new boolean[mChapter.getTopics().size()];
+        checkPermission();
 
     }
 
@@ -47,6 +55,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     public TopicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.topic_list,parent,false);
         registerReceiver();
+
         return new ViewHolder(v);
     }
 
@@ -64,7 +73,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             public void onClick(View v) {
                 holder.progressBar.setVisibility(View.VISIBLE);
 
-                    startDownload(position,mChapter.getTopics().get(position).getTopicName());
+                    startDownload(position,mChapter.getTopics().get(position).getTopicName(),mChapter.getTopics().get(position).getFiles().get(0).getId());
                 downloading_progress[position]=true;
 
             }
@@ -85,7 +94,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                     }
                     else{  holder.progressBar.setVisibility(View.VISIBLE);
 
-                        startDownload(position,mChapter.getTopics().get(position).getTopicName());
+                        startDownload(position,mChapter.getTopics().get(position).getTopicName(),mChapter.getTopics().get(position).getFiles().get(position).getId());
                         downloading_progress[position]=true;
 
                     }
@@ -117,13 +126,20 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
         }
     }
-    private void startDownload(int topicPosition,String topicName){
-
+    private void startDownload(int topicPosition,String topicName,String topicId){
+        checkPermission();
+        if(downloadable){
         Intent intent = new Intent(mContext,DownloadService.class);
-        intent.putExtra("topic",topicPosition);
-        intent.putExtra("topic",topicName);
+        intent.putExtra("topicno",topicPosition);
+        intent.putExtra("topicname",topicName);
+        intent.putExtra("topicid",topicId);
         mContext.startService(intent);
-        Log.d("download","start d");
+        Log.d("download","start d");}
+        else{
+            Toast.makeText(
+                    mContext,"Sorry dont have the permission to acces device storage",Toast.LENGTH_SHORT).show();
+
+        }
 
 
     } private void registerReceiver(){
@@ -153,6 +169,18 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         }
     };
 
+    private boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            downloadable=true;
+            return true;
+
+        } else {
+
+            return false;
+        }
+    }
 
 
 
