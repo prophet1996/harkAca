@@ -54,14 +54,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public void onBindViewHolder(final SubjectAdapter.ViewHolder holder, final int position) {
 
 
-        holder.id.setText(""+(position+1));
+        holder.id.setText("0"+(position+1));
         holder.desc.setText(mSubject.getChapters().get(position).getChapterDescription());
         holder.chapter_name.setText(mSubject.getChapters().get(position).getChapterName());
         holder.chapter.setText("Chapter");
         holder.chapter.setOnClickListener(gotchapteractivityListener(position));
         holder.chapter_name.setOnClickListener(gotchapteractivityListener(position));
         holder.id.setOnClickListener(gotchapteractivityListener(position));
-
+        holder.desc.setOnClickListener(gotchapteractivityListener(position));
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

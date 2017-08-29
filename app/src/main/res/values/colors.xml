@@ -4,10 +4,12 @@
 
     <color name="colorPrimaryDark">#0069c0</color>
     <color name="colorAccent">#eae8e8</color>
-    <color name="colorAccentDark">#eae9e9</color>
+    <color name="colorAccentDark">#efebe9</color>
     <color name="mainBackground">#dfdede</color>
     <color name="transparentcolor">#00000000</color>
     <color name="fontcolorquestion">#757575</color>
     <color name="warningcolor">#ff1723</color>
     <color name="navbarcolor">#212121</color>
+    <color name="textcolor">#212121</color>
+
 </resources>

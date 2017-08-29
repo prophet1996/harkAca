@@ -155,7 +155,7 @@ public class DownloadService extends IntentService {
 
         Intent intent = new Intent(CourseActivity.MESSAGE_PROGRESS);
         intent.putExtra("download",download);
-        intent.putExtra("topic",downloadingtopicPosition);
+        intent.putExtra("topicpos",downloadingtopicPosition);
         Log.d("send intent","sendingdownloadcomplete intent");
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
     }

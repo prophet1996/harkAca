@@ -101,10 +101,10 @@ public class CourseActivity extends AppCompatActivity {
 
                 DownloadedPdf download = intent.getParcelableExtra("download");
                 if(download.getProgress()==100)
-                {
+                {                Toast.makeText(CourseActivity.this,"Downloaded...",Toast.LENGTH_SHORT).show();
+
 
                 }
-                Toast.makeText(CourseActivity.this,"downloading files now",Toast.LENGTH_SHORT).show();
             }
         }
     };

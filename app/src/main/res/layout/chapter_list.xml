@@ -5,7 +5,7 @@
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:padding="10dp"
-    android:elevation="4dp"
+    android:elevation="8dp"
     android:id="@+id/relativeLayout1"
     android:minHeight="100dp"
     android:layout_margin="14dp"
@@ -20,33 +20,36 @@
         android:padding="@dimen/activity_horizontal_margin">
         <LinearLayout
         android:layout_width="wrap_content"
-
         android:orientation="vertical"
-            android:id="@+id/linearchild"
-            android:layout_marginRight="5dp"
+        android:id="@+id/linearchild"
+        android:layout_marginEnd="15dp"
         android:layout_height="wrap_content">
     <TextView
         android:id="@+id/chapter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView1"
-        android:layout_marginBottom="2dp"
-        android:textAppearance="?android:textAppearanceLarge"
+        android:text="Chapter"
+
+        android:fontFamily="sans-serif-thin"
+        android:textSize="14dp"
+        android:textColor="@color/navbarcolor"
 
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/chapter_no" />
     <TextView
         android:id="@+id/chapter_no"
-        android:textAppearance="?android:textAppearanceLarge"
         android:layout_width="wrap_content"
+        android:fontFamily="sans-serif-light"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:text="TextView2"
+        android:text="01"
+        android:textSize="38dp"
+        android:textColor="@color/textcolor"
+        android:layout_gravity="center_vertical|center_horizontal"
 
-        android:layout_gravity="center_horizontal"
 
 
-        android:gravity="center"
+
       />
     </LinearLayout>
 
@@ -54,24 +57,28 @@
         android:id="@+id/chapter_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceLarge"
 
-        android:text="TextView3"
+        android:text="Reproduction in organisms"
+        android:fontFamily="sans-serif-medium"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/chapter_description"
-        android:layout_alignTop="@+id/linearchild"
-
-                android:textSize="14dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="18dp"
+        android:textColor="@color/textcolor"
         android:layout_toRightOf="@+id/linearchild" />
 
     <TextView
         android:id="@+id/chapter_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView4"
-android:layout_below="@+id/chapter_title"
-        android:layout_alignBaseline="@+id/linearchild"
+        android:layout_below="@+id/chapter_title"
+        android:text="Looren ipsum ordr lorem ipsumother ordr lorem ipsumother ordr lorem ipsumother ordr l"
+        android:layout_alignBottom="@id/linearchild"
         android:layout_toRightOf="@+id/linearchild"
+        android:fontFamily="sans-serif-light"
+
+        android:maxLines="2"
+
         />
 
             <TextView
@@ -82,14 +89,25 @@ android:layout_below="@+id/chapter_title"
             android:layout_alignParentTop="true"
                 android:visibility="invisible"
                 android:gravity="center"
-        android:layout_alignRight="@+id/chapter_description"
+            android:layout_alignRight="@+id/chapter_description"
                 android:layout_alignTop="@+id/chapter_description"
                 android:layout_alignBaseline="@+id/chapter_description"
-            android:text="&#8942;"
-
+                android:text="&#8942;"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
             android:textAppearance="?android:textAppearanceLarge" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+           android:progress="100"
+            android:layout_alignStart="@+id/chapter_description"
+            android:layout_alignEnd="@+id/chapter_description"
+            android:progressDrawable="@color/colorPrimary"
+            android:layout_below="@+id/chapter_description"/>
 
     </RelativeLayout>
 

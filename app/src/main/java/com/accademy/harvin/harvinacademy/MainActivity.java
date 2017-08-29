@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
         if(!addedTabs) {
             addTabs();
 
+
         }
         replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
 
@@ -162,7 +163,8 @@ public class MainActivity extends AppCompatActivity
                             mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
                         addTabs();
                         addedTabs=true;
-                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(1),MainActivity.this));
+
+                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(0),MainActivity.this));
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {

@@ -34,6 +34,7 @@
         android:id="@+id/scrollView"
         android:layout_height="match_parent"
         android:layout_marginTop="48dp"
+        android:background="@color/colorAccentDark"
         app:layout_constraintTop_toBottomOf="@+id/mainTablayout"
 
         >

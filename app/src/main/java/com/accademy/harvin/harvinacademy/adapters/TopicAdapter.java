@@ -1,6 +1,7 @@
 package com.accademy.harvin.harvinacademy.adapters;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -89,7 +90,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                         Intent intent = new Intent();
                         intent.setAction(android.content.Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(pdfToOpen), mime);
-                        mContext.startActivity(intent);
+                       try{ mContext.startActivity(intent);}
+                       catch (ActivityNotFoundException ae){ae.printStackTrace();}
 
                     }
                     else{  holder.progressBar.setVisibility(View.VISIBLE);
@@ -161,7 +163,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                 {
                     Log.d("send intent","progress 100 intent recieved");
 
-                    downloading_progress[intent.getIntExtra("topic",0)]=false;
+                    downloading_progress[intent.getIntExtra("topicpos",-1)]=false;
                     notifyItemChanged(intent.getIntExtra("topic",0));
                 }
 

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/cardview_light_background"
-    android:gravity="bottom"
+
     android:orientation="vertical"
 
 
@@ -52,8 +51,9 @@
     android:scrollbars="none"
     android:layout_marginTop="@dimen/activity_vertical_margin"
     android:layout_height="400dp"
+    android:drawSelectorOnTop="true"
 
-    android:background="@color/cardview_light_background"
+
 
     />
 

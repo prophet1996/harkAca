@@ -5,14 +5,15 @@
         android:drawable="@color/cardview_light_background"/>
 
     <item
-        android:height="100dp"
-        android:width="100dp"
+
         android:gravity="center"
         >
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher"/>
+
+            android:src="@mipmap/ic_launcher1"/>
 
     </item>
+
 
 </layer-list>

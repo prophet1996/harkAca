@@ -10,7 +10,7 @@
         android:id="@+id/image_harvin"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_launcher1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
 
