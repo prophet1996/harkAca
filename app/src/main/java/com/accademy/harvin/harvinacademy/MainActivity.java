@@ -1,7 +1,10 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -29,12 +32,14 @@ import com.accademy.harvin.harvinacademy.model.DrawerItem;
 import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
+import com.accademy.harvin.harvinacademy.utils.Internet;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
 
 import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +50,10 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -135,6 +143,18 @@ public class MainActivity extends AppCompatActivity
         Cache cache=new Cache(getCacheDir(),cachesize);
         OkHttpClient okHttpClient= new OkHttpClient.Builder()
                 .cache(cache)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        if(Internet.isAvailable(MainActivity.this)){
+                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                        } else {
+                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                        }
+                        return chain.proceed(request);
+                    }
+                })
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -188,7 +208,7 @@ public class MainActivity extends AppCompatActivity
                 tb.addTab(tab_dynamic);
             }
             catch (NullPointerException np){np.printStackTrace();
-                Toast.makeText(MainActivity.this,"Can't connect right now please try again later..",Toast.LENGTH_LONG);}
+                Toast.makeText(MainActivity.this,"Can't connect right now please try again later..",Toast.LENGTH_LONG).show();}
        }
     }
 

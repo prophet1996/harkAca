@@ -12,6 +12,7 @@
     android:layout_height="wrap_content"
     android:elevation="8dp"
 
+
     >
 
     <RelativeLayout
@@ -47,47 +48,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@+id/topic_no"
             android:textSize="18dp"
             android:padding="10dp"
+
             android:text="Introduction to Relations"
 
             android:textColor="#000000" />
 
 
+        <ImageButton
+            android:id="@+id/download_pdf"
+            android:layout_margin="5dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_download"
+            android:layout_centerInParent="true"
+            android:layout_width="45dp"
+
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            />
 
 
-<FrameLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/frame"
-    android:layout_alignParentEnd="true"
-    android:layout_centerVertical="true"
-    >
 
     <ProgressBar
-        android:indeterminate="false"
-        android:progressDrawable="@drawable/progress_bar"
-        android:layout_width="35dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
         android:id="@+id/downloading_progress"
-        android:layout_height="35dp"
-        android:visibility="invisible"
-        android:layout_gravity="center" />
-
-            <Button
-                android:id="@+id/download_pdf"
-                android:layout_margin="5dp"
-                android:background="@mipmap/ic_download"
-                android:layout_gravity="center"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                />
-</FrameLayout>
-
-
-
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:padding="0dp"
+        android:progress="100"
+        android:layout_alignStart="@+id/topic_name"
+        android:visibility="visible"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/cardview_dark_background"
+        android:layout_alignEnd="@+id/download_pdf"
+        android:layout_below="@+id/topic_name"/>
 
     </RelativeLayout>
 

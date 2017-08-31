@@ -9,8 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accademy.harvin.harvinacademy.R;
+import com.accademy.harvin.harvinacademy.model.facebookpost.Datum;
 import com.accademy.harvin.harvinacademy.model.facebookpost.FacebookPosts;
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 /**
  * Created by ishank on 1/8/17.
@@ -20,6 +23,7 @@ public class FacebookPostAdapter extends RecyclerView.Adapter<FacebookPostAdapte
    private FacebookPosts facebookPosts;
    private Context mContext;
     private LayoutInflater inflater;
+    private List<Datum> posts;
 
     public FacebookPostAdapter(FacebookPosts facebookPosts, Context mContext) {
         this.facebookPosts = facebookPosts;
@@ -30,18 +34,19 @@ public class FacebookPostAdapter extends RecyclerView.Adapter<FacebookPostAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v=  inflater.inflate(R.layout.facebook_post_list,parent,false);
+       posts=getData();
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.postDesc.setText(facebookPosts.getData().get(position).getAttachments().getData().get(0).getDescription());
-        holder.postTitle.setText(facebookPosts.getData().get(position).getAttachments().getData().get(0).getTitle());
+        holder.postDesc.setText(posts.get(position).getAttachments().getData().get(0).getDescription());
+        holder.postTitle.setText(posts.get(position).getAttachments().getData().get(0).getTitle());
 try {
     Glide
             .with(mContext)
-            .load(facebookPosts.getData().get(position).getAttachments().getData().get(0).getMedia().getImage().getSrc())
+            .load(posts.get(position).getAttachments().getData().get(0).getMedia().getImage().getSrc())
             .placeholder(R.drawable.solidfill)
             .into(holder.postImage);
 
@@ -53,6 +58,10 @@ try {
     @Override
     public int getItemCount() {
         return facebookPosts.getData().size();
+    }
+
+    public List<Datum> getData() {
+        return facebookPosts.getReverseData();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

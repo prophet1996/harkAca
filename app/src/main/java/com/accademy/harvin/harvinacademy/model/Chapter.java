@@ -1,6 +1,7 @@
 
 package com.accademy.harvin.harvinacademy.model;
 
+import java.util.Collections;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -57,7 +58,11 @@ public class Chapter {
     public List<Topic> getTopics() {
         return topics;
     }
+public List<Topic> getTopicsAndReverse(){
+    Collections.reverse(topics);
+    return topics;
 
+}
 
 
 }

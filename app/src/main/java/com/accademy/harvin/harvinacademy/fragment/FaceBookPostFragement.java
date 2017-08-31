@@ -1,16 +1,19 @@
 package com.accademy.harvin.harvinacademy.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.camera2.params.Face;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.adapters.FacebookPostAdapter;
@@ -36,6 +39,7 @@ public class FaceBookPostFragement extends Fragment {
     }
 
 
+    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +50,11 @@ public class FaceBookPostFragement extends Fragment {
         Thread th= new Thread(new Runnable() {
             @Override
             public void run() {
-                getFacebookPosts();
+
+               try{ getFacebookPosts();}
+               catch (NullPointerException ne){
+                   ne.printStackTrace();
+               }
             }
         });
         th.start();
@@ -55,11 +63,16 @@ public class FaceBookPostFragement extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if(fb1[0]!=null){
         mFaceBookPostAdapter=new FacebookPostAdapter(fb1[0],mContext);
 
        mRecyclerView.setAdapter(mFaceBookPostAdapter);
        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.scrollToPosition(mFaceBookPostAdapter.getItemCount()-1);
+        mRecyclerView.scrollToPosition(mFaceBookPostAdapter.getItemCount()-1);}
+        else {
+v.setBackground(mContext.getDrawable(R.drawable.oops));
+         //   v.setLayoutParams(new CardView.LayoutParams(FrameLayout.LayoutParams.));
+        }
         return v;
     }
     public static FaceBookPostFragement getInstance(Context mContext){
@@ -94,6 +107,7 @@ public class FaceBookPostFragement extends Fragment {
                     }
                 }
         ).executeAndWait();
+
         return fb1[0];
     }
 

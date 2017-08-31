@@ -103,7 +103,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="3dp"
-           android:progress="100"
+            android:progress="100"
             android:layout_alignStart="@+id/chapter_description"
             android:layout_alignEnd="@+id/chapter_description"
             android:progressDrawable="@color/colorPrimary"

@@ -1,6 +1,7 @@
 
 package com.accademy.harvin.harvinacademy.model.facebookpost;
 
+import java.util.Collections;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,6 +13,10 @@ public class FacebookPosts {
     private List<Datum> data = null;
 
     public List<Datum> getData() {
+        return data;
+    }
+    public List<Datum> getReverseData(){
+        Collections.reverse(data);
         return data;
     }
 
