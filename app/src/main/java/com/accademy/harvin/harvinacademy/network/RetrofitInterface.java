@@ -4,6 +4,7 @@ import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
 import com.accademy.harvin.harvinacademy.model.Profile;
 import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.model.UserTest;
+import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.model.user.User;
 
 import io.reactivex.Observable;
@@ -32,6 +33,8 @@ public interface RetrofitInterface {
     @Streaming
     @GET("files/{name}")
     Call<ResponseBody> downloadfile(@Path("name")String topicid);
+    @GET("student/{username}/progresses")
+    Observable<Progresses> getProgress(@Path("username")String username);
 
 
 

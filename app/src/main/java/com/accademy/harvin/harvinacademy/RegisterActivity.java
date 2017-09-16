@@ -1,5 +1,7 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean error=false;
     private Profile mProfile;
     private Observable<User> call=null;
+    ProgressDialog progressDoalog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showdailog();
                 fillprofile();
                 registerprofile();
 
@@ -80,31 +85,38 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void fillprofile(){
 
-        fieldarray[0]=Validation.validataFields(re_username.getText().toString());
-        fieldarray[1]=Validation.validataFields(re_password.getText().toString());
-        fieldarray[2]=Validation.validataFields(re_conf_password.getText().toString());
-        fieldarray[3]=Validation.validataFields(re_batch.getText().toString());
-        fieldarray[4]=Validation.validataFields(re_contact.getText().toString());
-        fieldarray[5]=Validation.validataFields(re_email.getText().toString());
-        fieldarray[6]=Validation.validataFields(re_name.getText().toString());
-        for(boolean a : fieldarray){
-                if(!a)
-                    error=true;
+        /**
+         *
+         fieldarray[0]=Validation.validataFields(re_username.getText().toString());
+         fieldarray[1]=Validation.validataFields(re_password.getText().toString());
+         fieldarray[2]=Validation.validataFields(re_conf_password.getText().toString());
+         fieldarray[3]=Validation.validataFields(re_batch.getText().toString());
+         fieldarray[4]=Validation.validataFields(re_contact.getText().toString());
+         fieldarray[5]=Validation.validataFields(re_email.getText().toString());
+         fieldarray[6]=Validation.validataFields(re_name.getText().toString());
+         for(boolean a : fieldarray){
+         if(!a)
+         error=true;
 
-            }
-        if(error){
-            Toast.makeText(this,"Please check the fields",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            mProfile = new Profile(re_username.getText().toString(),
-                    re_password.getText().toString(),
-                    re_batch.getText().toString(),
-                    re_contact.getText().toString(),
-                    re_email.getText().toString(),
-                    re_name.getText().toString()
-                    );
+         }
+         if(error){
+         Toast.makeText(this,"Please check the fields",Toast.LENGTH_SHORT).show();
+         }
+         else{
 
-        }
+
+         }
+
+         *
+         */
+
+        mProfile = new Profile(re_username.getText().toString(),
+                re_password.getText().toString(),
+                re_batch.getText().toString(),
+                re_contact.getText().toString(),
+                re_email.getText().toString(),
+                re_name.getText().toString()
+        );
     }
     private void registerprofile() {
         HttpLoggingInterceptor loggin= new HttpLoggingInterceptor();
@@ -132,14 +144,22 @@ public class RegisterActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull User user) {
-                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(RegisterActivity.this);
-                            SharedPreferences.Editor editor=sharedPref.edit();
-                            editor.putString("password",user.getUsername());
-                            editor.putString("username",mProfile.getPassword());
-                            Log.d("login","saved");
-                            editor.commit();
+
+                            Log.d("login7","saved");
+                            Log.d("login7","saved profile" +mProfile.getUsername());
+                            Log.d("login7","saved user" +user.getUsername());
+
+                        saveuser();
+                        try{progressDoalog.dismiss();}
+                        catch (NullPointerException ne){
+                            ne.printStackTrace();
+                        }
                             setResult(RESULT_OK);
-                            finish();
+
+                        Intent i= new Intent(RegisterActivity.this,MainActivity.class);
+                        startActivity(i);
+                        finish();
+
 
                     }
 
@@ -153,6 +173,23 @@ public class RegisterActivity extends AppCompatActivity {
 
                     }
                 });
+
+    }
+    private void saveuser(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(RegisterActivity.this);
+        SharedPreferences.Editor editor=sharedPref.edit();
+        editor.putString("username",mProfile.getUsername());
+        editor.putString("password",mProfile.getPassword());
+        Log.d("login","saved");
+        editor.commit();
+    }
+    private void showdailog() {
+        progressDoalog =new ProgressDialog(RegisterActivity.this);
+        progressDoalog.setIndeterminate(true);
+        progressDoalog.setMessage("Registering ....");
+        progressDoalog.setTitle("Harvin Academy Registration");
+        progressDoalog.setCancelable(false);
+        progressDoalog.show();
 
     }
 }

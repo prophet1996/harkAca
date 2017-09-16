@@ -11,4 +11,7 @@ public class Constants {
     public static final String TOKEN = "token";
     public static final String EMAIL = "email";
     public static final String SUBJECT_KEY="subject";
+    public static final String PROGRESS_KEY="progress";
+    public static final String BADGES_KEY="badges";
+
 }

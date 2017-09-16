@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/mat_bag_a"
+    android:background="@color/cardview_light_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -84,7 +84,6 @@
             android:layout_alignParentTop="true"
 
             android:layout_centerHorizontal="true"
-            android:textColor="@color/mainBackground"
             android:layout_margin="@dimen/margin_large"
             android:textStyle="bold"
             />
@@ -94,7 +93,6 @@
             android:layout_margin="@dimen/margin_tiny"
             android:layout_below="@+id/username"
             android:text="ID:213712312"
-            android:textColor="@color/mainBackground"
 
             android:layout_centerHorizontal="true"
             android:id="@+id/userid"
@@ -103,7 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/mainBackground"
+            android:background="@color/cardview_dark_background"
             android:id="@+id/divider1"
 
             android:layout_below="@+id/userid"
@@ -124,7 +122,6 @@
     android:layout_height="wrap_content"
     android:textStyle="bold"
     android:text="Admission Date"
-    android:textColor="@color/mainBackground"
 
     android:layout_margin="@dimen/margin_small"
     />
@@ -134,7 +131,6 @@
             android:textStyle="bold"
             android:text="Admission Date"
             android:layout_margin="@dimen/margin_small"
-            android:textColor="@color/mainBackground"
 
             />
         <TextView
@@ -143,7 +139,6 @@
             android:textStyle="bold"
             android:text="Admission Date"
             android:layout_margin="@dimen/margin_small"
-            android:textColor="@color/mainBackground"
 
             />
 

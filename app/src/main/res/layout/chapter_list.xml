@@ -11,7 +11,64 @@
     android:layout_margin="14dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_margin="2dp"
+    >
 
+    <TextView
+        android:id="@+id/badge_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/downloading_progress"
+        android:layout_alignStart="@+id/topic_name"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone"
+
+        android:background="@drawable/badge_blue"
+        android:text="new"
+
+
+        android:textColor="@color/cardview_light_background"
+        android:textSize="8dp"
+
+        />
+
+    <TextView
+        android:id="@+id/badge_green"
+        android:layout_width="wrap_content"
+
+
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/downloading_progress"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@+id/badge_blue"
+        android:background="@drawable/badge_green"
+        android:text="completed"
+        android:visibility="gone"
+        android:textSize="8dp"
+
+
+        android:textColor="@color/cardview_light_background"
+
+        />
+
+    <TextView
+        android:id="@+id/badge_orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/downloading_progress"
+        android:layout_toEndOf="@+id/badge_green"
+        android:background="@drawable/badge_orange"
+        android:text="revision"
+        android:visibility="gone"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="8dp"
+
+        />
+</LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
 
@@ -29,11 +86,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chapter"
-
         android:fontFamily="sans-serif-thin"
         android:textSize="14dp"
         android:textColor="@color/navbarcolor"
-
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/chapter_no" />
     <TextView
@@ -76,40 +131,39 @@
         android:layout_alignBottom="@id/linearchild"
         android:layout_toRightOf="@+id/linearchild"
         android:fontFamily="sans-serif-light"
-
+        android:paddingBottom="3dp"
         android:maxLines="2"
+        android:minLines="1"
 
         />
 
-            <TextView
-            android:id="@+id/textViewOptions"
-            android:layout_width="@dimen/popup_button_width"
-            android:layout_height="@dimen/popup_button_height"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-                android:visibility="invisible"
-                android:gravity="center"
-            android:layout_alignRight="@+id/chapter_description"
-                android:layout_alignTop="@+id/chapter_description"
-                android:layout_alignBaseline="@+id/chapter_description"
-                android:text="&#8942;"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-            android:textAppearance="?android:textAppearanceLarge" />
-
 
         <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progress_bar_chapter"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
             android:layout_width="wrap_content"
             android:layout_height="3dp"
-            android:progress="100"
-            android:layout_alignStart="@+id/chapter_description"
-            android:layout_alignEnd="@+id/chapter_description"
-            android:progressDrawable="@color/colorPrimary"
-            android:layout_below="@+id/chapter_description"/>
+            android:layout_alignStart="@id/chapter_description"
+            android:max="100"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/chapter_description"
+
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_percentage"
+            android:text="79%"
+            android:fontFamily="sans-serif-thin"
+
+            android:layout_below="@id/progress_bar_chapter"
+            android:layout_alignStart="@id/chapter_description"
+
+            />
 
     </RelativeLayout>
+
 
 
 

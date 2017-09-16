@@ -5,9 +5,26 @@ import android.os.Bundle;
 
 public class McqActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_question);
+        setContentView(R.layout.activity_mcq);
+        showdialdog();
+        getTest();
+        showtest();
+        dismissdialog();
     }
+//TODO
+    public void dismissdialog(){
+    }
+//TODO
+    public void showdialdog() {
+    }
+//TODO
+    public void getTest() {
+
+    }
+//TODO
+    public void showtest(){}
 }

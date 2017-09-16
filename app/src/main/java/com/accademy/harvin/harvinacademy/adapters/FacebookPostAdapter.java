@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.facebookpost.Datum;
@@ -53,6 +54,12 @@ try {
 }catch (Exception e){
     e.printStackTrace();
 }
+holder.itemView.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        
+    }
+});
     }
 
     @Override

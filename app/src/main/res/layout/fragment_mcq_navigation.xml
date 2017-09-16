@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/mcq_test_image"
+    android:layout_margin="5dp"
+    android:src="@color/badge.blue"
+
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Science Test 1"
+        android:fontFamily="sans-serif-thin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:id="@+id/mcq_text_name"
+        android:layout_gravity="center_horizontal"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test descriptoion"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+
+        android:fontFamily="sans-serif"
+
+        android:id="@+id/mcqtest_description"
+        />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <include layout="@layout/fragment_mcq_navigation_list"/>
+</LinearLayout>

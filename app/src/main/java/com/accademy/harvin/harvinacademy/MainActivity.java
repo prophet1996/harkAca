@@ -30,12 +30,16 @@ import com.accademy.harvin.harvinacademy.fragment.FaceBookPostFragement;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
 import com.accademy.harvin.harvinacademy.model.Subjects;
+import com.accademy.harvin.harvinacademy.model.user.Progress;
+import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.utils.Internet;
+import com.accademy.harvin.harvinacademy.utils.ProgressUtil;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -58,6 +62,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.PROGRESS_KEY;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
     private static TabLayout tb;
@@ -66,10 +72,13 @@ public class MainActivity extends AppCompatActivity
     private ListView mDrawerList;
     private List<String> mSubjectList=null;
     private Subjects mSubjects;
+    private Progresses progresses;
     private static ImageView mProfilePhoto;
     private static TextView mProfilename;
     private static TextView mProfileusername;
     private static boolean addedTabs=false;
+    private Gson  GSON= new Gson();
+
     List<DrawerItem> dataList = new ArrayList<>();;
     TabLayout.Tab tab_dynamic;
     CustomDrawerAdapter customDrawerAdapter;
@@ -125,7 +134,7 @@ public class MainActivity extends AppCompatActivity
         tb=(TabLayout)findViewById(R.id.mainTablayout);
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();
-        getSubjectListFromServer();
+        getProgressFromServer();
         if(!addedTabs) {
             addTabs();
 
@@ -183,13 +192,78 @@ public class MainActivity extends AppCompatActivity
                             mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
                         addTabs();
                         addedTabs=true;
+                        StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(0),MainActivity.this);
+                        sf.setProgress(progresses);
+                        replaceFragment(sf);
 
-                        replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(0),MainActivity.this));
+                      //   ProgressUtil.saveProgress(mSubjects.getProgresses(),MainActivity.this);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("getting subjects","on error");
                         e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("getting subjects","on complete");
+                    }
+                });
+    }
+    private  void getProgressFromServer() {
+        Log.d("getting progress","first");
+        int cachesize=10*1024*1024;
+        Cache cache=new Cache(getCacheDir(),cachesize);
+        OkHttpClient okHttpClient= new OkHttpClient.Builder()
+                .cache(cache)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        if(Internet.isAvailable(MainActivity.this)){
+                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                        } else {
+                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                        }
+                        return chain.proceed(request);
+                    }
+                })
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RetrofitInterface client=retrofit.create(RetrofitInterface.class);
+        String username=getUsername();
+        Log.d("getting progress",username);
+        Observable<Progresses> call =client.getProgress(username);
+        call
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Progresses>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d("getting progress","on subscribe");
+                    }
+                    @Override
+                    public void onNext(@NonNull Progresses newProgresses) {
+                        progresses=newProgresses;
+                        Log.d("getting progress",progresses.getProgresses().toString());
+                        if(progresses!=null)
+
+                          ProgressUtil.saveProgress(progresses,MainActivity.this);
+
+                        getSubjectListFromServer();
+
+                    }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("getting progress","on error");
+                        Log.d("geting progress",e.toString());
 
                     }
 
@@ -211,6 +285,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this,"Can't connect right now please try again later..",Toast.LENGTH_LONG).show();}
        }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -260,22 +335,34 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         Log.d("done",""+pos);
         switch (pos){
             case 0:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
+                StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf.setProgress(progresses);
+
+                replaceFragment(sf);
                 Log.d("done2",""+pos);
 
                 break;
             case 1:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
+                 sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf.setProgress(progresses);
+
+                replaceFragment(sf);
                 Log.d("done2",""+pos);
 
                 break;
             case 2:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
+                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf.setProgress(progresses);
+
+                replaceFragment(sf);
                 Log.d("done2",""+pos);
 
                 break;
             case 3:
-                replaceFragment(StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this));
+                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf.setProgress(progresses);
+
+                replaceFragment(sf);
                 Log.d("done2",""+pos);
                 break;
 
@@ -323,7 +410,7 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
             username = sharedPreferences.getString("username", "z");
-
+        Log.d("username",username);
         return username;
     }
 }

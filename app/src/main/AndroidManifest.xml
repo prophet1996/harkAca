@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
+        android:name=".MyApplication"
         android:windowSoftInputMode="stateHidden|adjustResize">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -33,7 +33,7 @@
         <activity
             android:name=".UserProfile"
             android:screenOrientation="portrait"
-            android:theme="@style/theme96">
+            android:theme="@style/theme97">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -41,8 +41,11 @@
         <activity
             android:name=".Login_Main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".McqActivity" />
+            android:theme="@style/AppTheme.NoActionBar">    </activity>
+        <activity android:name=".McqActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".MainChatActivity" />
         <activity
             android:name=".RegisterActivity"
@@ -71,7 +74,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".ReportActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

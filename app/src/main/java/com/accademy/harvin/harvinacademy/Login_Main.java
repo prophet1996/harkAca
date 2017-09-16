@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.exceptionHandler.DefaultExceptionHandler;
 import com.accademy.harvin.harvinacademy.model.UserTest;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
@@ -64,8 +65,8 @@ public class Login_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(Login_Main.this);
-
         setContentView(R.layout.activity_login__main);
+       // Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler(Login_Main.this));
         b1 = (Button) findViewById(R.id.login);
         username = (TextView) findViewById(R.id.et_username);
         password = (TextView) findViewById(R.id.et_password);
@@ -202,7 +203,7 @@ public class Login_Main extends AppCompatActivity {
                 e.printStackTrace();
 
             }
-            Toast.makeText(this, "hi", Toast.LENGTH_LONG).show();
+
             Intent i= new Intent(Login_Main.this,MainActivity.class);
             startActivity(i);
             finish();
@@ -215,6 +216,7 @@ public class Login_Main extends AppCompatActivity {
         editor.putString("username",username.getText().toString());
         Log.d("login","saved");
         editor.commit();
+
     }
     private void showSnackBarMessage(String message){
         Toast.makeText(Login_Main.this,message,Toast.LENGTH_SHORT).show();
@@ -235,6 +237,7 @@ public class Login_Main extends AppCompatActivity {
         if(requestCode==REQUEST_REGISTER){
             if(resultCode==RESULT_OK){
                 done=true;
+                saveuser();
                 logindone();
             }
             else {

@@ -86,7 +86,7 @@ v.setBackground(mContext.getDrawable(R.drawable.oops));
 
         new GraphRequest(
                 com.facebook.AccessToken.getCurrentAccessToken(),
-                "/harvinacademy/feed/?fields=message,attachments&access_token="+AccessToken,
+                "/harvinacademy/posts/?fields=message,attachments&access_token="+AccessToken,
                 null,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {

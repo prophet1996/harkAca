@@ -24,6 +24,7 @@ public class Chapter {
     @Expose
     private List<Topic> topics = null;
 
+
     public String getId() {
         return id;
     }

@@ -30,6 +30,7 @@
         android:id="@+id/chapter_block"
         >
     <include layout="@layout/chapter_list"
+        android:id="@+id/chapter_card"
          />
     </LinearLayout>
     <FrameLayout

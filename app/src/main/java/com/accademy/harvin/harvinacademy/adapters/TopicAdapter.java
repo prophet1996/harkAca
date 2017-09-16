@@ -6,10 +6,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,16 +19,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accademy.harvin.harvinacademy.CourseActivity;
+import com.accademy.harvin.harvinacademy.MainActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.Chapter;
 import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
+import com.accademy.harvin.harvinacademy.model.user.Progress;
 import com.accademy.harvin.harvinacademy.model.Topic;
 import com.accademy.harvin.harvinacademy.services.DownloadService;
 import com.accademy.harvin.harvinacademy.utils.Internet;
@@ -36,6 +40,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.accademy.harvin.harvinacademy.CourseActivity.MESSAGE_PROGRESS;
+import static com.accademy.harvin.harvinacademy.utils.Constants.BADGES_KEY;
 
 /**
  * Created by ishank on 19/7/17.
@@ -45,17 +50,27 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
     private Context mContext;
     private Chapter mChapter;
+
     private boolean downloading_progress[];
+    private boolean badge_status[];
     private Integer downloading_progress_value[];
     private boolean downloadable=false;
     private List<Topic> topics;
+    private int subjectNo=0;
+    private RecyclerView recyclerView;
+    ArrayAdapter<CharSequence> dataAdapter;
 
-    public TopicAdapter( Chapter mChapter,Context mContext) {
+    public TopicAdapter( Chapter mChapter,int subjectNo,Context mContext) {
         this.mContext = mContext;
         this.mChapter = mChapter;
+        this.subjectNo=subjectNo;
+
         topics=mChapter.getTopicsAndReverse();
         downloading_progress= new boolean[topics.size()];
         downloading_progress_value= new Integer[topics.size()];
+        badge_status=new boolean[3];
+   dataAdapter =ArrayAdapter.createFromResource(mContext,R.array.state_spinner_array, android.R.layout.simple_spinner_item);
+
         checkPermission();
 
         if(Internet.isAvailable(mContext)){
@@ -74,8 +89,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     @Override
     public TopicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.topic_list,parent,false);
+        recyclerView=(RecyclerView)parent;
         registerReceiver();
-
         return new ViewHolder(v);
     }
 
@@ -83,14 +98,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     public void onBindViewHolder(final TopicAdapter.ViewHolder holder, final int position) {
         if(downloading_progress[position])
             holder.progressBar.setVisibility(View.VISIBLE);
-
-
         else
             holder.progressBar.setVisibility(View.INVISIBLE);
-
-
         holder.topic_name.setText(topics.get(position).getTopicName());
-        holder.topic_no.setText("1."+position);
+        holder.topic_no.setText(""+subjectNo+position);
+
+
         holder.download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,20 +162,71 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
                     }
             }
         });
+        holder.stateSpinner.setAdapter(dataAdapter);
+        holder.stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int positionw, long id) {
+                String state="";
+                switch (positionw){
+                    case 1:state="Completed";
+                        break;
+
+                    case 2:state="Revision";
+                        break;
+
+                    case 3:state="New";
+                        break;
+                }
+                saveTopicState(topics.get(position).getId(),state,position);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
 
     }
 
+    private void saveTopicState(String chapterId,String state,int position) {
+        SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString(chapterId,state);
+        editor.commit();
+        notifyItemChanged(position);
+        recyclerView.getAdapter().notifyItemChanged(position);
+
+
+    }
+private String getTopicState(String chapterId){
+    SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(mContext);
+
+    return pref.getString(chapterId,"-1");
+
+
+
+}
 
     @Override
     public int getItemCount() {
         return mChapter.getTopics().size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         TextView topic_no;
         TextView topic_name;
         ImageButton download;
         ProgressBar progressBar;
+        TextView badgeGreen;
+        TextView badgeBlue;
+        TextView badgeOrange;
+        Spinner stateSpinner;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -170,10 +234,16 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             topic_name=(TextView)itemView.findViewById(R.id.topic_name);
             download=(ImageButton) itemView.findViewById(R.id.download_pdf);
             progressBar=(ProgressBar) itemView.findViewById(R.id.downloading_progress);
+            badgeBlue=(TextView)itemView.findViewById(R.id.badge_blue);
+            badgeOrange=(TextView)itemView.findViewById(R.id.badge_orange);
+            badgeGreen=(TextView)itemView.findViewById(R.id.badge_green);
+            stateSpinner = (Spinner) itemView.findViewById(R.id.state_spinner);
+
 
 
 
         }
+
     }
     private void startDownload(int topicPosition,String topicName,String topicId){
         checkPermission();
@@ -194,7 +264,11 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         }
 
 
-    } private void registerReceiver(){
+    }
+
+
+
+    private void registerReceiver(){
 
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(mContext);
         IntentFilter intentFilter = new IntentFilter();

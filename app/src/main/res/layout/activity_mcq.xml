@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="5"
+    android:baselineAligned="false"
     tools:context="com.accademy.harvin.harvinacademy.McqActivity">
 
-</android.support.constraint.ConstraintLayout>
+   <FrameLayout
+       android:layout_width="100dp"
+       android:layout_height="match_parent"
+       app:layout_constraintTop_toBottomOf="parent"
+       app:layout_constraintBottom_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.0"
+       app:layout_constraintLeft_toLeftOf="parent"
+       android:id="@+id/fragment_navigation_mcq"
+       android:layout_weight="1"
+
+       />
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+android:layout_weight="4"
+        android:id="@+id/fragment_navigation_content"
+        app:layout_constraintLeft_toRightOf="@+id/fragment_navigation_mcq"
+
+        />
+
+
+</LinearLayout>

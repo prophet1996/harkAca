@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_navigation_list_card"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    android:maxHeight="50dp"
+
+    card_view:cardBackgroundColor="@color/colorPrimary"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/mcq_nav_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/topic_no"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Question" />
+
+        <TextView
+            android:id="@+id/mcq_nav_question_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mcq_nav_question"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:layout_alignEnd="@+id/mcq_nav_question"
+            android:layout_alignStart="@+id/mcq_nav_question"
+            android:text="1"
+            android:textSize="30dp" />
+<android.support.constraint.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toEndOf="@id/mcq_nav_question"
+    android:layout_margin="5dp"
+
+    >
+        <TextView
+            android:id="@+id/badge_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/badge_blue"
+            android:text="Not attempted"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="8dp"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+
+            />
+<CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+
+    card_view:layout_constraintTop_toBottomOf="@id/badge_blue"
+    card_view:layout_constraintEnd_toStartOf="@id/badge_blue"
+    card_view:layout_constraintStart_toEndOf="@id/badge_blue"
+
+
+    />
+        <TextView
+            android:id="@+id/badge_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            card_view:layout_constraintStart_toEndOf="@id/badge_blue"
+            card_view:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/badge_green"
+            android:text="Completed"
+            android:textSize="8dp"
+
+            android:textColor="@color/cardview_light_background"
+
+            />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@id/badge_green"
+            card_view:layout_constraintEnd_toStartOf="@id/badge_green"
+            card_view:layout_constraintStart_toEndOf="@id/badge_green"
+
+            />
+
+        <TextView
+            android:id="@+id/badge_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintStart_toEndOf="@id/badge_green"
+
+            android:background="@drawable/badge_orange"
+            android:text="Needs Revision"
+            android:textColor="@color/cardview_light_background"
+            card_view:layout_constraintTop_toTopOf="parent"
+            android:textSize="8dp"
+            android:layout_margin="5dp"
+
+            />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toBottomOf="@id/badge_orange"
+            card_view:layout_constraintEnd_toStartOf="@id/badge_orange"
+            card_view:layout_constraintStart_toEndOf="@id/badge_orange"
+
+
+            />
+</android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
