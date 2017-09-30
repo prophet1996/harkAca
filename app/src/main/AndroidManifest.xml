@@ -43,8 +43,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">    </activity>
         <activity android:name=".McqActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape"
+            android:theme="@style/themeMCQ"
             />
         <activity android:name=".MainChatActivity" />
         <activity
@@ -62,6 +62,12 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
+        </service>
+        <service
+            android:name=".services.TestTimerService"
+            android:icon="@drawable/ic_download"
+            android:label="@string/service_name"
+            >
         </service>
 
         <activity

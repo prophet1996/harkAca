@@ -5,30 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="5"
+    android:weightSum="20"
     android:baselineAligned="false"
     tools:context="com.accademy.harvin.harvinacademy.McqActivity">
 
-   <FrameLayout
-       android:layout_width="100dp"
+   <include
+       layout="@layout/layout_mcq_navigation"
+   android:layout_width="0dp"
        android:layout_height="match_parent"
        app:layout_constraintTop_toBottomOf="parent"
        app:layout_constraintBottom_toTopOf="parent"
        app:layout_constraintVertical_bias="0.0"
        app:layout_constraintLeft_toLeftOf="parent"
        android:id="@+id/fragment_navigation_mcq"
-       android:layout_weight="1"
+       android:layout_weight="6"
 
        />
 
-    <FrameLayout
-        android:layout_width="100dp"
+    <include
+        layout="@layout/layout_mcq_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-android:layout_weight="4"
-        android:id="@+id/fragment_navigation_content"
+android:layout_weight="14"
+        android:id="@+id/layout_navigation_content"
         app:layout_constraintLeft_toRightOf="@+id/fragment_navigation_mcq"
 
         />

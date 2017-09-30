@@ -33,6 +33,17 @@
         <item name="android:windowBackground">@color/mainBackground</item>
 
     </style>
+    <style name="themeMCQ" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/cardview_dark_background</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+
+
+        <item name="android:windowBackground">@color/mainBackground</item>
+
+    </style>
 
 
     <style name="AppTheme.NoActionBar">
@@ -46,6 +57,7 @@
     <style name="TabLayout_Theme" parent="@style/AppTheme">
         <item name="android:singleLine">true</item>
     </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 

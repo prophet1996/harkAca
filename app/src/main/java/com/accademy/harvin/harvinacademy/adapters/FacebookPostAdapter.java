@@ -71,11 +71,11 @@ holder.itemView.setOnClickListener(new View.OnClickListener() {
         return facebookPosts.getReverseData();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+     class ViewHolder extends RecyclerView.ViewHolder{
         ImageView postImage;
         TextView postTitle;
         TextView postDesc;
-        public ViewHolder(View itemView) {
+         ViewHolder(View itemView) {
             super(itemView);
             postImage=(ImageView)itemView.findViewById(R.id.facebook_post_imageview);
             postTitle=(TextView)itemView.findViewById(R.id.facebook_post_title);

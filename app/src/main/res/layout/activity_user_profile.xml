@@ -87,16 +87,7 @@
             android:layout_margin="@dimen/margin_large"
             android:textStyle="bold"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_tiny"
-            android:layout_below="@+id/username"
-            android:text="ID:213712312"
 
-            android:layout_centerHorizontal="true"
-            android:id="@+id/userid"
-            />
 
         <View
             android:layout_width="match_parent"
@@ -104,17 +95,18 @@
             android:background="@color/cardview_dark_background"
             android:id="@+id/divider1"
 
-            android:layout_below="@+id/userid"
+            android:layout_below="@+id/username"
         />
     <LinearLayout
         android:id="@+id/info1"
         android:layout_width="wrap_content"
+        android:visibility="invisible"
         android:orientation="vertical"
           android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
 
         android:layout_centerInParent="true"
-        android:layout_below="@+id/userid"
+        android:layout_below="@+id/username"
 
         >
 <TextView

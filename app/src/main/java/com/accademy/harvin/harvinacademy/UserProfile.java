@@ -31,9 +31,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.w3c.dom.Text;
+
 public class UserProfile extends AppCompatActivity {
 
     private static String ImageURL="http://www.rd.com/wp-content/uploads/sites/2/2016/02/02-train-cat-treats.jpg";
+    private TextView username;
+
 
     ProgressDialog progressDoalog;
     @SuppressLint("NewApi")
@@ -46,6 +50,11 @@ public class UserProfile extends AppCompatActivity {
 
 
         Button deleteUser = (Button) findViewById(R.id.delete_user);
+        username=(TextView)findViewById(R.id.username);
+        final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(UserProfile.this);
+        String user=sharedPreferences.getString("username","N/A");
+        username.setText(user);
+
 
         Glide
                 .with(this)   // pass Context
@@ -62,7 +71,6 @@ public class UserProfile extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showdailog();
-                        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(UserProfile.this);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.remove("username");
                         editor.remove("password");

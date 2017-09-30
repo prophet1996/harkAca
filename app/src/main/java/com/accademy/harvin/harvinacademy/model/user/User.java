@@ -1,6 +1,12 @@
 
 package com.accademy.harvin.harvinacademy.model.user;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.accademy.harvin.harvinacademy.MainActivity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -61,5 +67,16 @@ public class User {
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
+
+    public static String getSharedUsername(Context context) {
+
+
+    String username;
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+    username =sharedPreferences.getString("username","z");
+        Log.d("username",username);
+        return username;
+}
 
 }

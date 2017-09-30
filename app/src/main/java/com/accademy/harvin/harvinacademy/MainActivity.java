@@ -313,6 +313,15 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            if(!addedTabs) {
+                getSubjectListFromServer();
+                addTabs();
+            Log.d("addedTabs","refreshed and added");
+
+            }
+            replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
+
             return true;
         }
         return super.onOptionsItemSelected(item);
