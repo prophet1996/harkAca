@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-android:background="#37474f"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardview_light_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.CardView
+        android:layout_margin="10dp"
+        app:cardElevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     >
 <ImageView
     android:layout_width="100dp"
@@ -38,13 +46,14 @@ android:background="#37474f"
         android:id="@+id/mcqtest_description"
         />
     <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-
+android:layout_margin="10dp"
         android:id="@+id/layout_navigation_mcq_recyclerview"
         />
 
 </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </ScrollView>

@@ -1,9 +1,11 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.annotation.SuppressLint;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +43,7 @@ public class McqActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNavigation;
     private QuestionNavigationListAdapter questionNavigationListAdapter;
     private QuestionContentListAdapter questionContentListAdapter;
+    private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private ConstraintLayout content;
     private TextView questionNumberTextView;
@@ -56,14 +59,7 @@ public class McqActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mcq);
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        setFullScreen();
         navigation=(ScrollView)findViewById(R.id.fragment_navigation_mcq);
         content=(ConstraintLayout) findViewById(R.id.layout_navigation_content);
         questionNumberTextView=(TextView)findViewById(R.id.question_number_textview);
@@ -72,11 +68,22 @@ public class McqActivity extends AppCompatActivity {
          recyclerViewContent=(RecyclerView)content.findViewById(R.id.question_recyclerView_content);
 
 
-
         showdialdog();
         getTest();
         startTest();
         dismissdialog();
+    }
+    private void setFullScreen(){
+
+        setContentView(R.layout.activity_mcq);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
     }
     //TODO
     private void startTest() {
@@ -123,11 +130,13 @@ public class McqActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NewApi")
     private void initViews() {
         timerLayout=(RelativeLayout)content.findViewById(R.id.timer_layout);
         timerProgressBar=(ProgressBar)timerLayout.findViewById(R.id.timer_progess_bar);
         timerTextView=(TextView)timerLayout.findViewById(R.id.timer_textiew);
         timerProgressBar.setIndeterminate(false);
+
     }
 //TODO:listen to broadcast from service
     private void initListeners() {
@@ -198,15 +207,15 @@ public class McqActivity extends AppCompatActivity {
     public void showtest(QuestionTestPaper questionTestPaper){
 
         questionNavigationListAdapter =new QuestionNavigationListAdapter(McqActivity.this,questionTestPaper.getQuestionPaper().getQuestions());
-        linearLayoutManager=new LinearLayoutManager(this);
-         recyclerViewNavigation.setLayoutManager(linearLayoutManager);
+        gridLayoutManager =new GridLayoutManager(this,2);
+         recyclerViewNavigation.setLayoutManager(gridLayoutManager);
          recyclerViewNavigation.setHasFixedSize(true);
          recyclerViewNavigation.setAdapter(questionNavigationListAdapter);
         questionContentListAdapter=new QuestionContentListAdapter(McqActivity.this,questionTestPaper.getQuestionPaper().getQuestions());
         recyclerViewContent.setHasFixedSize(true);
         recyclerViewContent.setAdapter(questionContentListAdapter);
 
-        linearLayoutManager= new LinearLayoutManager(McqActivity.this,LinearLayoutManager.HORIZONTAL,true);
+        linearLayoutManager = new LinearLayoutManager(McqActivity.this,LinearLayoutManager.HORIZONTAL,true);
         recyclerViewContent.setLayoutManager(linearLayoutManager);
         SnapHelper contentSnapHelper= new PagerSnapHelper();
         contentSnapHelper.attachToRecyclerView(recyclerViewContent);
@@ -218,4 +227,15 @@ public class McqActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+      //  setFullScreen();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setFullScreen();
+    }
 }

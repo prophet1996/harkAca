@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +41,16 @@ public void setAnswersList( List<String> answersList){
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Log.d("options","option="+answersList.get(position));
-        holder.answerOptionTextView.setText(answersList.get(position));
+        holder.answerOptionButton.setText(answersList.get(position));
+        holder.answerOptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.answerOptionCheckBox.isChecked())
+                     holder.answerOptionCheckBox.setChecked(false);
+                else
+                    holder.answerOptionCheckBox.setChecked(true);
+            }
+        });
 
 
     }
@@ -53,12 +63,13 @@ public void setAnswersList( List<String> answersList){
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView answerOptionTextView;
-        CheckBox answerOptionCheckBox ;
+        Button answerOptionButton;
+        final CheckBox answerOptionCheckBox ;
         ViewHolder(View itemView) {
             super(itemView);
-            answerOptionTextView=(TextView)itemView.findViewById(R.id.answer_option_textview);
+            answerOptionButton=(Button)itemView.findViewById(R.id.answer_option_textview);
              answerOptionCheckBox=(CheckBox) itemView.findViewById(R.id.answer_option_checkbox);
+
 
 
         }

@@ -10,10 +10,11 @@
     android:layout_marginTop="@dimen/margin_tiny"
     android:layout_marginBottom="@dimen/margin_tiny"
     android:layout_height="wrap_content"
-    android:elevation="8dp"
+    android:elevation="10dp"
+    android:background="?selectableItemBackground"
+
     android:maxHeight="50dp"
 
-    card_view:cardBackgroundColor="@color/colorPrimary"
 
     >
 
@@ -21,22 +22,35 @@
         android:id="@+id/relative_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:padding="0dp">
+        android:background="?selectableItemBackground"
+       >
 
 
-        <TextView
+        <Button
             android:id="@+id/mcq_nav_question_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
             android:gravity="center"
+            android:layout_margin="10dp"
             android:fontFamily="sans-serif-thin"
-          android:layout_alignParentStart="true"
             android:text="1"
+            android:background="?selectableItemBackgroundBorderless"
+
+            android:layout_centerInParent="true"
             android:textSize="30dp" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:background="@color/badge.blue"
+            android:layout_alignEnd="@+id/mcq_nav_question_number"
+            android:layout_alignStart="@+id/mcq_nav_question_number"
+            android:layout_below="@+id/mcq_nav_question_number"
+
+            />
 <android.support.constraint.ConstraintLayout
+    android:visibility="gone"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_toEndOf="@id/mcq_nav_question_number"
