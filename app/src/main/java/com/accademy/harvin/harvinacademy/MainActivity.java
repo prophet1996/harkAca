@@ -1,10 +1,7 @@
 package com.accademy.harvin.harvinacademy;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -26,24 +23,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.adapters.CustomDrawerAdapter;
+import com.accademy.harvin.harvinacademy.db.AppDatabase;
+import com.accademy.harvin.harvinacademy.db.utils.DatabaseInitializer;
 import com.accademy.harvin.harvinacademy.fragment.FaceBookPostFragement;
 import com.accademy.harvin.harvinacademy.fragment.StudyFragment;
+import com.accademy.harvin.harvinacademy.model.Chapter;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
+import com.accademy.harvin.harvinacademy.model.Subject;
 import com.accademy.harvin.harvinacademy.model.Subjects;
-import com.accademy.harvin.harvinacademy.model.user.Progress;
+import com.accademy.harvin.harvinacademy.model.Topic;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
+import com.accademy.harvin.harvinacademy.network.HTTPclient;
+import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
-import com.accademy.harvin.harvinacademy.utils.Constants;
-import com.accademy.harvin.harvinacademy.utils.Internet;
-import com.accademy.harvin.harvinacademy.utils.ProgressUtil;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,16 +49,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.accademy.harvin.harvinacademy.utils.Constants.PROGRESS_KEY;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
@@ -77,8 +65,8 @@ public class MainActivity extends AppCompatActivity
     private static TextView mProfilename;
     private static TextView mProfileusername;
     private static boolean addedTabs=false;
+    private AppDatabase appDatabase;
     private Gson  GSON= new Gson();
-
     List<DrawerItem> dataList = new ArrayList<>();;
     TabLayout.Tab tab_dynamic;
     CustomDrawerAdapter customDrawerAdapter;
@@ -90,30 +78,30 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         adddrawerItems();
 
         customDrawerAdapter= new CustomDrawerAdapter(MainActivity.this,R.layout.custom_drawer_item,dataList);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
 
-        mDrawerList=(ListView)headerView.findViewById(R.id.drawer_list_view);
+        mDrawerList=headerView.findViewById(R.id.drawer_list_view);
         mDrawerList.setAdapter(customDrawerAdapter);
 
-        DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navHeader = navigationView.getHeaderView(0);
 
-        mProfilePhoto=(ImageView)navHeader.findViewById(R.id.profilephoto);
+        mProfilePhoto=navHeader.findViewById(R.id.profilephoto);
         Glide
                 .with(this)
                 .load(ImageURL)
@@ -122,7 +110,7 @@ public class MainActivity extends AppCompatActivity
                 .bitmapTransform(new CircleTransform(this))
                 .into(mProfilePhoto); // the ImageView to which the image is to be loaded
 
-        mProfileusername=(TextView)navHeader.findViewById(R.id.navbar_usernaame);
+        mProfileusername=navHeader.findViewById(R.id.navbar_usernaame);
         mProfileusername.setText(getUsername());
         mProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +119,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
-        tb=(TabLayout)findViewById(R.id.mainTablayout);
+        tb=findViewById(R.id.mainTablayout);
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();
         getProgressFromServer();
@@ -148,30 +136,9 @@ public class MainActivity extends AppCompatActivity
 
     private  void getSubjectListFromServer() {
         Log.d("getting subjects","first");
-        int cachesize=10*1024*1024;
-        Cache cache=new Cache(getCacheDir(),cachesize);
-        OkHttpClient okHttpClient= new OkHttpClient.Builder()
-                .cache(cache)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        if(Internet.isAvailable(MainActivity.this)){
-                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-                        } else {
-                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
-                        }
-                        return chain.proceed(request);
-                    }
-                })
-                .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl(Constants.BASE_URL)
-                                .client(okHttpClient)
-                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
+        OkHttpClient okHttpClient= HTTPclient.getClient(this);
+        Retrofit retrofit = RetrofitBuilder.getRetrofit(this,okHttpClient);
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
         String username=getUsername();
         Log.d("getting subjects",username);
@@ -187,12 +154,15 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onNext(@NonNull Subjects subjects) {
                         mSubjects=subjects;
+                        Log.d("tabs",mSubjects.getSubjects().get(0).getSubjectName()+"");
                         if(mSubjectList!=null)
                         for (int i=0;i<subjects.getSubjects().size();i++)
                             mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
                         addTabs();
                         addedTabs=true;
-                        StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(0),MainActivity.this);
+                       initdb();
+
+                        StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(0).getId(),0);
                         sf.setProgress(progresses);
                         replaceFragment(sf);
 
@@ -211,32 +181,48 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
+
+    private void initdb() {
+        appDatabase = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        populateDb();
+
+
+    }
+
+    private void populateDb() {
+        DatabaseInitializer.populateAsyncSubject(appDatabase,mSubjects.getSubjects());
+
+        for(Subject sub:mSubjects.getSubjects()) {
+            Log.d("roomSubject", "insterting " + sub.getSubjectName());
+            DatabaseInitializer.populateAsyncChapter(appDatabase, sub.getChapters());
+            for (Chapter chapter : sub.getChapters()){
+                DatabaseInitializer.populateAsyncTopic(appDatabase, chapter.getTopics());
+                Log.d("roomtopic", "insterting " + chapter.getTopics().size());
+
+                for(Topic top :chapter.getTopics()){
+                    Log.d("roomtopic", "insterting " + top.getFiles().get(0).chapterId);
+
+
+                    DatabaseInitializer.populateAsyncFile(appDatabase,top.getFiles());
+                }
+            Log.d("room","topic main");}
+        }
+        Log.d("roomProg","prog inserted");
+DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses());
+
+    }
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
+    }
+
+
     private  void getProgressFromServer() {
         Log.d("getting progress","first");
-        int cachesize=10*1024*1024;
-        Cache cache=new Cache(getCacheDir(),cachesize);
-        OkHttpClient okHttpClient= new OkHttpClient.Builder()
-                .cache(cache)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        if(Internet.isAvailable(MainActivity.this)){
-                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-                        } else {
-                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
-                        }
-                        return chain.proceed(request);
-                    }
-                })
-                .build();
+        OkHttpClient okHttpClient= HTTPclient.getClient(this);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .client(okHttpClient)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = RetrofitBuilder.getRetrofit(this,okHttpClient);
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
         String username=getUsername();
         Log.d("getting progress",username);
@@ -255,7 +241,7 @@ public class MainActivity extends AppCompatActivity
                         Log.d("getting progress",progresses.getProgresses().toString());
                         if(progresses!=null)
 
-                          ProgressUtil.saveProgress(progresses,MainActivity.this);
+                       //   ProgressUtil.saveProgress(progresses,MainActivity.this);
 
                         getSubjectListFromServer();
 
@@ -277,6 +263,7 @@ public class MainActivity extends AppCompatActivity
     private void addTabs() {
         for (int i=0;i<mSubjectList.size();i++){
             tab_dynamic=tb.newTab();
+            Log.d("tabs",""+mSubjectList.get(i));
             tab_dynamic.setText(mSubjectList.get(i));
             try{
                 tb.addTab(tab_dynamic);
@@ -289,7 +276,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -332,7 +319,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+DrawerLayout drawer=findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -344,7 +331,7 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         Log.d("done",""+pos);
         switch (pos){
             case 0:
-                StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
                 sf.setProgress(progresses);
 
                 replaceFragment(sf);
@@ -352,7 +339,7 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
 
                 break;
             case 1:
-                 sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                 sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
                 sf.setProgress(progresses);
 
                 replaceFragment(sf);
@@ -360,7 +347,7 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
 
                 break;
             case 2:
-                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
                 sf.setProgress(progresses);
 
                 replaceFragment(sf);
@@ -368,7 +355,7 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
 
                 break;
             case 3:
-                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos),MainActivity.this);
+                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
                 sf.setProgress(progresses);
 
                 replaceFragment(sf);
@@ -397,7 +384,10 @@ DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
         FragmentManager fragmentManager= getSupportFragmentManager();
         FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
         mFragmentTranscation.replace(R.id.fragment_container,sf);
-        mFragmentTranscation.commit();
+try{        mFragmentTranscation.commit();}
+catch (IllegalStateException ise){
+    ise.printStackTrace();
+}
     }
     public void replaceFacebookPosts(FaceBookPostFragement fb){
         FragmentManager fragmentManager=getSupportFragmentManager();

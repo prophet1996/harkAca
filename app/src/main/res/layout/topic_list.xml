@@ -9,6 +9,7 @@
     android:layout_marginEnd="@dimen/activity_horizontal_margin"
     android:layout_marginTop="@dimen/margin_small"
     android:layout_marginBottom="@dimen/margin_small"
+    android:background="?selectableItemBackground"
     android:layout_height="wrap_content"
     android:elevation="8dp"
 
@@ -19,6 +20,7 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:padding="10dp">
 
         <TextView
@@ -43,47 +45,6 @@
             android:text="1.1"
             android:textSize="30dp" />
 
-        <TextView
-            android:id="@+id/badge_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/downloading_progress"
-            android:layout_alignStart="@+id/topic_name"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/badge_blue"
-            android:text=""
-            android:textColor="@color/cardview_light_background"
-            android:textSize="8dp"
-
-            />
-
-        <TextView
-            android:id="@+id/badge_green"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/downloading_progress"
-            android:layout_marginEnd="5dp"
-            android:layout_toEndOf="@+id/badge_blue"
-            android:background="@drawable/badge_green"
-            android:text=""
-            android:textSize="8dp"
-
-            android:textColor="@color/cardview_light_background"
-
-            />
-
-        <TextView
-            android:id="@+id/badge_orange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/downloading_progress"
-            android:layout_toEndOf="@+id/badge_green"
-            android:background="@drawable/badge_orange"
-            android:text=""
-            android:textColor="@color/cardview_light_background"
-            android:textSize="8dp"
-
-            />
 
         <TextView
             android:id="@+id/topic_name"
@@ -100,25 +61,33 @@
             android:text="Introduction to Relations"
             android:textColor="#000000"
 
-            android:textSize="18dp" />
+            android:textSize="18sp" />
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/download_pdf"
+            android:layout_alignStart="@id/download_pdf"
+android:layout_margin="5dp"
 
-<Spinner
+            android:layout_height="wrap_content" >
+
+
+<CheckBox
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:id="@+id/state_spinner"
-    android:layout_alignEnd="@+id/download_pdf"
-    android:layout_alignStart="@id/download_pdf"
+    android:id="@+id/mark_as_done"
     >
 
-</Spinner>
+</CheckBox>
+        </LinearLayout>
         <ImageButton
             android:id="@+id/download_pdf"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
+android:layout_below="@+id/linearLayout1"
 
             android:layout_margin="5dp"
             android:background="?attr/selectableItemBackground"

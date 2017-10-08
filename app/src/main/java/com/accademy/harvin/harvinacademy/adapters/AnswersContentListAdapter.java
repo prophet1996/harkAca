@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accademy.harvin.harvinacademy.R;
+import com.accademy.harvin.harvinacademy.db.AppDatabase;
 
 import java.util.List;
 
@@ -23,12 +24,17 @@ public class AnswersContentListAdapter extends RecyclerView.Adapter<AnswersConte
 
     private List<String> answersList;
     private LayoutInflater layoutInflater;
-
+    private AppDatabase appDatabase;
+    private boolean stateClicked=false;
+    private String questionId;
     public AnswersContentListAdapter(Context context) {
         this.layoutInflater = LayoutInflater.from(context);
+        appDatabase=AppDatabase.getInMemoryDatabase(context);
+
     }
-public void setAnswersList( List<String> answersList){
+public void setAnswersList( List<String> answersList,String questionId){
     this.answersList = answersList;
+    this.questionId=questionId;
 
 
 }
@@ -46,13 +52,22 @@ public void setAnswersList( List<String> answersList){
             @Override
             public void onClick(View v) {
                 if(holder.answerOptionCheckBox.isChecked())
-                     holder.answerOptionCheckBox.setChecked(false);
-                else
+                {     holder.answerOptionCheckBox.setChecked(false);
+                    stateClicked=false;
+                save(stateClicked);}
+                else{
                     holder.answerOptionCheckBox.setChecked(true);
+                save(stateClicked);
+
+                }
             }
         });
 
 
+
+    }
+    private void save(boolean stateClicked){
+        appDatabase.questionModel().updateQuestionClicked(stateClicked,questionId);
     }
 
     @Override

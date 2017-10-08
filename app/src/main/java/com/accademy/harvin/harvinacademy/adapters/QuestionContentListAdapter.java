@@ -1,16 +1,24 @@
 package com.accademy.harvin.harvinacademy.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatCheckedTextView;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.exam.Question;
+import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 
 import java.util.List;
 
@@ -22,18 +30,22 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
     private LayoutInflater layoutInflater;
     private List<Question> questionList;
     private LinearLayoutManager linearLayoutManager;
-    private AnswersContentListAdapter answersContentListAdapter;
-    public QuestionContentListAdapter(Context context, List<Question> questionList) {
-        this.layoutInflater=LayoutInflater.from(context);
-        this.questionList=questionList;
-        linearLayoutManager= new LinearLayoutManager(context);
-
-
-        Log.d("content mcq","adapter createdd");
-
-
-
+    private QuestionPaper questionPaper;
+    private MarkerForReviewListener markerForReviewListener;
+    public interface MarkerForReviewListener{
+        void onMarked(int position,boolean checked);
     }
+    public void setMarkedForReviewListener(MarkerForReviewListener markerForReviewListener){
+        this.markerForReviewListener=markerForReviewListener;
+    }
+
+    public QuestionContentListAdapter(Context context, QuestionPaper questionPaper) {
+        this.layoutInflater=LayoutInflater.from(context);
+        this.questionPaper=questionPaper;
+        linearLayoutManager= new LinearLayoutManager(context);
+        Log.d("content mcq","adapter createdd");
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,34 +56,107 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Question question=questionPaper.getQuestions().get(position);
         holder.questionNumberTextView.setText("Q"+Integer.toString(position+1));
-        holder.questionTextView.setText(questionList.get(position).getQuestion());
-        answersContentListAdapter.setAnswersList(questionList.get(position).getOptions()
-        );
+        holder.questionTextView.setText(question.question);
+        holder.checkedTextView1.setText(question.getOptions().get(0));
+        holder.checkedTextView2.setText(question.getOptions().get(1));
+        holder.checkedTextView3.setText(question.getOptions().get(2));
+        holder.checkedTextView4.setText(question.getOptions().get(3));
+        holder.checkedTextView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!holder.checkedTextView1.isChecked()){
+                holder.checkedTextView1.setChecked(true);
+                    questionSelectedListener.onQuestionClicked(position);}
+                else{questionSelectedListener.onQuestionUnClicked(position);
+                    holder.checkedTextView1.setChecked(false);}
+                Log.d("listener","clicked"+position);
+            }
+        });
+        holder.checkedTextView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!holder.checkedTextView2.isChecked()){
+                    holder.checkedTextView2.setChecked(true);
+                    questionSelectedListener.onQuestionClicked(position);
+                }
+                else{questionSelectedListener.onQuestionUnClicked(position);
+                    holder.checkedTextView2.setChecked(false);}
+                Log.d("listener","clicked"+position);
+            }
+        });    holder.checkedTextView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!holder.checkedTextView3.isChecked()){
+                    holder.checkedTextView3.setChecked(true);
+                    questionSelectedListener.onQuestionClicked(position);
+                }
+                else{                    questionSelectedListener.onQuestionUnClicked(position);
+                    holder.checkedTextView3.setChecked(false);}
+                Log.d("listener","clicked"+position);
+            }
+        });    holder.checkedTextView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!holder.checkedTextView4.isChecked()){
+                    holder.checkedTextView4.setChecked(true);
+                    questionSelectedListener.onQuestionClicked(position);
+                }
+                else{questionSelectedListener.onQuestionUnClicked(position);
+                    holder.checkedTextView4.setChecked(false);}
+                Log.d("listener","clicked"+position);
+            }
+        });
 
+holder.marckedCheckBox.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View view) {
 
-    }
+                                                  if(!holder.marckedCheckBox.isChecked()) {
+                                                      markerForReviewListener.onMarked(position,false);
+
+                                                  }
+                                                  else {
+                                                      markerForReviewListener.onMarked(position, true);
+
+                                                  }                                                  Log.d("listener","clicked"+position);
+                                              }});}
 
     @Override
     public int getItemCount() {
-        return questionList.size();
+        return questionPaper.getQuestions().size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
          private TextView questionTextView;
          private TextView questionNumberTextView;
-         private RecyclerView answersRecyclerView;
+         //private RecyclerView answersRecyclerView;
+        private AppCompatCheckedTextView checkedTextView1;
+        private AppCompatCheckedTextView checkedTextView2;
+        private AppCompatCheckedTextView checkedTextView3;
+        private AppCompatCheckedTextView checkedTextView4;
+        private AppCompatCheckBox marckedCheckBox;
          ViewHolder(View itemView) {
             super(itemView);
-            questionTextView=(TextView)itemView.findViewById(R.id.question_textview_content);
-            questionNumberTextView=(TextView)itemView.findViewById(R.id.question_number_textview_content);
-            answersRecyclerView =(RecyclerView)itemView.findViewById(R.id.answers_recyclerView_content);
-             answersRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-             answersContentListAdapter= new AnswersContentListAdapter(itemView.getContext());
-
-             answersRecyclerView.setAdapter(answersContentListAdapter);
+            questionTextView=itemView.findViewById(R.id.question_textview_content);
+            questionNumberTextView=itemView.findViewById(R.id.question_number_textview_content);
+            checkedTextView1=itemView.findViewById(R.id.answer_one);
+            checkedTextView2=itemView.findViewById(R.id.answer_two);
+            checkedTextView3=itemView.findViewById(R.id.answer_three);
+            checkedTextView4=itemView.findViewById(R.id.answer_four);
+             marckedCheckBox=itemView.findViewById(R.id.marked_checked);
 
         }
 
+    }
+    public interface QuestionSelectedListener{
+        void  onQuestionClicked(int position);
+        void onQuestionUnClicked(int position);
+    }
+
+    private  QuestionSelectedListener questionSelectedListener;
+    public void setQuestionSelectedListener(QuestionSelectedListener questionSelectedListener) {
+        this.questionSelectedListener = questionSelectedListener;
     }
 }

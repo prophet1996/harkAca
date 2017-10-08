@@ -14,7 +14,7 @@ android:background="@color/cardview_light_background"
         app:layout_constraintBottom_toTopOf="parent"
         android:id="@+id/timer_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+ />
 
 
 
@@ -22,22 +22,25 @@ android:background="@color/cardview_light_background"
             android:layout_height="wrap_content"
             android:id="@+id/state_label_completed"
             android:layout_width="wrap_content"
-            android:textColor="#bef67a"
             android:text="Completed"
+            android:textColor="@color/cardview_light_background"
+            android:background="@drawable/badge_green"
             android:layout_margin="10dp"
-            app:layout_constraintEnd_toStartOf="@+id/state_label_not_attempted"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@+id/state_label_not_attempted"
-/>
+          />
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="#f44336"
             android:id="@+id/state_label_not_attempted"
             android:text="Not Attempted"
+            android:textColor="@color/cardview_light_background"
+            android:background="@drawable/badge_red"
             app:layout_constraintTop_toBottomOf="@+id/test_progress"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
+app:layout_constraintStart_toEndOf="@+id/state_label_completed"
             android:layout_margin="10dp"
 
 
@@ -45,18 +48,20 @@ android:background="@color/cardview_light_background"
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="#fb8c00"
+            android:textColor="@color/cardview_light_background"
             android:text="Needs Revision"
             android:layout_margin="10dp"
+            android:background="@drawable/badge_orange"
             app:layout_constraintStart_toEndOf="@id/state_label_not_attempted"
      app:layout_constraintTop_toBottomOf="parent"
             android:id="@+id/state_label_revision"
             app:layout_constraintBaseline_toBaselineOf="@+id/state_label_not_attempted"
- />
+        />
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="7"
+            android:id="@+id/state_value_completed"
             android:textSize="30sp"
             android:layout_margin="4dp"
             android:textColor="@color/cardview_dark_background"
@@ -65,7 +70,7 @@ android:background="@color/cardview_light_background"
             app:layout_constraintBaseline_toBaselineOf="@+id/state_value_not_attempted"
             app:layout_constraintStart_toEndOf="@+id/state_label_completed"
             app:layout_constraintEnd_toStartOf="@id/state_label_completed"
-/>
+            />
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -77,10 +82,10 @@ android:background="@color/cardview_light_background"
             android:id="@+id/state_value_not_attempted"
             app:layout_constraintTop_toBottomOf="@+id/state_label_not_attempted"
 
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/state_label_not_attempted"
+            app:layout_constraintEnd_toStartOf="@id/state_label_not_attempted"
 
- />
+         />
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -94,7 +99,7 @@ android:background="@color/cardview_light_background"
             app:layout_constraintStart_toEndOf="@+id/state_label_revision"
             app:layout_constraintEnd_toStartOf="@id/state_label_revision"
             app:layout_constraintBaseline_toBaselineOf="@+id/state_value_not_attempted"
- />
+         />
 
     <ImageView
         android:id="@+id/mcq_clipboard"
@@ -119,38 +124,49 @@ android:background="@color/cardview_light_background"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total "
-        app:layout_constraintTop_toBottomOf="@+id/mcq_clipboard"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
+        android:text="Total"
+        android:background="@drawable/badge_blue"
+        app:layout_constraintTop_toBottomOf="@+id/test_progress"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintBottom_toTopOf="@+id/question_number_textview"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.0"
+        android:textColor="@color/cardview_light_background"
         android:textStyle="bold"
-        android:fontFamily="sans-serif-thin"
+        android:layout_margin="10dp"
         android:id="@+id/question_number_label_textview"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"
+        app:layout_constraintTop_toBottomOf="@+id/question_number_label_textview"
+        app:layout_constraintLeft_toRightOf="@+id/question_number_label_textview"
+        app:layout_constraintRight_toLeftOf="@+id/question_number_label_textview"
+        app:layout_constraintVertical_bias="1.0"
+        android:textSize="30sp"
+        android:layout_margin="4dp"
+        android:textColor="@color/cardview_dark_background"
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/question_number_textview"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        />
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:elevation="10dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/mcq_clipboard"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintHorizontal_bias="0.50"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-thin"
-        android:id="@+id/question_number_textview"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:text="Submit"
+        android:id="@+id/submit_test_button"
+        android:background="?selectableItemBackground"
+        android:textColor="@color/badge.blue"
         />
-
     <ProgressBar
         android:id="@+id/test_progress"
         android:layout_width="match_parent"
@@ -165,6 +181,8 @@ android:background="@color/cardview_light_background"
         app:layout_constraintLeft_toRightOf="parent"
         android:layout_margin="10dp"
         app:layout_constraintRight_toLeftOf="parent" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>

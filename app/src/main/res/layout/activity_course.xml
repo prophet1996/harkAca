@@ -18,32 +18,60 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintHorizontal_bias="0.5"
-  />
+        app:layout_constraintVertical_bias="0.0" />
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         android:id="@+id/chapter_block"
         >
     <include layout="@layout/chapter_list"
         android:id="@+id/chapter_card"
+
          />
     </LinearLayout>
-    <FrameLayout
+    <TextView
+        android:id="@+id/chapter_progress_textview"
         android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-
         android:layout_height="wrap_content"
-        android:id="@+id/fragment_container"
+        android:text="10%"
+        android:textSize="30dp"
+        android:paddingStart="10dp"
+        android:layout_margin="10dp"
+        android:fontFamily="sans-serif-thin"
+        android:paddingEnd="10dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chapter_block"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/chapter_progress_progressbar"
+
+
+         />
+    <ProgressBar
+        android:id="@+id/chapter_progress_progressbar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:max="100"
+        android:layout_margin="8dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chapter_block"
 
 
         />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/new_topic_recylerview"
+        app:layout_constraintTop_toBottomOf="@+id/chapter_progress_progressbar"
+ app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        ></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="3dp"
             android:background="@color/badge.blue"
+            android:id="@+id/indicator_navigation_list"
             android:layout_alignEnd="@+id/mcq_nav_question_number"
             android:layout_alignStart="@+id/mcq_nav_question_number"
             android:layout_below="@+id/mcq_nav_question_number"

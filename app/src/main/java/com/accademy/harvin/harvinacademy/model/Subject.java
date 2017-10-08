@@ -1,24 +1,38 @@
 
 package com.accademy.harvin.harvinacademy.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class Subject {
 
     @SerializedName("_id")
     @Expose
-    private String id;
+    @ColumnInfo(name = "id")
+    public
+    @PrimaryKey
+    @NonNull
+    String id;
     @SerializedName("subjectName")
     @Expose
-    private String subjectName;
+    public String subjectName;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    public Integer v;
+    @Ignore
     @SerializedName("chapters")
     @Expose
-    private List<Chapter> chapters = null;
+    public List<Chapter> chapters = null;
+    @Expose
+    @SerializedName("class")
+    public String classid;
 
     public String getId() {
         return id;
@@ -33,6 +47,9 @@ public class Subject {
         return subjectName;
     }
 
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
     public Integer getV() {
         return v;

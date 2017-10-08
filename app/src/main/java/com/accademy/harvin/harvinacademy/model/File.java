@@ -1,42 +1,51 @@
 
 package com.accademy.harvin.harvinacademy.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class File {
 
     @SerializedName("_id")
     @Expose
-    private String id;
+    public
+    @PrimaryKey
+    @NonNull
+    String id;
     @SerializedName("fileName")
     @Expose
-    private String fileName;
+    public String fileName;
     @SerializedName("fileType")
     @Expose
-    private String fileType;
+    public String fileType;
     @SerializedName("filePath")
     @Expose
-    private String filePath;
+    public String filePath;
     @SerializedName("uploadDate")
     @Expose
-    private String uploadDate;
+    public String uploadDate;
     @SerializedName("fileSize")
     @Expose
-    private Integer fileSize;
-    @SerializedName("subjectName")
+    public Integer fileSize;
+    @SerializedName("subject")
     @Expose
-    private String subjectName;
-    @SerializedName("chapterName")
+    public String subjectId;
+    @SerializedName("chapter")
     @Expose
-    private String chapterName;
-    @SerializedName("topicName")
-    @Expose
-    private String topicName;
+    public String chapterId;
+
     @SerializedName("__v")
     @Expose
-    private Integer v;
-
+    public Integer v;
+    @Expose
+    @SerializedName("topic")
+    @ColumnInfo(name="topicId")
+    public String topicId;
     public String getId() {
         return id;
     }
@@ -56,11 +65,6 @@ public class File {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public File withFileName(String fileName) {
-        this.fileName = fileName;
-        return this;
     }
 
     public String getFileType() {
@@ -115,44 +119,32 @@ public class File {
         return this;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public File withSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+        this.subjectId = subjectName;
         return this;
     }
 
-    public String getChapterName() {
-        return chapterName;
+    public String getChapterId() {
+        return chapterId;
     }
 
-    public void setChapterName(String chapterName) {
-        this.chapterName = chapterName;
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 
     public File withChapterName(String chapterName) {
-        this.chapterName = chapterName;
+        this.chapterId = chapterName;
         return this;
     }
 
-    public String getTopicName() {
-        return topicName;
-    }
-
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
-    }
-
-    public File withTopicName(String topicName) {
-        this.topicName = topicName;
-        return this;
-    }
 
     public Integer getV() {
         return v;

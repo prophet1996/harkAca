@@ -2,30 +2,54 @@
 package com.accademy.harvin.harvinacademy.model.exam;
 
 import java.util.List;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
+@TypeConverters({})
 public class Question implements Parcelable
 {
 
     @SerializedName("_id")
     @Expose
-    private String id;
+    public
+    @PrimaryKey
+    @NonNull
+    String id;
     @SerializedName("question")
     @Expose
-    private String question;
+    public String question;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    public Integer v;
     @SerializedName("answers")
+    @Ignore
     @Expose
-    private List<String> answers = null;
+    public List<String> answers = null;
     @SerializedName("options")
     @Expose
-    private List<String> options = null;
+    @Ignore
+    public List<String> options = null;
+    public boolean isClicked=false;
+
+    @SerializedName("questionPaper")
+    @Expose
+    @ColumnInfo(name="questionPaperId")
+    public String questionPaperId;
+    public boolean isMarked=false;
+
+
     public final static Creator<Question> CREATOR = new Creator<Question>() {
 
 

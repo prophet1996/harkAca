@@ -32,6 +32,7 @@
 android:layout_toRightOf="@+id/drawer_icon"
                 android:layout_height="wrap_content"
                 android:text="hello"
+                android:fontFamily="sans-serif-light"
 android:textStyle="bold"
 
                 />

@@ -1,15 +1,18 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,12 +23,17 @@ import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.adapters.QuestionContentListAdapter;
 import com.accademy.harvin.harvinacademy.adapters.QuestionNavigationListAdapter;
+import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
 import com.accademy.harvin.harvinacademy.model.user.User;
+import com.accademy.harvin.harvinacademy.model.viewmodel.QuestionPaperWithQuestionViewModel;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Formatter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -36,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
-public class McqActivity extends AppCompatActivity {
+public class McqActivity extends AppCompatActivity  {
     private String DUMMYID="59bcd16d2cb25f494b1fa2a9";
     private ScrollView navigation;
     private RecyclerView recyclerViewContent;
@@ -48,34 +56,51 @@ public class McqActivity extends AppCompatActivity {
     private ConstraintLayout content;
     private TextView questionNumberTextView;
     private int totalQuestion=0;
+    private QuestionTestPaper questionTestPaper1;
+    private PagerSnapHelper contentSnapHelper;
 
     //for timer
     private ProgressBar timerProgressBar;
+    private ProgressBar testProgress;
     private CountDownTimer countDownTimer;
     private TextView timerTextView;
     private RelativeLayout timerLayout;
     private long timeCountInMilliSeconds = 1 * 60000;
+    private QuestionPaperWithQuestionViewModel viewModel;
+    private List<Integer> clickTracker;
+    private TextView stateCompletedTextView;
+    private TextView stateRevisionTextView;
+    private TextView stateNotAttemptedTextView;
+    private int completedTracker[];
+    private AppCompatButton submitTestButton;
+    private AlertDialog progressDialog;
+    private AlertDialog.Builder progressDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mcq);
         setFullScreen();
-        navigation=(ScrollView)findViewById(R.id.fragment_navigation_mcq);
-        content=(ConstraintLayout) findViewById(R.id.layout_navigation_content);
-        questionNumberTextView=(TextView)findViewById(R.id.question_number_textview);
+        navigation=findViewById(R.id.fragment_navigation_mcq);
+        content= findViewById(R.id.layout_navigation_content);
+        questionNumberTextView=findViewById(R.id.question_number_textview);
 
-         recyclerViewNavigation=(RecyclerView)navigation.findViewById(R.id.layout_navigation_mcq_recyclerview);
-         recyclerViewContent=(RecyclerView)content.findViewById(R.id.question_recyclerView_content);
-
-
+         recyclerViewNavigation=navigation.findViewById(R.id.layout_navigation_mcq_recyclerview);
+         recyclerViewContent=content.findViewById(R.id.question_recyclerView_content);
+        stateCompletedTextView=content.findViewById(R.id.state_value_completed);
+        stateRevisionTextView=content.findViewById(R.id.state_value_revision);
+        stateNotAttemptedTextView=content.findViewById(R.id.state_value_not_attempted);
+        testProgress=content.findViewById(R.id.test_progress);
+        submitTestButton=content.findViewById(R.id.submit_test_button);
+        viewModel= ViewModelProviders.of(this).get(QuestionPaperWithQuestionViewModel.class);
+if(viewModel==null)
+    Log.d("view model","null");
         showdialdog();
         getTest();
-        startTest();
         dismissdialog();
     }
     private void setFullScreen(){
 
-        setContentView(R.layout.activity_mcq);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -84,6 +109,9 @@ public class McqActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
+
+
+
     }
     //TODO
     private void startTest() {
@@ -91,12 +119,25 @@ public class McqActivity extends AppCompatActivity {
         initViews();
         // method call to initialize the timer listeners
         initListeners();
+        //setUIUpdateMethod();
         //start the timer
+        setStateTextViewValues();
         setProgressBarValues();
         startTimer();
 
 
+
     }
+
+    private void setStateTextViewValues() {
+        stateNotAttemptedTextView.setText(questionTestPaper1.getQuestionPaper().getQuestions().size()+"");
+        stateCompletedTextView.setText(Integer.toString(0));
+        stateRevisionTextView.setText(Integer.toString(0));
+        testProgress.setIndeterminate(false);
+        testProgress.setProgress(0);
+    }
+
+
 
     private void startTimer() {
         setTimerValues();
@@ -116,6 +157,8 @@ public class McqActivity extends AppCompatActivity {
             public void onFinish() {
                 Toast.makeText(McqActivity.this,"done with the test ",Toast.LENGTH_SHORT);
                 timerProgressBar.setProgress(100);
+                timerTextView.setText(Formatter.hmsTimeFormatter(0));
+                showEndTestDialog();
 
             }
         };
@@ -127,14 +170,16 @@ public class McqActivity extends AppCompatActivity {
         timeCountInMilliSeconds = 1 * 60 * 1000;
 
 
+    }
+    private void showEndTestDialog(){
 
     }
 
     @SuppressLint("NewApi")
     private void initViews() {
-        timerLayout=(RelativeLayout)content.findViewById(R.id.timer_layout);
-        timerProgressBar=(ProgressBar)timerLayout.findViewById(R.id.timer_progess_bar);
-        timerTextView=(TextView)timerLayout.findViewById(R.id.timer_textiew);
+        timerLayout=content.findViewById(R.id.timer_layout);
+        timerProgressBar=timerLayout.findViewById(R.id.timer_progess_bar);
+        timerTextView=timerLayout.findViewById(R.id.timer_textiew);
         timerProgressBar.setIndeterminate(false);
 
     }
@@ -171,71 +216,197 @@ public class McqActivity extends AppCompatActivity {
                 .subscribe(new Observer<QuestionTestPaper>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        Log.d("testpaper","subscribe");
-
-                    }
-
+                        Log.d("testpaper","subscribe");}
                     @Override
                     public void onNext(@NonNull QuestionTestPaper questionTestPaper) {
                         if(questionTestPaper!=null){
                         Log.d("testpaper",questionTestPaper.getQuestionPaper().getId());
+                            questionTestPaper1=questionTestPaper;
                             showtest(questionTestPaper);
-
-                        }
+                         //   saveTestToDb(questionTestPaper.getQuestionPaper());
+                            }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("testpaper","error"+e.toString());
                         e.printStackTrace();
-
                     }
 
                     @Override
-                    public void onComplete() {                        Log.d("testpaper","complete");
-
-
-                    }
-                })
-
-        ;
+                    public void onComplete() {Log.d("testpaper","complete");}
+                });
 
 
 
     }
+//    private void saveTestToDb(QuestionPaper questionPaper){
+//
+//        db=AppDatabase.getInMemoryDatabase(this);
+//        DatabaseInitializer.populateAsyncQuestionPaper(db,questionPaper);
+//
+//         //   DatabaseInitializer.populateAsyncQuestion(db,questionPaper.getQuestions());
+//
+//
+//    }
 //TODO
-    public void showtest(QuestionTestPaper questionTestPaper){
+    public void showtest(final QuestionTestPaper questionTestPaper){
+        final QuestionPaper qp=questionTestPaper.getQuestionPaper();
+        clickTracker= new ArrayList<>();
+        completedTracker= new int[qp.getQuestions().size()];
+        for(int i=0;i<qp.getQuestions().size();i++)
+            clickTracker.add(0);
 
-        questionNavigationListAdapter =new QuestionNavigationListAdapter(McqActivity.this,questionTestPaper.getQuestionPaper().getQuestions());
+        questionNavigationListAdapter =new QuestionNavigationListAdapter(McqActivity.this,qp);
+
+        questionNavigationListAdapter.setNavigationQuestionClickedListener(new QuestionNavigationListAdapter.NavigationQuestionClickedListener() {
+            @Override
+            public void onNavigationClicked(int position) {
+                recyclerViewContent.scrollToPosition(position);
+                linearLayoutManager.scrollToPosition(position);
+
+
+            }
+
+        });
         gridLayoutManager =new GridLayoutManager(this,2);
          recyclerViewNavigation.setLayoutManager(gridLayoutManager);
          recyclerViewNavigation.setHasFixedSize(true);
          recyclerViewNavigation.setAdapter(questionNavigationListAdapter);
-        questionContentListAdapter=new QuestionContentListAdapter(McqActivity.this,questionTestPaper.getQuestionPaper().getQuestions());
+        questionContentListAdapter=new QuestionContentListAdapter(McqActivity.this,qp);
+        questionContentListAdapter.setMarkedForReviewListener(new QuestionContentListAdapter.MarkerForReviewListener() {
+            @Override
+            public void onMarked(int position,boolean checked) {
+                if(checked){qp.getQuestions().get(position).isMarked=true;
+                    stateRevisionTextView.setText((Integer.parseInt(stateRevisionTextView.getText().toString())+1)+"");
+                }
+                else {qp.getQuestions().get(position).isMarked=false;
+                    stateRevisionTextView.setText((Integer.parseInt(stateRevisionTextView.getText().toString())-1)+"");
+
+                }
+            }
+        });
+        questionContentListAdapter.setQuestionSelectedListener(new QuestionContentListAdapter.QuestionSelectedListener() {
+            @Override
+            public void onQuestionClicked(int position) {
+                clickTracker.set(position,clickTracker.get(position)+1);
+
+                questionTestPaper.getQuestionPaper().getQuestions().get(position).isClicked=true;
+                Toast.makeText(McqActivity.this,"clicked",Toast.LENGTH_SHORT).show();
+                Log.d("listener","clicked   10"+position);
+                questionNavigationListAdapter.notifyItemChanged(position);
+                if(clickTracker.get(position)==1){
+                    stateCompletedTextView.setText((Integer.parseInt(stateCompletedTextView.getText().toString())+1)+"");
+                    stateNotAttemptedTextView.setText((Integer.parseInt(stateNotAttemptedTextView.getText().toString())-1)+"");
+                testProgress.setProgress(testProgress.getProgress()+100/qp.getQuestions().size());}
+
+
+
+            }
+
+            @Override
+            public void onQuestionUnClicked(int position) {
+                clickTracker.set(position,clickTracker.get(position)-1);
+                Log.d("listener","unclicked out   10"+position);
+
+                if(clickTracker.get(position)<=0){
+                    Log.d("listener","unclicked   10"+position);
+                    stateCompletedTextView.setText((Integer.parseInt(stateCompletedTextView.getText().toString())-1)+"");
+                    stateNotAttemptedTextView.setText((Integer.parseInt(stateNotAttemptedTextView.getText().toString())+1)+"");
+                    testProgress.setProgress(testProgress.getProgress()-100/qp.getQuestions().size());
+
+
+                    questionTestPaper.getQuestionPaper().getQuestions().get(position).isClicked=false;
+                    questionNavigationListAdapter.notifyItemChanged(position);
+
+
+
+                }
+
+            }
+
+
+
+
+        });
         recyclerViewContent.setHasFixedSize(true);
         recyclerViewContent.setAdapter(questionContentListAdapter);
 
         linearLayoutManager = new LinearLayoutManager(McqActivity.this,LinearLayoutManager.HORIZONTAL,true);
         recyclerViewContent.setLayoutManager(linearLayoutManager);
-        SnapHelper contentSnapHelper= new PagerSnapHelper();
+         contentSnapHelper= new PagerSnapHelper();
+
         contentSnapHelper.attachToRecyclerView(recyclerViewContent);
         totalQuestion=recyclerViewContent.getAdapter().getItemCount();
         questionNumberTextView.setText(Integer.toString(totalQuestion));
+        submitTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAreYouSureDialdog();
+
+            }
+        });
+
+        startTest();
 
 
 
+    }
+
+    private void showAreYouSureDialdog(){
+
+        progressDialogBuilder=new AlertDialog.Builder(McqActivity.this);
+        if(Integer.parseInt(stateNotAttemptedTextView.getText().toString())!=0)
+            progressDialogBuilder.setMessage("ARE YOU SURE YOU WANT TO SUBMIT ?" +
+                    "\nYou have "+stateNotAttemptedTextView.getText()+"questions left.");
+
+        progressDialogBuilder.setTitle("Harvin Academy Test");
+        progressDialogBuilder.setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+        progressDialogBuilder.setNegativeButton( "No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setFullScreen();
+
+            }
+        });
+        progressDialogBuilder.setCancelable(false);
+        progressDialog=progressDialogBuilder.create();
+
+        setDialogFullScreen();
+
+        progressDialog.show();
+
+
+
+    }
+
+    private void setDialogFullScreen() {
+
+        progressDialog.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-      //  setFullScreen();
+        setFullScreen();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setFullScreen();
+
     }
+
 }

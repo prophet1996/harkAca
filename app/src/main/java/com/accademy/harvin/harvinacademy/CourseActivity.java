@@ -5,16 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,14 +22,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accademy.harvin.harvinacademy.exceptionHandler.DefaultExceptionHandler;
-import com.accademy.harvin.harvinacademy.fragment.ChapterFragment;
+import com.accademy.harvin.harvinacademy.adapters.TopicAdapter;
+import com.accademy.harvin.harvinacademy.db.AppDatabase;
 import com.accademy.harvin.harvinacademy.model.Chapter;
+import com.accademy.harvin.harvinacademy.model.ChapterWithTopic;
 import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
-import com.accademy.harvin.harvinacademy.model.user.Progress;
-import com.google.gson.Gson;
+import com.accademy.harvin.harvinacademy.model.File;
+import com.accademy.harvin.harvinacademy.model.Topic;
 
-import static com.accademy.harvin.harvinacademy.utils.Constants.SUBJECT_KEY;
+import java.util.List;
+
+import static com.accademy.harvin.harvinacademy.utils.Constants.CHAPTER_KEY;
 
 public class CourseActivity extends AppCompatActivity {
     public static final String MESSAGE_PROGRESS = "message_progress";
@@ -41,10 +43,22 @@ public class CourseActivity extends AppCompatActivity {
     private TextView chapterCardTitle;
     private TextView chapterCardNo;
     private ProgressBar chapterCardProgressBar;
-    private int subjectNo=0;
+    private AppDatabase appDatabase;
+    private List<ChapterWithTopic> chapterWithTopics;
+    private String chapterId;
+    private int chapterPosition=-1;
+    private RecyclerView topicRecyclerView;
+    private int chapterProgress=-1;
+    private TopicAdapter topicAdapter;
+    private List<Topic> topics;
+    private List<File> files;
+    private ProgressBar chapterProgressBar;
+    private TextView chapterTextView;
+    private Chapter currChapter;
 
 
-    private Chapter mChapter;
+
+
 
     private boolean downloadable=false;
 
@@ -53,42 +67,65 @@ public class CourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
         //Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler(this));
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-       chapterCard=(View)findViewById(R.id.chapter_card);
-       chapterCardTitle=(TextView)chapterCard.findViewById(R.id.chapter_title);
-       chapterCardNo=(TextView) chapterCard.findViewById(R.id.chapter_no);
-       chapterCardDesc=(TextView) chapterCard.findViewById(R.id.chapter_description);
-        chapterCardProgressBar=(ProgressBar) chapterCard.findViewById(R.id.progress_bar_chapter);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        chapterCard = findViewById(R.id.chapter_card);
+        topicRecyclerView=findViewById(R.id.new_topic_recylerview);
+        chapterProgressBar=findViewById(R.id.chapter_progress_progressbar);
+        chapterProgressBar.setProgress(0);
+        chapterTextView=findViewById(R.id.chapter_progress_textview);
 
+
+        chapterCardTitle = chapterCard.findViewById(R.id.chapter_title);
+        chapterCardNo = chapterCard.findViewById(R.id.chapter_no);
+        chapterCardDesc = chapterCard.findViewById(R.id.exam_type);
+        chapterCardProgressBar = chapterCard.findViewById(R.id.progress_bar_chapter);
+        getChapter();
+
+        getTopics();
 
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSujectFromPrevActivity();
-        replaceFragment(ChapterFragment.getInstance(mChapter,subjectNo  ,CourseActivity.this));
+        Log.d("chap With",""+chapterPosition);
+        if(chapterWithTopics.get(chapterPosition).topics==null)
+            Log.d("chap With ","null");
+        else
+            Log.d("chap With ","not null");
+
+        topicAdapter= new TopicAdapter(topics,files,chapterPosition-1,chapterId,CourseActivity.this);
+        Log.d("topics prob  2",topics.size()+"");
+        topicAdapter.setTopics(topics);
+
+        topicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
+            @Override
+            public void onProgressClicked(int position) {
+
+                 chapterProgressBar.setProgress(chapterProgressBar.getProgress()+(100/topics.size()));
+                chapterTextView.setText(chapterProgressBar.getProgress()+"%");
+            }
+
+            @Override
+            public void onProgressUnclicked(int position) {
+                chapterProgressBar.setProgress(chapterProgressBar.getProgress()-(100/topics.size()));
+                 chapterTextView.setText(chapterProgressBar.getProgress()+"%");
+            }
+        });
+        topicRecyclerView.setLayoutManager(new LinearLayoutManager(CourseActivity.this));
+        topicRecyclerView.setAdapter(topicAdapter);
         registerReceiver();
-        if(!checkPermission())
+        if (!checkPermission())
             requestPermission();
-
-           }
-
-    private void getSujectFromPrevActivity() {
-        SharedPreferences mPref=getSharedPreferences(SUBJECT_KEY,MODE_PRIVATE);
-        String gson=mPref.getString(SUBJECT_KEY,null);
-         subjectNo=getIntent().getIntExtra(SUBJECT_KEY,-1);
-        Gson GSON=new Gson();
-        mChapter=GSON.fromJson(gson,Chapter.class);
-        if(mChapter!=null){
-            Log.d("donegson",""+mChapter.getChapterName());
-        setChapterCard(++subjectNo);
-        }
 
     }
 
-    private void setChapterCard(int subjectNo) {
-        chapterCardTitle.setText(mChapter.getChapterName());
-        chapterCardDesc.setText(mChapter.getChapterDescription());
-        chapterCardNo.setText("0"+subjectNo);
-        chapterCardProgressBar.setProgress(10);
+
+
+
+    private void setChapterCard() {
+
+        chapterCardTitle.setText(currChapter.getChapterName());
+        chapterCardDesc.setText(currChapter.getChapterDescription());
+        chapterCardNo.setText("0"+(++chapterPosition));
+
 
     }
 
@@ -105,13 +142,7 @@ public class CourseActivity extends AppCompatActivity {
 
 
 
-    public void replaceFragment(ChapterFragment cf){
-        Log.d("fragment","replaing fragments");
-        FragmentManager fragmentManager= getSupportFragmentManager();
-        FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction();
-        mFragmentTranscation.replace(R.id.fragment_container,cf);
-        mFragmentTranscation.commit();
-    }
+
 
     private void registerReceiver(){
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
@@ -153,4 +184,34 @@ public class CourseActivity extends AppCompatActivity {
     }
 
 
+    public void getChapter() {
+        Intent i=getIntent();
+        chapterId=i.getStringExtra(CHAPTER_KEY);
+        chapterPosition=i.getIntExtra(CHAPTER_KEY+"pos",-1);try{
+        chapterProgress=Integer.parseInt(i.getStringExtra(CHAPTER_KEY+"prog"));}
+        catch (NumberFormatException nf){
+            nf.printStackTrace();
+        }
+        Log.d("ishank room",chapterId+"");
+        Log.d("ishank room",chapterPosition+"");
+        Log.d("ishank room",chapterProgress+"");
+
+
+    }
+
+    public void getTopics() {
+appDatabase=AppDatabase.getInMemoryDatabase(CourseActivity.this);
+         currChapter= appDatabase.chapterModel().findChapterWithChapterId(chapterId);
+        Log.d("ishnk chap",currChapter.getChapterName());
+        chapterWithTopics=appDatabase.chapterModel().findChaptersWithTopic();
+        topics=appDatabase.topicModel().getTopicWithChapterId(chapterId);
+        files=appDatabase.fileModel().findAllFilesWithChapterId(chapterId);
+     // files=appDatabase.fileModel().findAllFiles();
+
+//        Log.d("ishnk chap haha",""+chapterWithTopics.get(0).topics.size());
+ //   Log.d("ishnk chap haha",""+chapterWithTopics.get(2).topics.size());
+  //  Log.d("ishnk chap haha",""+chapterWithTopics.size());
+        setChapterCard();
+
+    }
 }

@@ -6,12 +6,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".MyApplication"
         android:windowSoftInputMode="stateHidden|adjustResize">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -19,8 +19,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CourseActivity"
@@ -41,11 +41,11 @@
         <activity
             android:name=".Login_Main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">    </activity>
-        <activity android:name=".McqActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".McqActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/themeMCQ"
-            />
+            android:theme="@style/themeMCQ" />
         <activity android:name=".MainChatActivity" />
         <activity
             android:name=".RegisterActivity"
@@ -66,9 +66,7 @@
         <service
             android:name=".services.TestTimerService"
             android:icon="@drawable/ic_download"
-            android:label="@string/service_name"
-            >
-        </service>
+            android:label="@string/service_name"></service>
 
         <activity
             android:name=".SplashActivity"
@@ -80,10 +78,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReportActivity"
-            android:windowSoftInputMode="adjustResize"
+        <activity
+            android:name=".ReportActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MCQListActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.accademy.harvin.harvinacademy.fragment;
 
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +18,11 @@ import android.view.ViewGroup;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.adapters.SubjectAdapter;
 import com.accademy.harvin.harvinacademy.model.Subject;
-import com.accademy.harvin.harvinacademy.model.user.Progress;
+import com.accademy.harvin.harvinacademy.model.SubjectWithChapter;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
+import com.accademy.harvin.harvinacademy.model.viewmodel.SubjectWithChapterViewModel;
+
+import java.util.List;
 
 
 /**
@@ -25,9 +30,13 @@ import com.accademy.harvin.harvinacademy.model.user.Progresses;
  */
 public class StudyFragment extends Fragment {
 
-    private  Subject mSubject;
-    private  Context mContext;
+
     private  Progresses progresses;
+    private int subjectPosition;
+    private String subjectId;
+    private RecyclerView.Adapter mSubjectAdapter;
+
+    private SubjectWithChapterViewModel subjectWithChapterViewModel;
 
 
     public StudyFragment() {
@@ -45,26 +54,28 @@ public class StudyFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("done", "done");
         View v = inflater.inflate(R.layout.fragment_study, container, false);
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(container.getContext());
         if(progresses==null)
             Log.d("getting progress","null in oncreatefrag");
-        RecyclerView.Adapter mSubjectAdapter = new SubjectAdapter(mSubject, progresses, mContext);
+         mSubjectAdapter = new SubjectAdapter(progresses, subjectId,subjectPosition, getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setPadding(10,10,10,10);
         recyclerView.setAdapter(mSubjectAdapter);
         ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
         return v;
     }
+
 public void setProgress(Progresses progresses){
     this.progresses=progresses;
 }
 
-    public static StudyFragment getInstance(Subject mSubject, Context mContext){
+    public static StudyFragment getInstance(String subjectId,int subjectPosition){
         StudyFragment mStudyFragment= new StudyFragment();
-        Log.d("done2",""+mSubject.getSubjectName());
-        mStudyFragment.mSubject=mSubject;
-        mStudyFragment.mContext=mContext;
+
+        mStudyFragment.subjectId=subjectId;
+        mStudyFragment.subjectPosition=subjectPosition;
 
         return mStudyFragment;
     }

@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         jcenter()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
@@ -22,7 +23,13 @@ allprojects {
 
     }
 }
-
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    runnerVersion = "0.5"
+    rulesVersion = "0.5"
+    archLifecycleVersion = "1.0.0-beta1"
+    archRoomVersion = "1.0.0-beta1"
 }

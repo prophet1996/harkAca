@@ -1,25 +1,41 @@
 
 package com.accademy.harvin.harvinacademy.model;
 
-import java.util.List;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;public class Topic {
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+@Entity
+public class Topic {
 
     @SerializedName("_id")
     @Expose
-    private String id;
+    public
+    @PrimaryKey
+    @NonNull
+    String id;
     @SerializedName("topicName")
     @Expose
-    private String topicName;
+    public String topicName;
     @SerializedName("topicDescription")
     @Expose
-    private String topicDescription;
+    public String topicDescription;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    public Integer v;
     @SerializedName("files")
+    @Ignore
     @Expose
-    private List<File> files = null;
+    public List<File> files = null;
+    @Expose
+    @SerializedName("chapter")
+    public String chapterId;
 
     public String getId() {
         return id;

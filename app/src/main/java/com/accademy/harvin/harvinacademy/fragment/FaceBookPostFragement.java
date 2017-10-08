@@ -3,17 +3,14 @@ package com.accademy.harvin.harvinacademy.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.hardware.camera2.params.Face;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.adapters.FacebookPostAdapter;

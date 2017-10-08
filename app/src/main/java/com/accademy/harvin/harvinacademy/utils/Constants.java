@@ -13,5 +13,6 @@ public class Constants {
     public static final String SUBJECT_KEY="subject";
     public static final String PROGRESS_KEY="progress";
     public static final String BADGES_KEY="badges";
+    public static final String CHAPTER_KEY="chapter";
 
 }
