@@ -20,6 +20,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +44,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     private Context mContext;
 
     private boolean downloading_progress[];
-    private boolean badge_status[];
     private Integer downloading_progress_value[];
     private boolean downloadable=false;
     private List<Topic> topics;
     private List<com.accademy.harvin.harvinacademy.model.File> files;
-    private int subjectNo=0;
-    private String chapterId;
     private int chapterPosition;
     private ProgressCheckClickedListener progressCheckClickedListener;
     public interface ProgressCheckClickedListener{
@@ -66,8 +64,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         this.topics=topics;
         Log.d("topics prob",""+this.topics.size());
         this.files=files;
-
-
         downloading_progress= new boolean[this.topics.size()];
         downloading_progress_value= new Integer[this.topics.size()];
         checkPermission();
@@ -119,7 +115,8 @@ public void setTopics(List<Topic> topics){
             holder.progressBar.setVisibility(View.INVISIBLE);
         holder.topic_name.setText(topics.get(position).getTopicName());
         int currPos=topics.size()-position;
-        holder.topic_no.setText(""+subjectNo+currPos);
+        int currCh=chapterPosition+1;
+        holder.topic_no.setText(""+currCh+"."+currPos);
 
 
         holder.download.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +124,7 @@ public void setTopics(List<Topic> topics){
             public void onClick(View v) {
                 holder.progressBar.setVisibility(View.VISIBLE);
                 File pdfToOpen=new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS),files.get(position).getFileName()+".pdf");
+                        Environment.DIRECTORY_DOWNLOADS),topics.get(position).getTopicName()+".pdf");
                 if(pdfToOpen.exists()){
                     Toast.makeText(mContext,"Already downloaded.",Toast.LENGTH_SHORT).show();
                     holder.progressBar.setVisibility(View.INVISIBLE);
@@ -146,7 +143,7 @@ public void setTopics(List<Topic> topics){
                 }
             }
         });
-        holder.topic_name.setOnClickListener(new View.OnClickListener(){
+        holder.topicListLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 File pdfToOpen=new File(Environment.getExternalStoragePublicDirectory(
@@ -204,7 +201,7 @@ holder.checkBox.setOnClickListener(new View.OnClickListener() {
         TextView topic_name;
         ImageButton download;
         ProgressBar progressBar;
-
+        RelativeLayout topicListLayout;
         CheckBox checkBox;
 
 
@@ -215,7 +212,7 @@ holder.checkBox.setOnClickListener(new View.OnClickListener() {
             download=itemView.findViewById(R.id.download_pdf);
             progressBar=itemView.findViewById(R.id.downloading_progress);
            checkBox=itemView.findViewById(R.id.mark_as_done);
-
+            topicListLayout=itemView.findViewById(R.id.topic_list_layout);
 
 
         }

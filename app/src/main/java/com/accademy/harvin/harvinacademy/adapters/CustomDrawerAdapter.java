@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.MCQListActivity;
 import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.ReportActivity;
@@ -50,6 +52,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
             view=inflater.inflate(R.layout.custom_drawer_item,parent,false);
             drawerHolder.icon=(ImageView)view.findViewById(R.id.drawer_icon);
             drawerHolder.ItemName=(TextView) view.findViewById(R.id.drawer_itemName);
+            drawerHolder.itemLayout=view.findViewById(R.id.itemLayout);
             view.setTag(drawerHolder);
 
         }else {
@@ -61,6 +64,45 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                 dItem.getImgResId()));
         drawerHolder.ItemName.setText(dItem.getItemName());
         Log.d("adapter drawer","Name"+dItem.getItemName());
+        drawerHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch (position){
+                    case 0:
+
+                        Intent i=new Intent(context,McqActivity.class);
+                        context.startActivity(i);
+
+                        break;
+                    case 1:
+                        i=new Intent(context,MCQListActivity.class);
+                        context.startActivity(i);
+
+
+
+                        break;
+                    case 2:
+
+                        i=new Intent(context,ReportActivity.class);
+                        context.startActivity(i);
+
+
+                        break;
+                    case 3:
+
+                        i=new Intent(context,UserProfile.class);
+                        context.startActivity(i);
+                        break;
+
+                    case 4:
+                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
+
+
+
+                }
+            }
+        });
         drawerHolder.ItemName.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -73,7 +115,9 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
 
                         break;
                     case 1:
-                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
+                        i=new Intent(context,MCQListActivity.class);
+                        context.startActivity(i);
+
 
 
                         break;
@@ -111,6 +155,8 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
     private class DrawerItemHolder{
         ImageView icon;
         TextView ItemName;
+
+        RelativeLayout itemLayout;
 
     }
 }

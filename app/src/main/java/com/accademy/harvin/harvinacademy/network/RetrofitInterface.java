@@ -4,6 +4,7 @@ import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
 import com.accademy.harvin.harvinacademy.model.Profile;
 import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.model.UserTest;
+import com.accademy.harvin.harvinacademy.model.exam.ExamList;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.model.user.User;
@@ -38,7 +39,8 @@ public interface RetrofitInterface {
     Observable<Progresses> getProgress(@Path("username")String username);
     @GET("exams/{username}/exams/{questionPaperId}/questionPaper")
     Observable<QuestionTestPaper> getTestPaper(@Path("username")String username,@Path("questionPaperId")String questionPaperId);
-
+    @GET("exams/{username}/exams")
+    Observable<ExamList> getListOfExams(@Path("username")String username);
 
 
 

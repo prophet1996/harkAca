@@ -17,6 +17,8 @@
 
     android:layout_height="wrap_content">
             <ImageView
+                android:layout_margin="15dp"
+
                 android:id="@+id/drawer_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,12 +30,12 @@
             <TextView
                 android:id="@+id/drawer_itemName"
                 android:layout_width="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="15dp"
+                android:textSize="20dp"
 android:layout_toRightOf="@+id/drawer_icon"
                 android:layout_height="wrap_content"
                 android:text="hello"
-                android:fontFamily="sans-serif-light"
-android:textStyle="bold"
+                android:fontFamily="sans-serif-thin"
 
                 />
 </RelativeLayout>

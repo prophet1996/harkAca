@@ -44,8 +44,11 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.EXAM_ID_KEY;
+
 public class McqActivity extends AppCompatActivity  {
     private String DUMMYID="59bcd16d2cb25f494b1fa2a9";
+    private String currentExamId="59bcd16d2cb25f494b1fa2a9";
     private ScrollView navigation;
     private RecyclerView recyclerViewContent;
     private RecyclerView recyclerViewNavigation;
@@ -96,6 +99,7 @@ public class McqActivity extends AppCompatActivity  {
 if(viewModel==null)
     Log.d("view model","null");
         showdialdog();
+        currentExamId=getIntent().getStringExtra(EXAM_ID_KEY);
         getTest();
         dismissdialog();
     }
@@ -210,7 +214,7 @@ if(viewModel==null)
         String username=User.getSharedUsername(McqActivity.this);
         Log.d("username1",username);
 
-        Observable<QuestionTestPaper> call=retrofitInterface.getTestPaper(User.getSharedUsername(McqActivity.this),DUMMYID);
+        Observable<QuestionTestPaper> call=retrofitInterface.getTestPaper(User.getSharedUsername(McqActivity.this),currentExamId);
         call.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<QuestionTestPaper>() {

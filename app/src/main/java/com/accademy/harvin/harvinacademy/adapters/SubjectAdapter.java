@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accademy.harvin.harvinacademy.CourseActivity;
@@ -103,10 +104,7 @@ catch(NullPointerException ne){
         holder.desc.setText(ch.getChapterDescription());
         holder.chapter_name.setText(ch.getChapterName());
         holder.chapter.setText("Chapter");
-        holder.chapter.setOnClickListener(gotchapteractivityListener(position));
-        holder.chapter_name.setOnClickListener(gotchapteractivityListener(position));
-        holder.id.setOnClickListener(gotchapteractivityListener(position));
-        holder.desc.setOnClickListener(gotchapteractivityListener(position));
+        holder.relativeLayout.setOnClickListener(gotchapteractivityListener(position));
         Progress currProg=appDatabase.progressModel().getProgressWithChapterId(ch.getId());
         if(currProg!=null){
             holder.progressBar.setProgress(Integer.parseInt(currProg.getCompleted()));
@@ -190,7 +188,7 @@ if(holder.progressBar.isIndeterminate()){
          TextView badgeGreen;
          TextView badgeBlue;
          TextView badgeOrange;
-
+        RelativeLayout relativeLayout;
         ProgressBar progressBar;
          TextView progPercentage;
         ViewHolder(View itemView) {
@@ -203,7 +201,7 @@ if(holder.progressBar.isIndeterminate()){
             badgeBlue=itemView.findViewById(R.id.badge_blue);
             badgeOrange=itemView.findViewById(R.id.badge_orange);
             badgeGreen=itemView.findViewById(R.id.badge_green);
-
+relativeLayout=itemView.findViewById(R.id.chapter_card_layout);
             progressBar=itemView.findViewById(R.id.progress_bar_chapter);
             progressBar.setIndeterminate(false);
 
