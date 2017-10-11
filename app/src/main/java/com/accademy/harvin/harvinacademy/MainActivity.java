@@ -101,24 +101,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navHeader = navigationView.getHeaderView(0);
 
-        mProfilePhoto=navHeader.findViewById(R.id.profilephoto);
-        Glide
-                .with(this)
-                .load(ImageURL)
-                .error(R.drawable.solidfill)// pass the image url// optional scaletype
-                .placeholder(R.drawable.ic_menu_camera) // optional placeholder
-                .bitmapTransform(new CircleTransform(this))
-                .into(mProfilePhoto); // the ImageView to which the image is to be loaded
 
         mProfileusername=navHeader.findViewById(R.id.navbar_usernaame);
         mProfileusername.setText(getUsername());
-        mProfilePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i= new Intent(MainActivity.this,UserProfile.class);
-                startActivity(i);
-            }
-        });
+
         tb=findViewById(R.id.mainTablayout);
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();

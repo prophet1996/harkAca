@@ -15,5 +15,6 @@ public class Constants {
     public static final String BADGES_KEY="badges";
     public static final String EXAM_ID_KEY="examId";
     public static final String CHAPTER_KEY="chapter";
+    public static final String FIRST_TIME_LOGIN="firsttime";
 
 }

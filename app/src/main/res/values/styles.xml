@@ -22,6 +22,7 @@
         <item name="android:windowBackground">@color/mainBackground</item>
 
     </style>
+
     <style name="theme97" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/cardview_dark_background</item>
@@ -32,6 +33,7 @@
         <item name="android:windowBackground">@color/mainBackground</item>
 
     </style>
+
     <style name="themeMCQ" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/cardview_dark_background</item>
@@ -90,6 +92,7 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
+
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorAccent">@color/colorPrimary</item>
     </style>

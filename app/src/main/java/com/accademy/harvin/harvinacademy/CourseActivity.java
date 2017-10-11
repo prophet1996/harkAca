@@ -206,12 +206,14 @@ appDatabase=AppDatabase.getInMemoryDatabase(CourseActivity.this);
         chapterWithTopics=appDatabase.chapterModel().findChaptersWithTopic();
         topics=appDatabase.topicModel().getTopicWithChapterId(chapterId);
         files=appDatabase.fileModel().findAllFilesWithChapterId(chapterId);
-     // files=appDatabase.fileModel().findAllFiles();
 
-//        Log.d("ishnk chap haha",""+chapterWithTopics.get(0).topics.size());
- //   Log.d("ishnk chap haha",""+chapterWithTopics.get(2).topics.size());
-  //  Log.d("ishnk chap haha",""+chapterWithTopics.size());
         setChapterCard();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        appDatabase.destroyInstance();
     }
 }

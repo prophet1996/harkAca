@@ -1,11 +1,15 @@
 
 package com.accademy.harvin.harvinacademy.model.user;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 @Entity
 public class Progress {
 
@@ -26,7 +30,8 @@ public class Progress {
     @SerializedName("completed")
     @Expose
     private String completed;
-
+    @Ignore
+    public List<String> completedTopicsIds;
     public String getId() {
         return id;
     }

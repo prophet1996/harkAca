@@ -39,15 +39,11 @@ dependencies {
     })
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
-    
-
-
-    compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion;
+    compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
     annotationProcessor 'android.arch.persistence.room:compiler:' + rootProject.archRoomVersion
-    compile 'android.arch.lifecycle:runtime:'+rootProject.archLifecycleVersion
-    annotationProcessor 'android.arch.lifecycle:compiler:'+rootProject.archLifecycleVersion
-
-    compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion;
+    compile 'android.arch.lifecycle:runtime:' + rootProject.archLifecycleVersion
+    annotationProcessor 'android.arch.lifecycle:compiler:' + rootProject.archLifecycleVersion
+    compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -59,13 +55,17 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.facebook.android:account-kit-sdk:4.+'
+    compile 'com.google.firebase:firebase-core:11.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.25.0'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.27.0'
     compile 'android.arch.persistence.room:rxjava2:1.0.0-alpha5'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services:11.0.1'
 }
+
+
 
 
 

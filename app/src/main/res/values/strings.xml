@@ -7,6 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="facebook_app_id">1054614874673150</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">2f9448d0d5ed1b590bda68037d44e597</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -19,4 +20,6 @@
         <item>New</item>
 
     </string-array>
+    <string name="title_activity_on_boarding">OnBoardingActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

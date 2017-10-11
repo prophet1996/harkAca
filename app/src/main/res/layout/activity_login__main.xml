@@ -85,6 +85,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/register"
                 android:layout_centerInParent="true"
+                android:visibility="invisible"
                 />
 
             <Button
@@ -92,9 +93,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Login"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="@color/cardview_dark_background"
+
                 android:layout_margin="4dp"
                 android:layout_centerInParent="true"
                 android:layout_below="@+id/ti_password"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_below="@+id/login"
+                android:layout_centerInParent="true"
+                android:id="@+id/dividing_or"
+
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login With Email"
+                android:padding="10dp"
+                android:backgroundTint="#23b791"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_centerInParent="true"
+                android:layout_below="@+id/dividing_or"
+                android:id="@+id/account_kit_email_login"
+                android:textStyle="italic|bold"
+                android:fontFamily="sans-serif-thin"
+
+
                 />
         </RelativeLayout>
 

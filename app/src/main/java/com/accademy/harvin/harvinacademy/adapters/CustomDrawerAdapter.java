@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.AssignmentActivity;
+import com.accademy.harvin.harvinacademy.ClassRoomActivity;
 import com.accademy.harvin.harvinacademy.MCQListActivity;
 import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
@@ -50,8 +52,8 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
             LayoutInflater inflater=LayoutInflater.from(context);
             drawerHolder= new DrawerItemHolder();
             view=inflater.inflate(R.layout.custom_drawer_item,parent,false);
-            drawerHolder.icon=(ImageView)view.findViewById(R.id.drawer_icon);
-            drawerHolder.ItemName=(TextView) view.findViewById(R.id.drawer_itemName);
+            drawerHolder.icon=view.findViewById(R.id.drawer_icon);
+            drawerHolder.ItemName=view.findViewById(R.id.drawer_itemName);
             drawerHolder.itemLayout=view.findViewById(R.id.itemLayout);
             view.setTag(drawerHolder);
 
@@ -71,12 +73,12 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                 switch (position){
                     case 0:
 
-                        Intent i=new Intent(context,McqActivity.class);
+                        Intent i=new Intent(context,MCQListActivity.class);
                         context.startActivity(i);
 
                         break;
                     case 1:
-                        i=new Intent(context,MCQListActivity.class);
+                        i=new Intent(context,AssignmentActivity.class);
                         context.startActivity(i);
 
 
@@ -96,7 +98,10 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                         break;
 
                     case 4:
-                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
+                        i=new Intent(context,ClassRoomActivity.class);
+                        context.startActivity(i);
+                        break;
+
 
 
 
@@ -135,7 +140,9 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                         break;
 
                     case 4:
-                        Toast.makeText(context,"Working on it..",Toast.LENGTH_SHORT).show();
+                       i=new Intent(context,ClassRoomActivity.class);
+                        context.startActivity(i);
+                        break;
 
 
 

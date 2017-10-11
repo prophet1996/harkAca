@@ -7,6 +7,8 @@ import android.arch.persistence.room.Update;
 
 import com.accademy.harvin.harvinacademy.model.user.Progress;
 
+import java.util.List;
+
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
@@ -26,4 +28,7 @@ public interface ProgressDao {
 
     @Query("SELECT * FROM progress WHERE chapter=:chapterId")
     Progress getProgressWithChapterId(String chapterId);
+
+  //  @Query("SELECT * FROM progress WHERE completedTopicsIds=:completedTopicsIds")
+   // Progress getProgressWithListOfTopics(List<String> completedTopicsIds);
 }

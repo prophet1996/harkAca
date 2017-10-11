@@ -20,6 +20,14 @@ import com.accademy.harvin.harvinacademy.model.UserTest;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.utils.Validation;
+import com.facebook.accountkit.Account;
+import com.facebook.accountkit.AccountKit;
+import com.facebook.accountkit.AccountKitCallback;
+import com.facebook.accountkit.AccountKitError;
+import com.facebook.accountkit.AccountKitLoginResult;
+import com.facebook.accountkit.ui.AccountKitActivity;
+import com.facebook.accountkit.ui.AccountKitConfiguration;
+import com.facebook.accountkit.ui.LoginType;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +47,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Login_Main extends AppCompatActivity {
     private static final String TAG = "RxAndroidSamples";
     private static final int REQUEST_REGISTER=100;
+    private static final int APP_RESULT_CODE=101;
 
     private Observable<UserTest> call=null;
 
@@ -48,6 +57,7 @@ public class Login_Main extends AppCompatActivity {
     TextView username;
     TextView mRegister;
     TextView password;
+    Button accountKitButton;
     ProgressDialog progressDoalog;
     boolean done = false;
 
@@ -70,14 +80,21 @@ public class Login_Main extends AppCompatActivity {
         b1 = (Button) findViewById(R.id.login);
         username = (TextView) findViewById(R.id.et_username);
         password = (TextView) findViewById(R.id.et_password);
-        mRegister=(TextView) findViewById(R.id.register);
+        mRegister= findViewById(R.id.register);
+        accountKitButton=findViewById(R.id.account_kit_email_login);
 
         mRegister.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 Intent i= new Intent(Login_Main.this,RegisterActivity.class);
-              startActivityForResult(i,REQUEST_REGISTER);
+              startActivityForResult(i,APP_RESULT_CODE);
+            }
+        });
+        accountKitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    onSMSLoginFlow();
             }
         });
         if(sharedPreferences.getString("username","z").equals("z")&&sharedPreferences.getString("password","z").equals("z")){
@@ -102,6 +119,14 @@ public class Login_Main extends AppCompatActivity {
         });
 
 
+    }
+
+    private void onSMSLoginFlow() {
+        final Intent intent= new Intent(this, AccountKitActivity.class);
+        AccountKitConfiguration.AccountKitConfigurationBuilder accountKitConfigurationBuilder=
+                new AccountKitConfiguration.AccountKitConfigurationBuilder(LoginType.EMAIL, AccountKitActivity.ResponseType.TOKEN);
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,accountKitConfigurationBuilder.build());
+        startActivityForResult(intent,APP_RESULT_CODE);
     }
 
     private void showdailog() {
@@ -241,8 +266,56 @@ public class Login_Main extends AppCompatActivity {
                 logindone();
             }
             else {
-                Toast.makeText(this,"Something went wrong please try again..",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this,"Something went wrong please try again..",Toast.LENGTH_SHORT).show();
+            }}
+
+            else if(requestCode==APP_RESULT_CODE){
+                AccountKitLoginResult loginResult=data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
+                String toastMessage="";
+                Log.e("AccountKit","resultcode ok");
+
+                if(loginResult.getError()!=null){
+                    toastMessage=loginResult.getError().getErrorType().getMessage();
+
+                }else if (loginResult.wasCancelled()){
+                    toastMessage="Login Cancelled";
+                    Log.e("AccountKit","login cancelled");
+
+                }
+                else {
+                    if(loginResult.getAccessToken()!=null){
+                        toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
+                        getAccount();
+                    }
+                }
+
+                Toast.makeText(
+                        this,
+                        toastMessage,
+                        Toast.LENGTH_LONG)
+                        .show();
             }
-        }
+            }
+
+
+    private void getAccount() {
+        Log.e("AccountKit","getAccount");
+        AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
+            @Override
+            public void onSuccess(Account account) {
+                String accountKitId=account.getId();
+                String accountKitEmail=account.getEmail();
+
+                Toast.makeText(Login_Main.this,accountKitId+" / "+accountKitEmail,Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onError(AccountKitError accountKitError) {
+                Log.e("AccountKit",accountKitError.toString());
+            }
+        });
     }
+
 }
