@@ -6,10 +6,12 @@ android {
     defaultConfig {
         applicationId "com.accademy.harvin.harvinacademy"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -41,9 +43,6 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
     annotationProcessor 'android.arch.persistence.room:compiler:' + rootProject.archRoomVersion
-    compile 'android.arch.lifecycle:runtime:' + rootProject.archLifecycleVersion
-    annotationProcessor 'android.arch.lifecycle:compiler:' + rootProject.archLifecycleVersion
-    compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -62,8 +61,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
     compile 'android.arch.persistence.room:rxjava2:1.0.0-alpha5'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services:11.0.1'
 }
+
 
 
 

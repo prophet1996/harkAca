@@ -1,7 +1,6 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,7 +25,6 @@ import com.accademy.harvin.harvinacademy.adapters.QuestionNavigationListAdapter;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
 import com.accademy.harvin.harvinacademy.model.user.User;
-import com.accademy.harvin.harvinacademy.model.viewmodel.QuestionPaperWithQuestionViewModel;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
@@ -69,12 +67,11 @@ public class McqActivity extends AppCompatActivity  {
     private TextView timerTextView;
     private RelativeLayout timerLayout;
     private long timeCountInMilliSeconds = 1 * 60000;
-    private QuestionPaperWithQuestionViewModel viewModel;
+    private int completedTracker[];
     private List<Integer> clickTracker;
     private TextView stateCompletedTextView;
     private TextView stateRevisionTextView;
     private TextView stateNotAttemptedTextView;
-    private int completedTracker[];
     private AppCompatButton submitTestButton;
     private AlertDialog progressDialog;
     private AlertDialog.Builder progressDialogBuilder;
@@ -84,22 +81,22 @@ public class McqActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mcq);
         setFullScreen();
-        navigation=findViewById(R.id.fragment_navigation_mcq);
-        content= findViewById(R.id.layout_navigation_content);
-        questionNumberTextView=findViewById(R.id.question_number_textview);
+        navigation = findViewById(R.id.fragment_navigation_mcq);
+        content = findViewById(R.id.layout_navigation_content);
+        questionNumberTextView = findViewById(R.id.question_number_textview);
 
-         recyclerViewNavigation=navigation.findViewById(R.id.layout_navigation_mcq_recyclerview);
-         recyclerViewContent=content.findViewById(R.id.question_recyclerView_content);
-        stateCompletedTextView=content.findViewById(R.id.state_value_completed);
-        stateRevisionTextView=content.findViewById(R.id.state_value_revision);
-        stateNotAttemptedTextView=content.findViewById(R.id.state_value_not_attempted);
-        testProgress=content.findViewById(R.id.test_progress);
-        submitTestButton=content.findViewById(R.id.submit_test_button);
-        viewModel= ViewModelProviders.of(this).get(QuestionPaperWithQuestionViewModel.class);
-if(viewModel==null)
-    Log.d("view model","null");
+        recyclerViewNavigation = navigation.findViewById(R.id.layout_navigation_mcq_recyclerview);
+        recyclerViewContent = content.findViewById(R.id.question_recyclerView_content);
+        stateCompletedTextView = content.findViewById(R.id.state_value_completed);
+        stateRevisionTextView = content.findViewById(R.id.state_value_revision);
+        stateNotAttemptedTextView = content.findViewById(R.id.state_value_not_attempted);
+        testProgress = content.findViewById(R.id.test_progress);
+        submitTestButton = content.findViewById(R.id.submit_test_button);
+
+
+        Log.d("view model", "null");
         showdialdog();
-        currentExamId=getIntent().getStringExtra(EXAM_ID_KEY);
+        currentExamId = getIntent().getStringExtra(EXAM_ID_KEY);
         getTest();
         dismissdialog();
     }

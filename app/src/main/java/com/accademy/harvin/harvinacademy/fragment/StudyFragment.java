@@ -1,9 +1,6 @@
 package com.accademy.harvin.harvinacademy.fragment;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,12 +14,7 @@ import android.view.ViewGroup;
 
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.adapters.SubjectAdapter;
-import com.accademy.harvin.harvinacademy.model.Subject;
-import com.accademy.harvin.harvinacademy.model.SubjectWithChapter;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
-import com.accademy.harvin.harvinacademy.model.viewmodel.SubjectWithChapterViewModel;
-
-import java.util.List;
 
 
 /**
@@ -36,7 +28,6 @@ public class StudyFragment extends Fragment {
     private String subjectId;
     private RecyclerView.Adapter mSubjectAdapter;
 
-    private SubjectWithChapterViewModel subjectWithChapterViewModel;
 
 
     public StudyFragment() {

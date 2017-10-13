@@ -41,6 +41,8 @@ public interface RetrofitInterface {
     Observable<QuestionTestPaper> getTestPaper(@Path("username")String username,@Path("questionPaperId")String questionPaperId);
     @GET("exams/{username}/exams")
     Observable<ExamList> getListOfExams(@Path("username")String username);
+    //TODO
+    Observable<UserTest> loginWithEmail(@Body UserTest userTest);
 
 
 

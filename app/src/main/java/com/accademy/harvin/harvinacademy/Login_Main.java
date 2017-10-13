@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.exceptionHandler.DefaultExceptionHandler;
 import com.accademy.harvin.harvinacademy.model.UserTest;
+import com.accademy.harvin.harvinacademy.network.HTTPclient;
+import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
 import com.accademy.harvin.harvinacademy.utils.Validation;
@@ -32,6 +34,7 @@ import com.facebook.accountkit.ui.LoginType;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
@@ -57,6 +60,7 @@ public class Login_Main extends AppCompatActivity {
     TextView username;
     TextView mRegister;
     TextView password;
+    UserTest testUser;
     Button accountKitButton;
     ProgressDialog progressDoalog;
     boolean done = false;
@@ -305,7 +309,43 @@ public class Login_Main extends AppCompatActivity {
             public void onSuccess(Account account) {
                 String accountKitId=account.getId();
                 String accountKitEmail=account.getEmail();
+                OkHttpClient client=HTTPclient.getClient(Login_Main.this);
+                Retrofit retrofit=RetrofitBuilder.getRetrofit(Login_Main.this,client);
+                RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
 
+                //TODO
+
+                Observable<UserTest> call=retrofitInterface.loginWithEmail(new UserTest("",""));
+                call.subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableObserver<UserTest>() {
+                            @Override
+                            public void onNext(@NonNull UserTest userTest) {
+                                Log.d("AccountKit","got user data using email");
+                                testUser=userTest;
+                                if(testUser.getUsername()==null){
+                                    //TODO Start the batch select activity
+
+                                }
+                                else {
+                                    //TODO Start Main Activity
+                                }
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.d("AccountKit","got error on user data using email");
+
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.d("AccountKit","done with this observable ");
+
+
+                            }
+                        });
                 Toast.makeText(Login_Main.this,accountKitId+" / "+accountKitEmail,Toast.LENGTH_SHORT).show();
 
 

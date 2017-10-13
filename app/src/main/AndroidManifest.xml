@@ -53,7 +53,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".services.DownloadService" />
-
         <service
             android:name=".services.TestTimerService"
             android:icon="@drawable/ic_download"
@@ -68,7 +67,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-           </activity>
+        </activity>
         <activity
             android:name=".ReportActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -79,22 +78,20 @@
         <activity
             android:name=".OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"></activity>
 
-
-
-        </activity>
-        <meta-data android:name="com.facebook.accountkit.ApplicationName"
+        <meta-data
+            android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-        <meta-data android:name="com.facebook.accountkit.ClientToken"
+        <meta-data
+            android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
 
-        <activity
-            android:name="com.facebook.accountkit.ui.AccountKitActivity"></activity>
+        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+        <activity android:name=".BatchSelectActivity"></activity>
     </application>
-
-
 
 </manifest>
