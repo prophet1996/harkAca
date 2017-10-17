@@ -1,7 +1,7 @@
 
 package com.accademy.harvin.harvinacademy.model.user;
+
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -35,7 +35,6 @@ public class Progress {
         return completedTopicsIds;
     }
 
-    @Ignore
     public List<String> completedTopicsIds;
     public String getId() {
         return id;

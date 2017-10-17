@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -194,6 +195,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
         private ImageView onboardingImageView;
         private  int sectionNumber;
+        private AppCompatTextView onBoardingTextView;
 
         public PlaceholderFragment() {
         }
@@ -216,15 +218,22 @@ public class OnBoardingActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_on_boarding, container, false);
             onboardingImageView=rootView.findViewById(R.id.onboarding_imageView);
+            onBoardingTextView=rootView.findViewById(R.id.onboarding_textView);
             switch (sectionNumber){
                 case 1:
                     onboardingImageView.setImageResource(R.drawable.onboarding_green);
+                    onBoardingTextView.setText("Take MCQ Exams made by our teachers");
                     break;
                 case 2:
                     onboardingImageView.setImageResource(R.drawable.onboarding_blue);
+
+                    onBoardingTextView.setText("Get acces to our stuudy materials");
                     break;
                 case 3:
                     onboardingImageView.setImageResource(R.drawable.onboarding_red);
+
+
+                    onBoardingTextView.setText("Get up to date assignments from Harvin Academy");
                     break;
             }
 

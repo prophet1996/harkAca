@@ -13,6 +13,17 @@
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
       android:id="@+id/onboarding_imageView"
+      android:layout_marginBottom="10dp"
       />
+  <android.support.v7.widget.AppCompatTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/onboarding_imageView"
+      android:layout_centerHorizontal="true"
+      android:textColor="@color/colorPrimary"
+      android:id="@+id/onboarding_textView"
+      android:text="Take MCQ made by our teachers"
+      />
+
 
 </RelativeLayout>

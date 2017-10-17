@@ -31,6 +31,7 @@ import com.accademy.harvin.harvinacademy.model.File;
 import com.accademy.harvin.harvinacademy.model.Topic;
 import com.accademy.harvin.harvinacademy.model.user.Progress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.accademy.harvin.harvinacademy.utils.Constants.CHAPTER_KEY;
@@ -102,6 +103,9 @@ public class CourseActivity extends AppCompatActivity {
         Log.d("topics prob  2",topics.size()+"");
         topicAdapter.setTopics(topics);
 
+try{        topicAdapter.setProgressForTopics(currProg.completedTopicsIds);}
+catch (NullPointerException ne){ne.printStackTrace();}
+
         topicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
             @Override
             public void onProgressClicked(int position,String topicId) {
@@ -110,7 +114,10 @@ public class CourseActivity extends AppCompatActivity {
                 chapterTextView.setText(chapterProgressBar.getProgress()+"%");
                 if(currProg!=null){
                     currProg.setCompleted(chapterProgressBar.getProgress()+"");
-                    currProg.completedTopicsIds.add(topicId);}
+                    if (currProg.completedTopicsIds==null) {
+                        currProg.completedTopicsIds=new ArrayList<>();
+                    }
+                    ((ArrayList)currProg.completedTopicsIds).add(topicId);}
 
             }
 

@@ -45,6 +45,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
     private boolean downloading_progress[];
     private Integer downloading_progress_value[];
+    private List<String> progressForTopics;
     private boolean downloadable=false;
     private List<Topic> topics;
     private List<com.accademy.harvin.harvinacademy.model.File> files;
@@ -98,6 +99,9 @@ public void setTopics(List<Topic> topics){
         Log.d("internet","not availabel");
     }
 }
+public void setProgressForTopics(List<String> progressForTopics){
+    this.progressForTopics=progressForTopics;
+}
 
     @Override
     public TopicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -117,7 +121,11 @@ public void setTopics(List<Topic> topics){
         int currPos=topics.size()-position;
         int currCh=chapterPosition+1;
         holder.topic_no.setText(""+currCh+"."+currPos);
-
+        if(progressForTopics!=null)
+            if(progressForTopics.contains(topics.get(position).getId())){
+                holder.checkBox.setChecked(true);
+                progressCheckClickedListener.onProgressClicked(position,topics.get(position).getId());
+        }
 
         holder.download.setOnClickListener(new View.OnClickListener() {
             @Override

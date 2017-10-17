@@ -25,6 +25,7 @@ import android.util.Log;
 
 import com.accademy.harvin.harvinacademy.db.dao.ProgressDao;
 import com.accademy.harvin.harvinacademy.db.typeconvertor.AnswersConverter;
+import com.accademy.harvin.harvinacademy.db.typeconvertor.TopicIdOfProgressConvetor;
 import com.accademy.harvin.harvinacademy.model.Chapter;
 import com.accademy.harvin.harvinacademy.model.File;
 import com.accademy.harvin.harvinacademy.model.Topic;
@@ -39,7 +40,7 @@ import com.accademy.harvin.harvinacademy.model.exam.Question;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 import com.accademy.harvin.harvinacademy.model.user.Progress;
 
-@TypeConverters({AnswersConverter.class})
+@TypeConverters({TopicIdOfProgressConvetor.class})
 @Database(entities = {Chapter.class,Subject.class,Topic.class,File.class, QuestionPaper.class, Question.class, Progress.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
