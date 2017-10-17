@@ -30,6 +30,11 @@ public class Progress {
     @SerializedName("completed")
     @Expose
     private String completed;
+
+    public List<String> getCompletedTopicsIds() {
+        return completedTopicsIds;
+    }
+
     @Ignore
     public List<String> completedTopicsIds;
     public String getId() {

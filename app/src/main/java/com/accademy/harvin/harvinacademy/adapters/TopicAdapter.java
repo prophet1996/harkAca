@@ -51,7 +51,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     private int chapterPosition;
     private ProgressCheckClickedListener progressCheckClickedListener;
     public interface ProgressCheckClickedListener{
-        void onProgressClicked(int position);
+        void onProgressClicked(int position,String topicId);
         void onProgressUnclicked(int position);
     }
     public void setProgressCheckClickedListener(ProgressCheckClickedListener progressCheckClickedListener){
@@ -180,7 +180,7 @@ holder.checkBox.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
         if(holder.checkBox.isChecked()){
-            progressCheckClickedListener.onProgressClicked(position);
+            progressCheckClickedListener.onProgressClicked(position,topics.get(position).getId());
         }
         else{
             progressCheckClickedListener.onProgressUnclicked(position);

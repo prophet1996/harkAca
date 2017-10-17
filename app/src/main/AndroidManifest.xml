@@ -21,11 +21,15 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+
+            android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CourseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/theme96">
+            android:theme="@style/theme96"
+            android:parentActivityName=".MainActivity"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

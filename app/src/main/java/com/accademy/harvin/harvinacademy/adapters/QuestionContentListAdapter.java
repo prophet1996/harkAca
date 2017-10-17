@@ -20,6 +20,7 @@ import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.exam.Question;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,8 +58,9 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Question question=questionPaper.getQuestions().get(position);
+        final Question question=questionPaper.getQuestions().get(position);
         holder.questionNumberTextView.setText("Q"+Integer.toString(position+1));
+        question.givenAnswer=new ArrayList<>();
         holder.questionTextView.setText(question.question);
         holder.checkedTextView1.setText(question.getOptions().get(0));
         holder.checkedTextView2.setText(question.getOptions().get(1));
@@ -69,9 +71,17 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
             public void onClick(View view) {
                 if(!holder.checkedTextView1.isChecked()){
                 holder.checkedTextView1.setChecked(true);
-                    questionSelectedListener.onQuestionClicked(position);}
+                    questionSelectedListener.onQuestionClicked(position);
+                    question.givenAnswer.add(holder.checkedTextView1.getText().toString());
+                }
                 else{questionSelectedListener.onQuestionUnClicked(position);
-                    holder.checkedTextView1.setChecked(false);}
+                    holder.checkedTextView1.setChecked(false);
+                    try{
+                question.answers.remove(holder.checkedTextView1.getText().toString());}
+                    catch (Exception ne){
+                        ne.printStackTrace();
+                    }
+                }
                 Log.d("listener","clicked"+position);
             }
         });
@@ -81,9 +91,16 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
                 if(!holder.checkedTextView2.isChecked()){
                     holder.checkedTextView2.setChecked(true);
                     questionSelectedListener.onQuestionClicked(position);
+                    question.givenAnswer.add(holder.checkedTextView2.getText().toString());
                 }
                 else{questionSelectedListener.onQuestionUnClicked(position);
-                    holder.checkedTextView2.setChecked(false);}
+                    holder.checkedTextView2.setChecked(false);
+                    try{
+                        question.answers.remove(holder.checkedTextView2.getText().toString());}
+                    catch (Exception ne){
+                        ne.printStackTrace();
+                    }
+                }
                 Log.d("listener","clicked"+position);
             }
         });    holder.checkedTextView3.setOnClickListener(new View.OnClickListener() {
@@ -92,9 +109,16 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
                 if(!holder.checkedTextView3.isChecked()){
                     holder.checkedTextView3.setChecked(true);
                     questionSelectedListener.onQuestionClicked(position);
+                    question.givenAnswer.add(holder.checkedTextView3.getText().toString());
                 }
                 else{                    questionSelectedListener.onQuestionUnClicked(position);
-                    holder.checkedTextView3.setChecked(false);}
+                    holder.checkedTextView3.setChecked(false);
+                    try{
+                        question.answers.remove(holder.checkedTextView3.getText().toString());}
+                    catch (Exception ne){
+                        ne.printStackTrace();
+                    }
+                }
                 Log.d("listener","clicked"+position);
             }
         });    holder.checkedTextView4.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +127,7 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
                 if(!holder.checkedTextView4.isChecked()){
                     holder.checkedTextView4.setChecked(true);
                     questionSelectedListener.onQuestionClicked(position);
+                    question.givenAnswer.add(holder.checkedTextView4.getText().toString());
                 }
                 else{questionSelectedListener.onQuestionUnClicked(position);
                     holder.checkedTextView4.setChecked(false);}

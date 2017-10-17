@@ -3,13 +3,12 @@ package com.accademy.harvin.harvinacademy.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.model.exam.Question;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
@@ -22,6 +21,7 @@ import java.util.List;
 
 public class QuestionNavigationListAdapter extends RecyclerView.Adapter<QuestionNavigationListAdapter.ViewHolder> {
     private LayoutInflater inflater;
+    private static final String TAG="QuestionNavListAdapter";
     private List<Question> questionList;
     private QuestionPaper questionPaper;
     private String greenColor="#00C851";
@@ -47,16 +47,20 @@ public class QuestionNavigationListAdapter extends RecyclerView.Adapter<Question
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v=inflater.inflate(R.layout.layout_mcq_navigation_list,parent,false);
-
+Log.d(TAG,"inflated");
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        Log.d(TAG,"onBindView");
+
         holder.navQuestionNumber.setText(Integer.toString(position + 1));
+        Log.d(TAG,holder.navQuestionNumber.getText().toString());
         holder.navQuestionNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 navigationQuestionClickedListener.onNavigationClicked(position);
             }
         });
@@ -69,6 +73,7 @@ public class QuestionNavigationListAdapter extends RecyclerView.Adapter<Question
 
     @Override
     public int getItemCount() {
+        Log.d(TAG,questionPaper.getQuestions().size()+"");
         return questionPaper.getQuestions().size();
     }
      class ViewHolder extends RecyclerView.ViewHolder{

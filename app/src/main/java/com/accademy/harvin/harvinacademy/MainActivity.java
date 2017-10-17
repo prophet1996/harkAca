@@ -1,6 +1,5 @@
 package com.accademy.harvin.harvinacademy;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +34,6 @@ import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
-import com.accademy.harvin.harvinacademy.views.CircleTransform;
-import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,30 +47,33 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,TabLayout.OnTabSelectedListener{
-    private static TabLayout tb;
-    private static View navHeader;
+    //TODO REMOVE STATIC
+    private  TabLayout tb;
+    private  View navHeader;
     private NavigationView navigationView;
     private ListView mDrawerList;
     private List<String> mSubjectList=null;
+    private static String TAG="MainActivity.class";
     private Subjects mSubjects;
     private Progresses progresses;
-    private static ImageView mProfilePhoto;
-    private static TextView mProfilename;
+
+
     private static TextView mProfileusername;
     private static boolean addedTabs=false;
     private AppDatabase appDatabase;
-    private Gson  GSON= new Gson();
-    List<DrawerItem> dataList = new ArrayList<>();;
+    List<DrawerItem> dataList = new ArrayList<>();
     TabLayout.Tab tab_dynamic;
     CustomDrawerAdapter customDrawerAdapter;
 
-    private static String ImageURL="http://www.rd.com/wp-content/uploads/sites/2/2016/02/02-train-cat-treats.jpg";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar =findViewById(R.id.toolbar);
@@ -120,6 +118,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     private  void getSubjectListFromServer() {
         Log.d("getting subjects","first");
 
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity
                         if(mSubjectList!=null)
                         for (int i=0;i<subjects.getSubjects().size();i++)
                             mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
+
                         addTabs();
                         addedTabs=true;
                        initdb();
@@ -169,6 +173,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initdb() {
+        Log.d(TAG,"initdb");
+
         appDatabase = AppDatabase.getInMemoryDatabase(getApplicationContext());
         populateDb();
 
@@ -199,10 +205,29 @@ DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses()
     }
     @Override
     protected void onDestroy() {
-        AppDatabase.destroyInstance();
+
+
         super.onDestroy();
+        Log.d(TAG,"onDestroy");
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG,"onRestart");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume");
+
+
+
+
+
+    }
 
     private  void getProgressFromServer() {
         Log.d("getting progress","first");
@@ -394,7 +419,7 @@ catch (IllegalStateException ise){
         String username;
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-            username = sharedPreferences.getString("username", "z");
+            username = sharedPreferences.getString(USERNAME_KEY, "z");
         Log.d("username",username);
         return username;
     }

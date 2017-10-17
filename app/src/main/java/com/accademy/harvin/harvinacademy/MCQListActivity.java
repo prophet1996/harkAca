@@ -27,6 +27,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class MCQListActivity extends AppCompatActivity {
+    private static final String TAG = "MCQLISTACTIVITY";
     private RecyclerView questionListRecyclerView;
     private List<Exam> examList;
     private String username;
@@ -87,5 +88,11 @@ public class MCQListActivity extends AppCompatActivity {
         username = sharedPreferences.getString("username", "z");
         Log.d("username",username);
         return username;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"ondestroy");
     }
 }

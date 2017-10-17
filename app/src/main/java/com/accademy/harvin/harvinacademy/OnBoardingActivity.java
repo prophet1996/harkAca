@@ -58,9 +58,9 @@ public class OnBoardingActivity extends AppCompatActivity {
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        final int color1 = ContextCompat.getColor(this, R.color.badge_blue);
-        final int color2 = ContextCompat.getColor(this, R.color.badge_orange);
-        final int color3 = ContextCompat.getColor(this, R.color.badge_green);
+        final int color1 = ContextCompat.getColor(this, R.color.onboarding_green);
+        final int color2 = ContextCompat.getColor(this, R.color.onboarding_blue);
+        final int color3 = ContextCompat.getColor(this, R.color.onboarding_red);
 
        final  int[] colorList = new int[]{color1, color2, color3};
 
@@ -192,6 +192,8 @@ public class OnBoardingActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private ImageView onboardingImageView;
+        private  int sectionNumber;
 
         public PlaceholderFragment() {
         }
@@ -204,6 +206,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.sectionNumber=sectionNumber;
             fragment.setArguments(args);
             return fragment;
         }
@@ -212,8 +215,20 @@ public class OnBoardingActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_on_boarding, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            onboardingImageView=rootView.findViewById(R.id.onboarding_imageView);
+            switch (sectionNumber){
+                case 1:
+                    onboardingImageView.setImageResource(R.drawable.onboarding_green);
+                    break;
+                case 2:
+                    onboardingImageView.setImageResource(R.drawable.onboarding_blue);
+                    break;
+                case 3:
+                    onboardingImageView.setImageResource(R.drawable.onboarding_red);
+                    break;
+            }
+
+
             return rootView;
         }
     }
@@ -233,6 +248,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
+
         }
 
         @Override
@@ -253,5 +269,19 @@ public class OnBoardingActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setFullScreen();
+
     }
 }

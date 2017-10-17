@@ -13,6 +13,7 @@
         android:src="@mipmap/ic_launcher1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
 
         />
 
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login With Email"
                 android:padding="10dp"
-                android:backgroundTint="#23b791"
+                android:backgroundTint="@color/onboarding.green"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_centerInParent="true"
                 android:layout_below="@+id/dividing_or"

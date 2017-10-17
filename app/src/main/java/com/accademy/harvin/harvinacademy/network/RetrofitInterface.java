@@ -6,8 +6,10 @@ import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.model.UserTest;
 import com.accademy.harvin.harvinacademy.model.exam.ExamList;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
+import com.accademy.harvin.harvinacademy.model.user.Batches;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.model.user.User;
+import com.accademy.harvin.harvinacademy.model.user.UserDetails;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -15,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 
@@ -42,7 +45,12 @@ public interface RetrofitInterface {
     @GET("exams/{username}/exams")
     Observable<ExamList> getListOfExams(@Path("username")String username);
     //TODO
-    Observable<UserTest> loginWithEmail(@Body UserTest userTest);
+    @POST("student/loginWithEmail")
+    Observable<UserDetails> loginWithEmail(@Body UserDetails userDetails);
+    @GET("batches")
+    Observable<Batches> getBatches();
+    @PUT("student/{username}")
+    Observable<UserDetails> setBatchForUser(@Path("username") String username,@Body UserDetails userDetails);
 
 
 

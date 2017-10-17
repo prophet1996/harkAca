@@ -62,7 +62,6 @@ public class McqActivity extends AppCompatActivity  {
 
     //for timer
     private ProgressBar timerProgressBar;
-    private ProgressBar testProgress;
     private CountDownTimer countDownTimer;
     private TextView timerTextView;
     private RelativeLayout timerLayout;
@@ -90,7 +89,6 @@ public class McqActivity extends AppCompatActivity  {
         stateCompletedTextView = content.findViewById(R.id.state_value_completed);
         stateRevisionTextView = content.findViewById(R.id.state_value_revision);
         stateNotAttemptedTextView = content.findViewById(R.id.state_value_not_attempted);
-        testProgress = content.findViewById(R.id.test_progress);
         submitTestButton = content.findViewById(R.id.submit_test_button);
 
 
@@ -134,8 +132,7 @@ public class McqActivity extends AppCompatActivity  {
         stateNotAttemptedTextView.setText(questionTestPaper1.getQuestionPaper().getQuestions().size()+"");
         stateCompletedTextView.setText(Integer.toString(0));
         stateRevisionTextView.setText(Integer.toString(0));
-        testProgress.setIndeterminate(false);
-        testProgress.setProgress(0);
+
     }
 
 
@@ -263,16 +260,16 @@ public class McqActivity extends AppCompatActivity  {
         questionNavigationListAdapter.setNavigationQuestionClickedListener(new QuestionNavigationListAdapter.NavigationQuestionClickedListener() {
             @Override
             public void onNavigationClicked(int position) {
-                recyclerViewContent.scrollToPosition(position);
-                linearLayoutManager.scrollToPosition(position);
+                recyclerViewContent.smoothScrollToPosition(position);
 
 
             }
 
         });
+     //   View currentChild=recyclerViewContent.getChildAt(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+     //   if(currentChild!=null){}
         gridLayoutManager =new GridLayoutManager(this,2);
-         recyclerViewNavigation.setLayoutManager(gridLayoutManager);
-         recyclerViewNavigation.setHasFixedSize(true);
+         recyclerViewNavigation.setLayoutManager(new LinearLayoutManager(this));
          recyclerViewNavigation.setAdapter(questionNavigationListAdapter);
         questionContentListAdapter=new QuestionContentListAdapter(McqActivity.this,qp);
         questionContentListAdapter.setMarkedForReviewListener(new QuestionContentListAdapter.MarkerForReviewListener() {
@@ -299,7 +296,7 @@ public class McqActivity extends AppCompatActivity  {
                 if(clickTracker.get(position)==1){
                     stateCompletedTextView.setText((Integer.parseInt(stateCompletedTextView.getText().toString())+1)+"");
                     stateNotAttemptedTextView.setText((Integer.parseInt(stateNotAttemptedTextView.getText().toString())-1)+"");
-                testProgress.setProgress(testProgress.getProgress()+100/qp.getQuestions().size());}
+                }
 
 
 
@@ -314,7 +311,7 @@ public class McqActivity extends AppCompatActivity  {
                     Log.d("listener","unclicked   10"+position);
                     stateCompletedTextView.setText((Integer.parseInt(stateCompletedTextView.getText().toString())-1)+"");
                     stateNotAttemptedTextView.setText((Integer.parseInt(stateNotAttemptedTextView.getText().toString())+1)+"");
-                    testProgress.setProgress(testProgress.getProgress()-100/qp.getQuestions().size());
+
 
 
                     questionTestPaper.getQuestionPaper().getQuestions().get(position).isClicked=false;
@@ -359,12 +356,13 @@ public class McqActivity extends AppCompatActivity  {
         progressDialogBuilder=new AlertDialog.Builder(McqActivity.this);
         if(Integer.parseInt(stateNotAttemptedTextView.getText().toString())!=0)
             progressDialogBuilder.setMessage("ARE YOU SURE YOU WANT TO SUBMIT ?" +
-                    "\nYou have "+stateNotAttemptedTextView.getText()+"questions left.");
+                    "\nYou have "+stateNotAttemptedTextView.getText()+" questions left.");
 
         progressDialogBuilder.setTitle("Harvin Academy Test");
         progressDialogBuilder.setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    checkTest();
                     finish();
                 }
             });
@@ -382,6 +380,11 @@ public class McqActivity extends AppCompatActivity  {
 
         progressDialog.show();
 
+
+
+    }
+
+    private void checkTest() {
 
 
     }
@@ -410,4 +413,8 @@ public class McqActivity extends AppCompatActivity  {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

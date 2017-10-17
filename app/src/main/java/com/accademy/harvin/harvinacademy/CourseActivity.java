@@ -29,6 +29,7 @@ import com.accademy.harvin.harvinacademy.model.ChapterWithTopic;
 import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
 import com.accademy.harvin.harvinacademy.model.File;
 import com.accademy.harvin.harvinacademy.model.Topic;
+import com.accademy.harvin.harvinacademy.model.user.Progress;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ import static com.accademy.harvin.harvinacademy.utils.Constants.CHAPTER_KEY;
 public class CourseActivity extends AppCompatActivity {
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final int PERMISSION_REQUEST_CODE = 1;
+    private static final String TAG="CourseActivity.class";
 
     private  View chapterCard;
     private TextView chapterCardDesc;
@@ -55,6 +57,7 @@ public class CourseActivity extends AppCompatActivity {
     private ProgressBar chapterProgressBar;
     private TextView chapterTextView;
     private Chapter currChapter;
+    private Progress currProg;
 
 
 
@@ -66,6 +69,7 @@ public class CourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        Log.d(TAG, "onCreate");
         //Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler(this));
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         chapterCard = findViewById(R.id.chapter_card);
@@ -79,17 +83,20 @@ public class CourseActivity extends AppCompatActivity {
         chapterCardNo = chapterCard.findViewById(R.id.chapter_no);
         chapterCardDesc = chapterCard.findViewById(R.id.exam_type);
         chapterCardProgressBar = chapterCard.findViewById(R.id.progress_bar_chapter);
+        appDatabase=AppDatabase.getInMemoryDatabase(getApplicationContext());
+
         getChapter();
 
         getTopics();
 
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Log.d("chap With",""+chapterPosition);
-        if(chapterWithTopics.get(chapterPosition).topics==null)
-            Log.d("chap With ","null");
-        else
-            Log.d("chap With ","not null");
+//        if(chapterWithTopics.get(chapterPosition).topics==null)
+//            Log.d("chap With ","null");
+//        else
+//            Log.d("chap With ","not null");
 
         topicAdapter= new TopicAdapter(topics,files,chapterPosition-1,chapterId,CourseActivity.this);
         Log.d("topics prob  2",topics.size()+"");
@@ -97,10 +104,14 @@ public class CourseActivity extends AppCompatActivity {
 
         topicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
             @Override
-            public void onProgressClicked(int position) {
+            public void onProgressClicked(int position,String topicId) {
 
                  chapterProgressBar.setProgress(chapterProgressBar.getProgress()+(100/topics.size()));
                 chapterTextView.setText(chapterProgressBar.getProgress()+"%");
+                if(currProg!=null){
+                    currProg.setCompleted(chapterProgressBar.getProgress()+"");
+                    currProg.completedTopicsIds.add(topicId);}
+
             }
 
             @Override
@@ -121,7 +132,7 @@ public class CourseActivity extends AppCompatActivity {
 
 
     private void setChapterCard() {
-
+        Log.d(TAG, "setChapterCard");
         chapterCardTitle.setText(currChapter.getChapterName());
         chapterCardDesc.setText(currChapter.getChapterDescription());
         chapterCardNo.setText("0"+(++chapterPosition));
@@ -131,6 +142,7 @@ public class CourseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
@@ -185,6 +197,7 @@ public class CourseActivity extends AppCompatActivity {
 
 
     public void getChapter() {
+        Log.d(TAG, "getChapter ");
         Intent i=getIntent();
         chapterId=i.getStringExtra(CHAPTER_KEY);
         chapterPosition=i.getIntExtra(CHAPTER_KEY+"pos",-1);try{
@@ -200,20 +213,47 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     public void getTopics() {
-appDatabase=AppDatabase.getInMemoryDatabase(CourseActivity.this);
+        Log.d(TAG, "getTopics");
+        if(appDatabase!=null)
+        Log.d("appdb",""+appDatabase.toString());
+        else
+            Log.d("appdb","null");
+//TODO WORKS ONLY FIRST TIME(MAYBE BECAUSE THE NETWORK REQUEST DOES'NT HAPPEN AND IT OVERWRITES WITH NULL)
          currChapter= appDatabase.chapterModel().findChapterWithChapterId(chapterId);
-        Log.d("ishnk chap",currChapter.getChapterName());
+
+//        Log.d("ishnk chap",currChapter.getChapterName());
         chapterWithTopics=appDatabase.chapterModel().findChaptersWithTopic();
         topics=appDatabase.topicModel().getTopicWithChapterId(chapterId);
         files=appDatabase.fileModel().findAllFilesWithChapterId(chapterId);
+        currProg=appDatabase.progressModel().getProgressWithChapterId(chapterId);
+        if(currProg==null){
 
+        }
+
+        if(currChapter!=null)
         setChapterCard();
 
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+        if(currProg!=null)
+        appDatabase.progressModel().insertProgressUpdated(currProg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
     protected void onDestroy() {
+        //AppDatabase.destroyInstance();
+
         super.onDestroy();
-        appDatabase.destroyInstance();
+        Log.d(TAG, "onDestroy");
     }
 }

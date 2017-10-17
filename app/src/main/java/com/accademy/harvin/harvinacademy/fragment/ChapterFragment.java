@@ -75,20 +75,20 @@ public class ChapterFragment extends Fragment {
         initTopics();
         //mTopicAdapter=new TopicAdapter(topics,chapterPosition,chapterId,container.getContext());
 
-        mTopicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
-            @Override
-            public void onProgressClicked(int position) {
-
-              //  chapterProgressBar.setProgress(chapterProgressBar.getProgress()+(100/topicWithFiles.size()));
-               // chapterTextView.setText(chapterProgressBar.getProgress()+"");
-            }
-
-            @Override
-            public void onProgressUnclicked(int position) {
-               // chapterProgressBar.setProgress(chapterProgressBar.getProgress()-(100/topicWithFiles.size()));
-               // chapterTextView.setText(chapterProgressBar.getProgress()+"");
-            }
-        });
+//        mTopicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
+//            @Override
+//            public void onProgressClicked(int position) {
+//
+//              //  chapterProgressBar.setProgress(chapterProgressBar.getProgress()+(100/topicWithFiles.size()));
+//               // chapterTextView.setText(chapterProgressBar.getProgress()+"");
+//            }
+//
+//            @Override
+//            public void onProgressUnclicked(int position) {
+//               // chapterProgressBar.setProgress(chapterProgressBar.getProgress()-(100/topicWithFiles.size()));
+//               // chapterTextView.setText(chapterProgressBar.getProgress()+"");
+//            }
+//        });
         mRecyclerView.setAdapter(mTopicAdapter);
 
         return v;

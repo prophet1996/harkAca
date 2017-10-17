@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public  class AnswersConverter {
-    public static Gson gson;
     @TypeConverter
     public static List<String > toAnswer(String answersString){
 

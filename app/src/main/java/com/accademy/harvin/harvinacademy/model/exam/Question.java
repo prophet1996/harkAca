@@ -47,6 +47,8 @@ public class Question implements Parcelable
     @Expose
     @ColumnInfo(name="questionPaperId")
     public String questionPaperId;
+    @Ignore
+    public List<String> givenAnswer;
     public boolean isMarked=false;
 
 

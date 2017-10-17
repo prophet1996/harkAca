@@ -16,6 +16,10 @@ public class Batch {
     @SerializedName("__v")
     @Expose
     private Integer v;
+
+    @SerializedName("batchDesc")
+    @Expose
+    private String batchDesc;
     @SerializedName("subjects")
     @Expose
     private List<String> subjects = null;
@@ -30,6 +34,10 @@ public class Batch {
 
     public String getBatchName() {
         return batchName;
+    }
+
+    public String getBatchDesc() {
+        return batchDesc;
     }
 
     public void setBatchName(String batchName) {

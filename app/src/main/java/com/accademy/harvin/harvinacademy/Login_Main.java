@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.exceptionHandler.DefaultExceptionHandler;
 import com.accademy.harvin.harvinacademy.model.UserTest;
+import com.accademy.harvin.harvinacademy.model.user.UserDetails;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Constants;
+import com.accademy.harvin.harvinacademy.utils.SharedPref;
 import com.accademy.harvin.harvinacademy.utils.Validation;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
@@ -34,9 +36,11 @@ import com.facebook.accountkit.ui.LoginType;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
@@ -45,6 +49,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.accademy.harvin.harvinacademy.utils.Constants.PASSWORD_KEY;
+import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
 
 
 public class Login_Main extends AppCompatActivity {
@@ -60,7 +67,7 @@ public class Login_Main extends AppCompatActivity {
     TextView username;
     TextView mRegister;
     TextView password;
-    UserTest testUser;
+    UserDetails userD;
     Button accountKitButton;
     ProgressDialog progressDoalog;
     boolean done = false;
@@ -276,14 +283,14 @@ public class Login_Main extends AppCompatActivity {
             else if(requestCode==APP_RESULT_CODE){
                 AccountKitLoginResult loginResult=data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
                 String toastMessage="";
-                Log.e("AccountKit","resultcode ok");
+                Log.d("AccountKit","resultcode ok");
 
                 if(loginResult.getError()!=null){
                     toastMessage=loginResult.getError().getErrorType().getMessage();
 
                 }else if (loginResult.wasCancelled()){
                     toastMessage="Login Cancelled";
-                    Log.e("AccountKit","login cancelled");
+                    Log.d("AccountKit","login cancelled");
 
                 }
                 else {
@@ -303,7 +310,7 @@ public class Login_Main extends AppCompatActivity {
 
 
     private void getAccount() {
-        Log.e("AccountKit","getAccount");
+        Log.d("AccountKit","getAccount");
         AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
             @Override
             public void onSuccess(Account account) {
@@ -314,21 +321,38 @@ public class Login_Main extends AppCompatActivity {
                 RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
 
                 //TODO
-
-                Observable<UserTest> call=retrofitInterface.loginWithEmail(new UserTest("",""));
+                UserDetails currUser=new UserDetails();
+                currUser.setUsername(accountKitEmail);
+                Observable<UserDetails> call=retrofitInterface.loginWithEmail(currUser);
                 call.subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableObserver<UserTest>() {
+                        .subscribe(new Observer<UserDetails>() {
                             @Override
-                            public void onNext(@NonNull UserTest userTest) {
+                            public void onSubscribe(@NonNull Disposable d) {
                                 Log.d("AccountKit","got user data using email");
-                                testUser=userTest;
-                                if(testUser.getUsername()==null){
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull UserDetails userDetails) {
+                                Log.d("AccountKit","got user data using email");
+                                userD=userDetails;
+                                SharedPref.setPref(Login_Main.this,USERNAME_KEY,userDetails.getUsername());
+                                SharedPref.setPref(Login_Main.this,PASSWORD_KEY,userDetails.getPassword());
+
+                                if(userDetails.getBatch().isEmpty()){
                                     //TODO Start the batch select activity
+                                    Intent i=new Intent(Login_Main.this,BatchSelectActivity.class);
+                                    startActivity(i);
+                                    finish();
+
 
                                 }
                                 else {
                                     //TODO Start Main Activity
+                                    Intent i=new Intent(Login_Main.this,MainActivity.class);
+                                    startActivity(i);
+                                    finish();
                                 }
                             }
 

@@ -19,9 +19,12 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface ProgressDao {
     @Insert(onConflict = IGNORE)
     void insertProgress(Progress progress);
-
+    @Insert(onConflict = REPLACE)
+    void insertProgressUpdated(Progress progress);
     @Update(onConflict = REPLACE)
     void updateProgress(Progress progeress);
+
+    //@Query("UPDATE progress SET completed=:completed WHERE )
 
     @Query("DELETE FROM progress")
     void deleteAll();

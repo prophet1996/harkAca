@@ -39,7 +39,7 @@ android:background="@color/cardview_light_background"
             android:text="Not Attempted"
             android:textColor="@color/cardview_light_background"
             android:background="@drawable/badge_red"
-            app:layout_constraintTop_toBottomOf="@+id/test_progress"
+            app:layout_constraintTop_toBottomOf="parent"
 app:layout_constraintStart_toEndOf="@+id/state_label_completed"
             android:layout_margin="10dp"
 
@@ -101,17 +101,7 @@ app:layout_constraintStart_toEndOf="@+id/state_label_completed"
             app:layout_constraintBaseline_toBaselineOf="@+id/state_value_not_attempted"
          />
 
-    <ImageView
-        android:id="@+id/mcq_clipboard"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_mcq_clipboard"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        app:layout_constraintRight_toLeftOf="parent"
-        android:visibility="invisible"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_progress" />
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
@@ -126,7 +116,7 @@ app:layout_constraintStart_toEndOf="@+id/state_label_completed"
         android:layout_height="wrap_content"
         android:text="Total"
         android:background="@drawable/badge_blue"
-        app:layout_constraintTop_toBottomOf="@+id/test_progress"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -157,7 +147,7 @@ app:layout_constraintStart_toEndOf="@+id/state_label_completed"
         android:layout_width="wrap_content"
         android:elevation="10dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/mcq_clipboard"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -167,20 +157,7 @@ app:layout_constraintStart_toEndOf="@+id/state_label_completed"
         android:background="?selectableItemBackground"
         android:textColor="@color/badge.blue"
         />
-    <ProgressBar
-        android:id="@+id/test_progress"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:indeterminate="false"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-        android:progress="50"
-        android:max="100"
-        app:layout_constraintLeft_toRightOf="parent"
-        android:layout_margin="10dp"
-        app:layout_constraintRight_toLeftOf="parent" />
+
 
 
 

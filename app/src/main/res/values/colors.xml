@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196f3</color>
+    <color name="colorPrimary">#00B584</color>
 
-    <color name="colorPrimaryDark">#0069c0</color>
+    <color name="colorPrimaryDark">#FF009F74</color>
     <color name="colorAccent">#eae8e8</color>
     <color name="colorAccentDark">#efebe9</color>
     <color name="mainBackground">#ececec</color>
@@ -14,6 +14,9 @@
     <color name="badge.green">#00C851</color>
     <color name="badge.orange">#ffbb33</color>
     <color name="badge.blue">#2196f3</color>
+    <color name="onboarding.green">#00B584</color>
+    <color name="onboarding.red">#f34336</color>
+    <color name="onboarding.blue">#2195f2</color>
 
 
 </resources>

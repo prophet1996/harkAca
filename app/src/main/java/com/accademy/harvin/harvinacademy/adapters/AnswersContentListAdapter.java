@@ -29,7 +29,7 @@ public class AnswersContentListAdapter extends RecyclerView.Adapter<AnswersConte
     private String questionId;
     public AnswersContentListAdapter(Context context) {
         this.layoutInflater = LayoutInflater.from(context);
-        appDatabase=AppDatabase.getInMemoryDatabase(context);
+        appDatabase=AppDatabase.getInMemoryDatabase(context.getApplicationContext());
 
     }
 public void setAnswersList( List<String> answersList,String questionId){
