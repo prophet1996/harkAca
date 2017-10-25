@@ -21,6 +21,7 @@ import com.accademy.harvin.harvinacademy.MCQListActivity;
 import com.accademy.harvin.harvinacademy.McqActivity;
 import com.accademy.harvin.harvinacademy.R;
 import com.accademy.harvin.harvinacademy.ReportActivity;
+import com.accademy.harvin.harvinacademy.ScrollingActivity12;
 import com.accademy.harvin.harvinacademy.UserProfile;
 import com.accademy.harvin.harvinacademy.model.DrawerItem;
 
@@ -108,48 +109,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                 }
             }
         });
-        drawerHolder.ItemName.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                switch (position){
-                    case 0:
-
-                        Intent i=new Intent(context,McqActivity.class);
-                        context.startActivity(i);
-
-                        break;
-                    case 1:
-                        i=new Intent(context,MCQListActivity.class);
-                        context.startActivity(i);
-
-
-
-                        break;
-                    case 2:
-
-                        i=new Intent(context,ReportActivity.class);
-                        context.startActivity(i);
-
-
-                        break;
-                    case 3:
-
-                        i=new Intent(context,UserProfile.class);
-                        context.startActivity(i);
-                        break;
-
-                    case 4:
-                       i=new Intent(context,ClassRoomActivity.class);
-                        context.startActivity(i);
-                        break;
-
-
-
-                }
-            }
-        });
-
         return view;
     }
 

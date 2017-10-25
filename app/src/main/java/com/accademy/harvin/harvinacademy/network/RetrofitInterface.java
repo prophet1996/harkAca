@@ -1,6 +1,7 @@
 package com.accademy.harvin.harvinacademy.network;
 
 import com.accademy.harvin.harvinacademy.model.DownloadedPdf;
+import com.accademy.harvin.harvinacademy.model.PAssignment;
 import com.accademy.harvin.harvinacademy.model.Profile;
 import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.model.UserTest;
@@ -51,7 +52,10 @@ public interface RetrofitInterface {
     Observable<Batches> getBatches();
     @PUT("student/{username}")
     Observable<UserDetails> setBatchForUser(@Path("username") String username,@Body UserDetails userDetails);
-
+    @GET("assignment/{username}/assignments")
+    Observable<PAssignment> getAssignmentList(@Path("username")String username);
+    @GET("assignment/{assignmentId}")
+    Call<ResponseBody> downloadAssignment(@Path("assignmentId") String assignmentId);
 
 
 }

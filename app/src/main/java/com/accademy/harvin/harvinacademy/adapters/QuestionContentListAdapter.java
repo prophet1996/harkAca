@@ -71,10 +71,11 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
             public void onClick(View view) {
                 if(!holder.checkedTextView1.isChecked()){
                 holder.checkedTextView1.setChecked(true);
-                    questionSelectedListener.onQuestionClicked(position);
+                    questionSelectedListener.onQuestionClicked(position,0);
                     question.givenAnswer.add(holder.checkedTextView1.getText().toString());
+
                 }
-                else{questionSelectedListener.onQuestionUnClicked(position);
+                else{questionSelectedListener.onQuestionUnClicked(position,0);
                     holder.checkedTextView1.setChecked(false);
                     try{
                 question.answers.remove(holder.checkedTextView1.getText().toString());}
@@ -90,10 +91,10 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
             public void onClick(View view) {
                 if(!holder.checkedTextView2.isChecked()){
                     holder.checkedTextView2.setChecked(true);
-                    questionSelectedListener.onQuestionClicked(position);
+                    questionSelectedListener.onQuestionClicked(position,1);
                     question.givenAnswer.add(holder.checkedTextView2.getText().toString());
                 }
-                else{questionSelectedListener.onQuestionUnClicked(position);
+                else{questionSelectedListener.onQuestionUnClicked(position,1);
                     holder.checkedTextView2.setChecked(false);
                     try{
                         question.answers.remove(holder.checkedTextView2.getText().toString());}
@@ -108,10 +109,10 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
             public void onClick(View view) {
                 if(!holder.checkedTextView3.isChecked()){
                     holder.checkedTextView3.setChecked(true);
-                    questionSelectedListener.onQuestionClicked(position);
+                    questionSelectedListener.onQuestionClicked(position,2);
                     question.givenAnswer.add(holder.checkedTextView3.getText().toString());
                 }
-                else{                    questionSelectedListener.onQuestionUnClicked(position);
+                else{                    questionSelectedListener.onQuestionUnClicked(position,2);
                     holder.checkedTextView3.setChecked(false);
                     try{
                         question.answers.remove(holder.checkedTextView3.getText().toString());}
@@ -126,10 +127,10 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
             public void onClick(View view) {
                 if(!holder.checkedTextView4.isChecked()){
                     holder.checkedTextView4.setChecked(true);
-                    questionSelectedListener.onQuestionClicked(position);
+                    questionSelectedListener.onQuestionClicked(position,3);
                     question.givenAnswer.add(holder.checkedTextView4.getText().toString());
                 }
-                else{questionSelectedListener.onQuestionUnClicked(position);
+                else{questionSelectedListener.onQuestionUnClicked(position,3);
                     holder.checkedTextView4.setChecked(false);}
                 Log.d("listener","clicked"+position);
             }
@@ -138,16 +139,10 @@ public class QuestionContentListAdapter extends RecyclerView.Adapter<QuestionCon
 holder.marckedCheckBox.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View view) {
-
-                                                  if(!holder.marckedCheckBox.isChecked()) {
-                                                      markerForReviewListener.onMarked(position,false);
-
-                                                  }
-                                                  else {
-                                                      markerForReviewListener.onMarked(position, true);
-
-                                                  }                                                  Log.d("listener","clicked"+position);
-                                              }});}
+                                                  if(!holder.marckedCheckBox.isChecked()) {markerForReviewListener.onMarked(position,false);}
+                                                  else {markerForReviewListener.onMarked(position, true);}Log.d("listener","clicked"+position);
+                                              }});
+    }
 
     @Override
     public int getItemCount() {
@@ -176,8 +171,8 @@ holder.marckedCheckBox.setOnClickListener(new View.OnClickListener() {
 
     }
     public interface QuestionSelectedListener{
-        void  onQuestionClicked(int position);
-        void onQuestionUnClicked(int position);
+        void  onQuestionClicked(int position,int answerPosition);
+        void onQuestionUnClicked(int position,int answerPosition);
     }
 
     private  QuestionSelectedListener questionSelectedListener;

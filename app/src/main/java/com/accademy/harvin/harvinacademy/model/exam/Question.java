@@ -50,7 +50,14 @@ public class Question implements Parcelable
     @Ignore
     public List<String> givenAnswer;
     public boolean isMarked=false;
+    @Expose
+    @SerializedName("answersIndex")
+    @Ignore
+    public List<Integer> answersIndex=null;
 
+    public List<Integer> getAnswersIndex() {
+        return answersIndex;
+    }
 
     public final static Creator<Question> CREATOR = new Creator<Question>() {
 

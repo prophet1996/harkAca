@@ -2,10 +2,13 @@ package com.accademy.harvin.harvinacademy;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.accademy.harvin.harvinacademy.adapters.MCQListAdapter;
@@ -31,19 +34,31 @@ public class MCQListActivity extends AppCompatActivity {
     private RecyclerView questionListRecyclerView;
     private List<Exam> examList;
     private String username;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mcqlist);
-
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        collapsingToolbarLayout=findViewById(R.id.collapsing_toolbar_layout);
+        setSupportActionBar(toolbar);
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        toolbarTextAppearence();
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         username=getUsername();
         Log.d("getting progress",username);
         getExamList();
         questionListRecyclerView=findViewById(R.id.exam_list_recyclerView);
 
     }
+    private void toolbarTextAppearence() {
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(android.R.style.TextAppearance_DeviceDefault_Small);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(android.R.style.TextAppearance_DeviceDefault_Medium);
 
+
+    }
     public void getExamList() {
         OkHttpClient okHttpClient= HTTPclient.getClient(this);
 

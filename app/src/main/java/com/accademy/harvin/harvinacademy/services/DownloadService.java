@@ -39,7 +39,8 @@ public class DownloadService extends IntentService {
     private int totalFileSize;
     private int downloadingtopicPosition;
     private String downloadingtopicname;
-    private String downloadingtopicid;
+    private String downloadingid;
+    private boolean assignment;
 
 
     public DownloadService() {
@@ -52,8 +53,10 @@ public class DownloadService extends IntentService {
         Log.d("download1",downloadingtopicPosition+"");
         downloadingtopicname=intent.getStringExtra("topicname");
         Log.d("download1",downloadingtopicname);
-        downloadingtopicid=intent.getStringExtra("topicid");
-        Log.d("download2",downloadingtopicid);
+        assignment=intent.getBooleanExtra("assignment",false);
+        Log.d("download1",assignment+"");
+        downloadingid =intent.getStringExtra("topicid");
+        Log.d("download2", downloadingid);
 
         notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -73,7 +76,10 @@ public class DownloadService extends IntentService {
                 .build();
 
         RetrofitInterface client=retrofit.create(RetrofitInterface.class);
-        Call<ResponseBody> request=client.downloadFile(downloadingtopicid);
+
+        if(!assignment)
+        {
+        Call<ResponseBody> request=client.downloadFile(downloadingid);
 
         try{
             Log.d("download","retorfit1");
@@ -85,7 +91,22 @@ public class DownloadService extends IntentService {
             e.printStackTrace();
             Log.d("download","failed");
 
-        }
+        }}
+else {
+            Call<ResponseBody> request=client.downloadAssignment(downloadingid);
+
+            try{
+                Log.d("download","retorfit1");
+
+                downloadfile(request.execute().body());
+                Log.d("download","retorfit2");
+
+            }catch (IOException e){
+                e.printStackTrace();
+                Log.d("download","failed");
+
+            }}
+
 
     }
     private void downloadfile(ResponseBody body) throws IOException {

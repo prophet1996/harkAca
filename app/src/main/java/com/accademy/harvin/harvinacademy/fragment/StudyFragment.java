@@ -49,10 +49,11 @@ public class StudyFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(container.getContext());
         if(progresses==null)
             Log.d("getting progress","null in oncreatefrag");
-         mSubjectAdapter = new SubjectAdapter(progresses, subjectId,subjectPosition, getActivity());
+       try{  mSubjectAdapter = new SubjectAdapter(progresses, subjectId,subjectPosition, getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setPadding(10,10,10,10);
-        recyclerView.setAdapter(mSubjectAdapter);
+        recyclerView.setAdapter(mSubjectAdapter);}
+       catch (Exception e){e.printStackTrace();}
         ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         return v;

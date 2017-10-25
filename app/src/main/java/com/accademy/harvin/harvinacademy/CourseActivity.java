@@ -45,7 +45,6 @@ public class CourseActivity extends AppCompatActivity {
     private TextView chapterCardDesc;
     private TextView chapterCardTitle;
     private TextView chapterCardNo;
-    private ProgressBar chapterCardProgressBar;
     private AppDatabase appDatabase;
     private List<ChapterWithTopic> chapterWithTopics;
     private String chapterId;
@@ -83,7 +82,6 @@ public class CourseActivity extends AppCompatActivity {
         chapterCardTitle = chapterCard.findViewById(R.id.chapter_title);
         chapterCardNo = chapterCard.findViewById(R.id.chapter_no);
         chapterCardDesc = chapterCard.findViewById(R.id.exam_type);
-        chapterCardProgressBar = chapterCard.findViewById(R.id.progress_bar_chapter);
         appDatabase=AppDatabase.getInMemoryDatabase(getApplicationContext());
 
         getChapter();
@@ -102,29 +100,37 @@ public class CourseActivity extends AppCompatActivity {
         topicAdapter= new TopicAdapter(topics,files,chapterPosition-1,chapterId,CourseActivity.this);
         Log.d("topics prob  2",topics.size()+"");
         topicAdapter.setTopics(topics);
-
-try{        topicAdapter.setProgressForTopics(currProg.completedTopicsIds);}
-catch (NullPointerException ne){ne.printStackTrace();}
-
+    try {topicAdapter.setProgressForTopics(currProg.completedTopicsIds);}
+    catch(NullPointerException ne){ne.printStackTrace();}
         topicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
             @Override
             public void onProgressClicked(int position,String topicId) {
-
-                 chapterProgressBar.setProgress(chapterProgressBar.getProgress()+(100/topics.size()));
-                chapterTextView.setText(chapterProgressBar.getProgress()+"%");
+                    int newProgress=chapterProgressBar.getProgress()+(100/topics.size());
+                Log.d(TAG+"pro","setting prgress1"+newProgress);
+                 chapterProgressBar.setProgress(newProgress);
+                chapterTextView.setText(newProgress+"%");
                 if(currProg!=null){
                     currProg.setCompleted(chapterProgressBar.getProgress()+"");
                     if (currProg.completedTopicsIds==null) {
                         currProg.completedTopicsIds=new ArrayList<>();
                     }
+                    if(currProg.completedTopicsIds.indexOf(topicId)==-1)
                     ((ArrayList)currProg.completedTopicsIds).add(topicId);}
 
             }
 
             @Override
-            public void onProgressUnclicked(int position) {
-                chapterProgressBar.setProgress(chapterProgressBar.getProgress()-(100/topics.size()));
-                 chapterTextView.setText(chapterProgressBar.getProgress()+"%");
+            public void onProgressUnclicked(int position,String topicId) {
+                int newProgress=Integer.parseInt(currProg.getCompleted())-(100/topics.size());
+                Log.d(TAG+"pro","setting prgress"+newProgress);
+                chapterProgressBar.setProgress(newProgress);
+                 chapterTextView.setText(newProgress+"%");
+                currProg.setCompleted(chapterProgressBar.getProgress()+"");
+                try{currProg.completedTopicsIds.remove(topicId);}
+                catch (Exception e){e.printStackTrace();
+                Log.d(TAG,"cant romve topic");
+                }
+
             }
         });
         topicRecyclerView.setLayoutManager(new LinearLayoutManager(CourseActivity.this));
@@ -153,7 +159,7 @@ catch (NullPointerException ne){ne.printStackTrace();}
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -233,9 +239,7 @@ catch (NullPointerException ne){ne.printStackTrace();}
         topics=appDatabase.topicModel().getTopicWithChapterId(chapterId);
         files=appDatabase.fileModel().findAllFilesWithChapterId(chapterId);
         currProg=appDatabase.progressModel().getProgressWithChapterId(chapterId);
-        if(currProg==null){
 
-        }
 
         if(currChapter!=null)
         setChapterCard();
@@ -246,8 +250,10 @@ catch (NullPointerException ne){ne.printStackTrace();}
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-        if(currProg!=null)
-        appDatabase.progressModel().insertProgressUpdated(currProg);
+        if(currProg!=null){
+
+            Log.d(TAG,"setting prog "+currProg.getChapter()+currProg.getCompleted());
+        appDatabase.progressModel().insertProgressUpdated(currProg);}
     }
 
     @Override
@@ -261,6 +267,7 @@ catch (NullPointerException ne){ne.printStackTrace();}
         //AppDatabase.destroyInstance();
 
         super.onDestroy();
+        topicAdapter.removeProgressCheckClickedListener();
         Log.d(TAG, "onDestroy");
     }
 }

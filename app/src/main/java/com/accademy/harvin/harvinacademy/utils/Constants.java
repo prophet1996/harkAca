@@ -19,6 +19,7 @@ public class Constants {
     public static final String USERNAME_KEY="username";
     public static final String PASSWORD_KEY="password";
     public static final String BATCH_KEY="batch";
+    public static final String HARVIN_DATABASE="harvinDB";
 
 
 }

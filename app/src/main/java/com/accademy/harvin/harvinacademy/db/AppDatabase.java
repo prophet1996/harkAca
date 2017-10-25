@@ -40,6 +40,8 @@ import com.accademy.harvin.harvinacademy.model.exam.Question;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 import com.accademy.harvin.harvinacademy.model.user.Progress;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.HARVIN_DATABASE;
+
 @TypeConverters({TopicIdOfProgressConvetor.class})
 @Database(entities = {Chapter.class,Subject.class,Topic.class,File.class, QuestionPaper.class, Question.class, Progress.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -58,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInMemoryDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
+                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,HARVIN_DATABASE)
                     // To simplify the codelab, allow queries on the main thread.
                     // Don't do this on a real app! See PersistenceBasicSample for an example.
                     .allowMainThreadQueries()

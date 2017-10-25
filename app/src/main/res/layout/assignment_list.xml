@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+
+    android:layout_marginRight="4dp"
+    android:padding="10dp"
+    android:elevation="8dp"
+    android:minHeight="100dp"
+    android:layout_margin="14dp"
+    android:background="?selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/assignment_card_layout"
+        android:background="?selectableItemBackground"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearchild"
+            android:layout_marginEnd="15dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/assignment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assignment"
+                android:fontFamily="sans-serif-thin"
+                android:textSize="14dp"
+                android:textColor="@color/navbarcolor"/>
+            <TextView
+                android:id="@+id/assignment_no"
+                android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:text="01"
+                android:textSize="38dp"
+                android:textColor="@color/textcolor"
+                android:layout_gravity="center_vertical|center_horizontal"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/assignment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MATHS ASSIGNMENT#1"
+            android:fontFamily="sans-serif-medium"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/linearLayout1"
+            android:textSize="18dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/textcolor"
+            android:layout_toRightOf="@+id/linearchild" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/download_pdf"
+            android:layout_alignStart="@id/download_pdf"
+
+            android:layout_height="wrap_content" >
+
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/mark_as_done"
+                >
+            </CheckBox>
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/download_pdf"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/linearLayout1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_download" />
+
+        <ProgressBar
+            android:id="@+id/downloading_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_alignEnd="@+id/download_pdf"
+            android:layout_alignStart="@+id/assignment_name"
+            android:layout_below="@+id/download_pdf"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:padding="0dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:progress="100"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+
+
+
+</android.support.v7.widget.CardView>
+
+

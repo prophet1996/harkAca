@@ -19,17 +19,15 @@
 
         <activity
             android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-
-            android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CourseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/theme96"
             android:parentActivityName=".MainActivity"
-            >
+            android:screenOrientation="portrait"
+            android:theme="@style/theme96">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -75,14 +73,31 @@
         <activity
             android:name=".ReportActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MCQListActivity" />
-        <activity android:name=".AssignmentActivity" />
+            android:windowSoftInputMode="adjustResize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".MCQListActivity"
+            android:theme="@style/Assignmenttheme"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".AssignmentActivity"
+            android:theme="@style/Assignmenttheme"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity android:name=".ClassRoomActivity" />
         <activity
             android:name=".OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/SplashTheme"></activity>
+            android:theme="@style/SplashTheme" />
 
         <meta-data
             android:name="com.facebook.accountkit.ApplicationName"
@@ -95,7 +110,11 @@
             android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
 
         <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
-        <activity android:name=".BatchSelectActivity"></activity>
+        <activity android:name=".BatchSelectActivity" />
+        <activity
+            android:name=".ScrollingActivity12"
+            android:label="@string/title_activity_scrolling12"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

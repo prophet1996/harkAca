@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -53,12 +54,15 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     private ProgressCheckClickedListener progressCheckClickedListener;
     public interface ProgressCheckClickedListener{
         void onProgressClicked(int position,String topicId);
-        void onProgressUnclicked(int position);
+        void onProgressUnclicked(int position,String topicId);
     }
     public void setProgressCheckClickedListener(ProgressCheckClickedListener progressCheckClickedListener){
         this.progressCheckClickedListener=progressCheckClickedListener;
     }
-
+    public void removeProgressCheckClickedListener(){
+        if(this.progressCheckClickedListener!=null)
+            this.progressCheckClickedListener=null;
+    }
     public TopicAdapter(List<Topic> topics, List<com.accademy.harvin.harvinacademy.model.File> files, int chapterPosition, String chapterId, Context mContext) {
         this.mContext = mContext;
         this.chapterPosition=chapterPosition;
@@ -89,15 +93,8 @@ public void setTopics(List<Topic> topics){
     downloading_progress_value= new Integer[this.topics.size()];
     checkPermission();
 
-    if(Internet.isAvailable(mContext)){
-        Log.d("internet","availabel");
-
-    }
-
-    else {
-
-        Log.d("internet","not availabel");
-    }
+    if(Internet.isAvailable(mContext)){Log.d("internet","availabel");}
+    else {Log.d("internet","not availabel");}
 }
 public void setProgressForTopics(List<String> progressForTopics){
     this.progressForTopics=progressForTopics;
@@ -183,16 +180,17 @@ public void setProgressForTopics(List<String> progressForTopics){
                     }
             }
         });
-
 holder.checkBox.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+
         if(holder.checkBox.isChecked()){
             progressCheckClickedListener.onProgressClicked(position,topics.get(position).getId());
         }
         else{
-            progressCheckClickedListener.onProgressUnclicked(position);
+            progressCheckClickedListener.onProgressUnclicked(position,topics.get(position).getId());
         }
+
     }
 });
 

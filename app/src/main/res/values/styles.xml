@@ -15,9 +15,20 @@
     <style name="theme96" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimaryLight</item>
         <item name="android:windowDisablePreview">true</item>
 
+
+        <item name="android:windowBackground">@color/mainBackground</item>
+
+    </style>
+
+    <style name="Assignmenttheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/badge.blue</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
+<item name="android:textColor">@color/cardview_light_background</item>
 
         <item name="android:windowBackground">@color/mainBackground</item>
 
