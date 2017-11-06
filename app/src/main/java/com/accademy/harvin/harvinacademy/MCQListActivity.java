@@ -1,11 +1,11 @@
 package com.accademy.harvin.harvinacademy;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -68,30 +68,30 @@ public class MCQListActivity extends AppCompatActivity {
         call.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ExamList>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(@NonNull ExamList exams) {
-        Log.d("exams list",exams.getExams().size()+"");
-                examList=exams.getExams();
-                questionListRecyclerView.setLayoutManager(new LinearLayoutManager(MCQListActivity.this));
-                questionListRecyclerView.setAdapter(new MCQListAdapter(examList,MCQListActivity.this));
+                    @Override
+                    public void onNext(@NonNull ExamList exams) {
+                        Log.d("exams list",exams.getExams().size()+"");
+                        examList=exams.getExams();
+                        questionListRecyclerView.setLayoutManager(new LinearLayoutManager(MCQListActivity.this));
+                        questionListRecyclerView.setAdapter(new MCQListAdapter(examList,MCQListActivity.this));
 
-            }
+                    }
 
-            @Override
-            public void onError(@NonNull Throwable e) {
+                    @Override
+                    public void onError(@NonNull Throwable e) {
 
-            }
+                    }
 
-            @Override
-            public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-            }
-        });
+                    }
+                });
 
 
     }
@@ -99,7 +99,6 @@ public class MCQListActivity extends AppCompatActivity {
     public String getUsername() {
         String username;
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MCQListActivity.this);
-
         username = sharedPreferences.getString("username", "z");
         Log.d("username",username);
         return username;

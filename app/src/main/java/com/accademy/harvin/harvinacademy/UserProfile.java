@@ -46,11 +46,11 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        ImageView mProfilePhoto = (ImageView) findViewById(R.id.profilephotoact);
+        ImageView mProfilePhoto =findViewById(R.id.profilephotoact);
 
 
-        Button deleteUser = (Button) findViewById(R.id.delete_user);
-        username=(TextView)findViewById(R.id.username);
+        Button deleteUser =  findViewById(R.id.delete_user);
+        username=findViewById(R.id.username);
         final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(UserProfile.this);
         String user=sharedPreferences.getString("username","N/A");
         username.setText(user);
@@ -60,7 +60,7 @@ public class UserProfile extends AppCompatActivity {
                 .with(this)   // pass Context
                 .load(ImageURL)
                 .error(R.drawable.solidfill)// pass the image url// optional scaletype
-                .placeholder(R.drawable.ic_menu_camera) // optional placeholder
+                .placeholder(R.drawable.solidfill) // optional placeholder
 
                 .into(mProfilePhoto); // the ImageView to which the image is to be
         deleteUser.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +69,7 @@ public class UserProfile extends AppCompatActivity {
                 AlertDialog.Builder builder=new AlertDialog.Builder(UserProfile.this,R.style.AlertDialogCustom);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showdailog();
+                    public void onClick(final DialogInterface dialog, int which) {
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.remove("username");
                         editor.remove("password");
@@ -82,10 +81,14 @@ public class UserProfile extends AppCompatActivity {
                             public void run() {
 
                                 Intent i=new Intent(UserProfile.this,Login_Main.class);
+
+
+
                                 startActivity(i);
                                 finish();
+
                             }
-                        },1000);
+                        },500);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -102,15 +105,4 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-    }
-    private void showdailog() {
-        progressDoalog =new ProgressDialog(UserProfile.this);
-        progressDoalog.setIndeterminate(true);
-        progressDoalog.setMessage("Logging out....");
-        progressDoalog.setTitle("Harvin Academy Login");
-        progressDoalog.setCancelable(false);
-        progressDoalog.show();
-
-    }
-
-}
+    }}

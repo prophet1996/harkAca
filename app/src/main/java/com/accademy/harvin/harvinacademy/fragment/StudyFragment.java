@@ -51,7 +51,7 @@ public class StudyFragment extends Fragment {
             Log.d("getting progress","null in oncreatefrag");
        try{  mSubjectAdapter = new SubjectAdapter(progresses, subjectId,subjectPosition, getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setPadding(10,10,10,10);
+
         recyclerView.setAdapter(mSubjectAdapter);}
        catch (Exception e){e.printStackTrace();}
         ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);

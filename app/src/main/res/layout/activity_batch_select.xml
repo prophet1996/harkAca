@@ -47,6 +47,7 @@
         android:text="Choose your batch"
         android:fontFamily="sans-serif-thin"
         android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         style="@style/Base.TextAppearance.AppCompat.Headline"
         />
     <android.support.v7.widget.AppCompatTextView

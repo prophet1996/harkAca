@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/cardview_light_background"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -114,7 +114,7 @@
     android:layout_height="wrap_content"
     android:textStyle="bold"
     android:text="Admission Date"
-
+    android:id="@+id/profil_email"
     android:layout_margin="@dimen/margin_small"
     />
         <TextView
@@ -122,17 +122,11 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="Admission Date"
+            android:id="@+id/profile_password"
             android:layout_margin="@dimen/margin_small"
 
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Admission Date"
-            android:layout_margin="@dimen/margin_small"
 
-            />
 
     </LinearLayout>
 

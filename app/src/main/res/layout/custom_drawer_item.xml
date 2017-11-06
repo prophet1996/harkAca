@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="?android:attr/selectableItemBackground"
     android:id="@+id/itemLayout"
@@ -27,17 +28,15 @@
 
                 />
 
-            <TextView
-                android:id="@+id/drawer_itemName"
-                android:layout_width="wrap_content"
-            android:layout_margin="15dp"
-                android:textSize="20dp"
-android:layout_toRightOf="@+id/drawer_icon"
-                android:layout_height="wrap_content"
-                android:text="hello"
-                android:fontFamily="sans-serif-thin"
-
-                />
+    <TextView
+        android:id="@+id/drawer_itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_toRightOf="@+id/drawer_icon"
+        android:fontFamily="@font/montserrat"
+        android:text="hello"
+        android:textSize="20dp" />
 </RelativeLayout>
 
 

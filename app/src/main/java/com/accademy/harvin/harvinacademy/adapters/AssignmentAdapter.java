@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -176,10 +177,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                         Environment.DIRECTORY_DOWNLOADS),assignmentList.get(position).getAssignmentName()+".pdf");
                 if(pdfToOpen.exists()){
                     String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".pdf");
-
+                    Uri path= FileProvider.getUriForFile(context,"com.accademy.harvin.harvinacademy",pdfToOpen);
                     Intent intent = new Intent();
                     intent.setAction(android.content.Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.fromFile(pdfToOpen), mime);
+                    intent.setDataAndType(path, mime);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                     try{ context.startActivity(intent);}
                     catch (ActivityNotFoundException ae){ae.printStackTrace();}
 

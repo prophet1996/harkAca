@@ -26,6 +26,18 @@ public class QuestionPaper implements Parcelable
     @SerializedName("__v")
     @Expose
     private Integer v;
+    @SerializedName("positiveMarks")
+    @Ignore
+    @Expose
+    private int positiveMarks;
+    @Ignore
+    @SerializedName("negativeMarks")
+    @Expose
+    private int negativeMarks;
+    @Ignore
+    @SerializedName("totalTime")
+    @Expose
+    private String totalTime;
     @SerializedName("questions")
     @Ignore
     @Expose
@@ -62,6 +74,18 @@ public class QuestionPaper implements Parcelable
 
     public Integer getV() {
         return v;
+    }
+
+    public int getPositiveMarks() {
+        return positiveMarks;
+    }
+
+    public int getNegativeMarks() {
+        return negativeMarks;
+    }
+
+    public String getTotalTime() {
+        return totalTime;
     }
 
     public void setV(Integer v) {

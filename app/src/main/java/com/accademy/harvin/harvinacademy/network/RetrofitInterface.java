@@ -7,10 +7,13 @@ import com.accademy.harvin.harvinacademy.model.Subjects;
 import com.accademy.harvin.harvinacademy.model.UserTest;
 import com.accademy.harvin.harvinacademy.model.exam.ExamList;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
+import com.accademy.harvin.harvinacademy.model.exam.TestResult;
 import com.accademy.harvin.harvinacademy.model.user.Batches;
 import com.accademy.harvin.harvinacademy.model.user.Progresses;
 import com.accademy.harvin.harvinacademy.model.user.User;
 import com.accademy.harvin.harvinacademy.model.user.UserDetails;
+
+import junit.framework.Test;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -56,6 +59,8 @@ public interface RetrofitInterface {
     Observable<PAssignment> getAssignmentList(@Path("username")String username);
     @GET("assignment/{assignmentId}")
     Call<ResponseBody> downloadAssignment(@Path("assignmentId") String assignmentId);
+    @POST("exams/{questionPaperId}/{username}")
+    Observable<TestResult> sendTestResult(@Path("questionPaperId")String questionPaperId,@Path("username")String username,@Body TestResult testResult);
 
 
 }

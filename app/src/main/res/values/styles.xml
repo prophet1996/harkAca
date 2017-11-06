@@ -7,6 +7,7 @@
         <item name="android:windowDisablePreview">true</item>
 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/cardview_light_background</item>
 
@@ -25,7 +26,7 @@
 
     <style name="Assignmenttheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/badge.blue</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/badge.bluedark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowDisablePreview">true</item>
 <item name="android:textColor">@color/cardview_light_background</item>
@@ -74,11 +75,18 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/cardview_light_background</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/mainBackground</item>
     </style>
 
+    <style name="AppTheme.collapsable" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <item name="colorPrimary">@color/badge.blue</item>
+        <item name="colorPrimaryDark">@color/badge.bluedark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/mainBackground</item>
+    </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="appbartheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

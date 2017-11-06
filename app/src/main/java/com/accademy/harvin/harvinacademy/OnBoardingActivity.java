@@ -138,6 +138,12 @@ public class OnBoardingActivity extends AppCompatActivity {
                 finish();
             }
         });
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+            }
+        });
 
 
     }
@@ -222,18 +228,18 @@ public class OnBoardingActivity extends AppCompatActivity {
             switch (sectionNumber){
                 case 1:
                     onboardingImageView.setImageResource(R.drawable.onboarding_green);
-                    onBoardingTextView.setText("Take MCQ Exams made by our teachers");
+                    onBoardingTextView.setText(getResources().getString(R.string.onboarding_study));
                     break;
                 case 2:
                     onboardingImageView.setImageResource(R.drawable.onboarding_blue);
 
-                    onBoardingTextView.setText("Get acces to our stuudy materials");
+                    onBoardingTextView.setText(getResources().getString(R.string.onboarding_mcq));
                     break;
                 case 3:
                     onboardingImageView.setImageResource(R.drawable.onboarding_red);
 
 
-                    onBoardingTextView.setText("Get up to date assignments from Harvin Academy");
+                    onBoardingTextView.setText(getResources().getString(R.string.onboarding_assignment));
                     break;
             }
 

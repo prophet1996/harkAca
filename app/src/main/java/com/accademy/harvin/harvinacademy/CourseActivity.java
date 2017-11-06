@@ -133,8 +133,10 @@ public class CourseActivity extends AppCompatActivity {
 
             }
         });
-        topicRecyclerView.setLayoutManager(new LinearLayoutManager(CourseActivity.this));
+        topicRecyclerView.setLayoutManager(new LinearLayoutManager(CourseActivity.this,LinearLayoutManager.VERTICAL,true));
+
         topicRecyclerView.setAdapter(topicAdapter);
+        topicRecyclerView.scrollToPosition(0);
         registerReceiver();
         if (!checkPermission())
             requestPermission();

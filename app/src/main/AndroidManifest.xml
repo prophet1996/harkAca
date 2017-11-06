@@ -13,6 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustResize">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.accademy.harvin.harvinacademy"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                        android:resource="@xml/provider_paths"
+                />
+
+        </provider>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -35,7 +46,7 @@
         <activity
             android:name=".UserProfile"
             android:screenOrientation="portrait"
-            android:theme="@style/theme97">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -109,10 +120,24 @@
             android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
 
-        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
-        <activity android:name=".BatchSelectActivity" />
+
+        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity">
+
+        </activity>
+        <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/ak_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".BatchSelectActivity"
+
+            />
         <activity
             android:name=".ScrollingActivity12"
+
             android:label="@string/title_activity_scrolling12"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

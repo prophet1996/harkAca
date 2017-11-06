@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,7 +42,7 @@ import static com.accademy.harvin.harvinacademy.CourseActivity.MESSAGE_PROGRESS;
  */
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> {
-
+    private String TAG="TopicAdapter";
     private Context mContext;
 
     private boolean downloading_progress[];
@@ -130,6 +131,7 @@ public void setProgressForTopics(List<String> progressForTopics){
                 holder.progressBar.setVisibility(View.VISIBLE);
                 File pdfToOpen=new File(Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_DOWNLOADS),topics.get(position).getTopicName()+".pdf");
+
                 if(pdfToOpen.exists()){
                     Toast.makeText(mContext,"Already downloaded.",Toast.LENGTH_SHORT).show();
                     holder.progressBar.setVisibility(View.INVISIBLE);
@@ -155,10 +157,12 @@ public void setProgressForTopics(List<String> progressForTopics){
                         Environment.DIRECTORY_DOWNLOADS),topics.get(position).getTopicName()+".pdf");
                     if(pdfToOpen.exists()){
                         String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".pdf");
-
+//                        Log.d(TAG,mime);
+                        Uri path= FileProvider.getUriForFile(mContext,"com.accademy.harvin.harvinacademy",pdfToOpen);
                         Intent intent = new Intent();
                         intent.setAction(android.content.Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(pdfToOpen), mime);
+                        intent.setDataAndType(path, mime);
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                        try{ mContext.startActivity(intent);}
                        catch (ActivityNotFoundException ae){ae.printStackTrace();}
 

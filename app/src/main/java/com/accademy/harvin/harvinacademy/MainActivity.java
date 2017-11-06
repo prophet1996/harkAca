@@ -145,18 +145,18 @@ public class MainActivity extends AppCompatActivity
                         mSubjects=subjects;
                         Log.d("tabs",mSubjects.getSubjects().get(0).getSubjectName()+"");
                         if(mSubjectList!=null)
-                        for (int i=0;i<subjects.getSubjects().size();i++)
-                            mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
+                            for (int i=0;i<subjects.getSubjects().size();i++)
+                                mSubjectList.add(i,subjects.getSubjects().get(i).getSubjectName());
 
                         addTabs();
                         addedTabs=true;
-                       initdb();
+                        initdb();
 
                         StudyFragment sf=StudyFragment.getInstance(mSubjects.getSubjects().get(0).getId(),0);
                         sf.setProgress(progresses);
                         replaceFragment(sf);
 
-                      //   ProgressUtil.saveProgress(mSubjects.getProgresses(),MainActivity.this);
+                        //   ProgressUtil.saveProgress(mSubjects.getProgresses(),MainActivity.this);
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {
@@ -197,10 +197,10 @@ public class MainActivity extends AppCompatActivity
 
                     DatabaseInitializer.populateAsyncFile(appDatabase,top.getFiles());
                 }
-            Log.d("room","topic main");}
+                Log.d("room","topic main");}
         }
         Log.d("roomProg","prog inserted");
-DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses());
+        DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses());
 
     }
     @Override
@@ -252,9 +252,9 @@ DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses()
                         Log.d("getting progress",progresses.getProgresses().toString());
                         if(progresses!=null)
 
-                       //   ProgressUtil.saveProgress(progresses,MainActivity.this);
+                            //   ProgressUtil.saveProgress(progresses,MainActivity.this);
 
-                        getSubjectListFromServer();
+                            getSubjectListFromServer();
 
                     }
                     @Override
@@ -281,7 +281,7 @@ DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses()
             }
             catch (NullPointerException np){np.printStackTrace();
                 Toast.makeText(MainActivity.this,"Can't connect right now please try again later..",Toast.LENGTH_LONG).show();}
-       }
+        }
     }
 
 
@@ -315,7 +315,7 @@ DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses()
             if(!addedTabs) {
                 getSubjectListFromServer();
                 addTabs();
-            Log.d("addedTabs","refreshed and added");
+                Log.d("addedTabs","refreshed and added");
 
             }
             replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
@@ -330,7 +330,7 @@ DatabaseInitializer.populateAsyncProgress(appDatabase,progresses.getProgresses()
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-DrawerLayout drawer=findViewById(R.id.drawer_layout);
+        DrawerLayout drawer=findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -350,7 +350,7 @@ DrawerLayout drawer=findViewById(R.id.drawer_layout);
 
                 break;
             case 1:
-                 sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
+                sf=StudyFragment.getInstance(mSubjects.getSubjects().get(pos).getId(),pos);
                 sf.setProgress(progresses);
 
                 replaceFragment(sf);
@@ -395,10 +395,10 @@ DrawerLayout drawer=findViewById(R.id.drawer_layout);
         FragmentManager fragmentManager= getSupportFragmentManager();
         FragmentTransaction mFragmentTranscation=fragmentManager.beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
         mFragmentTranscation.replace(R.id.fragment_container,sf);
-try{        mFragmentTranscation.commit();}
-catch (IllegalStateException ise){
-    ise.printStackTrace();
-}
+        try{        mFragmentTranscation.commit();}
+        catch (IllegalStateException ise){
+            ise.printStackTrace();
+        }
     }
     public void replaceFacebookPosts(FaceBookPostFragement fb){
         FragmentManager fragmentManager=getSupportFragmentManager();
@@ -411,15 +411,14 @@ catch (IllegalStateException ise){
         dataList.add(new DrawerItem("Assignment", R.drawable.ic_import_contacts_black_1));
         dataList.add(new DrawerItem("Report", R.drawable.ic_content_paste_black_1));
         dataList.add(new DrawerItem("Profile", R.drawable.ic_person_black_1));
-        dataList.add(new DrawerItem("Classroom", R.drawable.ic_people_black_1));
 
-          }
+    }
 
     public String getUsername() {
         String username;
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-            username = sharedPreferences.getString(USERNAME_KEY, "z");
+        username = sharedPreferences.getString(USERNAME_KEY, "z");
         Log.d("username",username);
         return username;
     }

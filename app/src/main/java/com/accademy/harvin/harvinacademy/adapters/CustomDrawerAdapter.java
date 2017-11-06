@@ -98,10 +98,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem>{
                         context.startActivity(i);
                         break;
 
-                    case 4:
-                        i=new Intent(context,ClassRoomActivity.class);
-                        context.startActivity(i);
-                        break;
 
 
 

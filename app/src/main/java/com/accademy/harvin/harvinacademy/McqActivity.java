@@ -24,17 +24,20 @@ import com.accademy.harvin.harvinacademy.adapters.QuestionContentListAdapter;
 import com.accademy.harvin.harvinacademy.adapters.QuestionNavigationListAdapter;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionPaper;
 import com.accademy.harvin.harvinacademy.model.exam.QuestionTestPaper;
+import com.accademy.harvin.harvinacademy.model.exam.TestResult;
 import com.accademy.harvin.harvinacademy.model.user.User;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.Formatter;
+import com.accademy.harvin.harvinacademy.utils.SharedPref;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -43,10 +46,10 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 import static com.accademy.harvin.harvinacademy.utils.Constants.EXAM_ID_KEY;
+import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
 
 public class McqActivity extends AppCompatActivity  {
     private String TAG ="McqActivity";
-    private String DUMMYID="59bcd16d2cb25f494b1fa2a9";
     private String currentExamId="59bcd16d2cb25f494b1fa2a9";
     private ScrollView navigation;
     private RecyclerView recyclerViewContent;
@@ -77,7 +80,7 @@ public class McqActivity extends AppCompatActivity  {
     private AlertDialog progressDialog;
     private AlertDialog.Builder progressDialogBuilder;
     private List<List<Integer>> answerTracker;
-    private boolean  flag =true;
+    private boolean  flag =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,6 @@ public class McqActivity extends AppCompatActivity  {
 
 
         Log.d("view model", "null");
-        showLoadingDialog();
         currentExamId = getIntent().getStringExtra(EXAM_ID_KEY);
         getTest();
         dismissdialog();
@@ -161,15 +163,18 @@ public class McqActivity extends AppCompatActivity  {
                 timerProgressBar.setProgress(100);
                 timerTextView.setText(Formatter.hmsTimeFormatter(0));
                 showEndTestDialog();
-
+                checkTest();
             }
         };
         countDownTimer.start();
     }
 
     private void setTimerValues() {
+        int time=1;
 //TODO add the time from the test data
-        timeCountInMilliSeconds = 1 * 60 * 1000;
+        try {time=Integer.parseInt(questionTestPaper1.getQuestionPaper().getTotalTime());}
+        catch (Exception e){e.printStackTrace();}
+            timeCountInMilliSeconds = time * 60 * 1000;
 
 
     }
@@ -352,7 +357,7 @@ public class McqActivity extends AppCompatActivity  {
     private void showAreYouSureDialdog(){
 
         progressDialogBuilder=new AlertDialog.Builder(McqActivity.this);
-        if(Integer.parseInt(stateNotAttemptedTextView.getText().toString())!=0)
+        
             progressDialogBuilder.setMessage("ARE YOU SURE YOU WANT TO SUBMIT ?" +
                     "\nYou have "+stateNotAttemptedTextView.getText()+" questions left.");
 
@@ -360,9 +365,13 @@ public class McqActivity extends AppCompatActivity  {
         progressDialogBuilder.setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    showLoadingDialog();
+                    try{
+
+                        progressDialog.dismiss();
+                    progressDialog=null;
+                    }catch (Exception e){e.printStackTrace();}
                     checkTest();
-                    finish();
+
                 }
             });
         progressDialogBuilder.setNegativeButton( "No", new DialogInterface.OnClickListener() {
@@ -375,7 +384,7 @@ public class McqActivity extends AppCompatActivity  {
         progressDialogBuilder.setCancelable(false);
         progressDialog=progressDialogBuilder.create();
 
-        setDialogFullScreen();
+        //setDialogFullScreen();
 
         progressDialog.show();
 
@@ -383,9 +392,6 @@ public class McqActivity extends AppCompatActivity  {
 
     }
 
-    private void showLoadingDialog() {
-
-    }
 
     private void checkTest() {
         for(int i=0;i<questionTestPaper1.getQuestionPaper().getQuestions().size();i++) {
@@ -396,16 +402,17 @@ public class McqActivity extends AppCompatActivity  {
                     if (questionTestPaper1.getQuestionPaper().getQuestions().get(i).getAnswersIndex().indexOf(answerTracker.get(i).get(j)) == -1) {
                         {
                             flag=false;
-                            score--;
+                            score-=questionTestPaper1.getQuestionPaper().getNegativeMarks();
                             Log.d(TAG,score+" c score");
                             continue;
                         }
                     }else {flag=true;}
                 }
-                catch (NullPointerException ne){ne.printStackTrace();}
+                catch (IndexOutOfBoundsException ioe){Log.d(TAG,ioe.getLocalizedMessage());}
+                catch (NullPointerException ne){Log.d(TAG,ne.getLocalizedMessage());}
                 }
                 if(flag==true)
-        score+=4;
+        score+=questionTestPaper1.getQuestionPaper().getPositiveMarks();
             Log.d(TAG,score+" a score");
         }
         Log.d(TAG,score+" Q score");
@@ -415,38 +422,67 @@ public class McqActivity extends AppCompatActivity  {
 
     private void showResultDialog() {
         progressDialogBuilder=new AlertDialog.Builder(McqActivity.this);
-        if(Integer.parseInt(stateNotAttemptedTextView.getText().toString())!=0)
-            progressDialogBuilder.setMessage("Test Completed you scored "+score+"/"+questionTestPaper1+"marks");
+            progressDialogBuilder.setMessage("Test Completed you scored "+score+"/"+questionTestPaper1.getQuestionPaper().getPositiveMarks()*totalQuestion+"marks");
 
         progressDialogBuilder.setTitle("Harvin Academy Test");
         progressDialogBuilder.setPositiveButton( "OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                sendResultToServer();
+                try{progressDialog.dismiss();
+                    progressDialog=null;
+
+
+                }
+                catch (Exception e){e.printStackTrace();
+                Log.d(TAG,"exp");
+                }
                 finish();
             }
         });
         progressDialogBuilder.setCancelable(false);
         progressDialog=progressDialogBuilder.create();
 
-        setDialogFullScreen();
+        //setDialogFullScreen();
 
-        progressDialog.show();
-
-
-    }
-
-    private void setDialogFullScreen() {
-
-        progressDialog.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+try {
+    progressDialog.show();
+}catch (Exception e){e.printStackTrace();}
 
     }
+
+    private void sendResultToServer() {
+        TestResult tr=new TestResult(totalQuestion,stateCompletedTextView.getText().toString(),score);
+    OkHttpClient okHttpClient=HTTPclient.getClient(McqActivity.this);
+    Retrofit retrofit=RetrofitBuilder.getRetrofit(McqActivity.this,okHttpClient);
+    RetrofitInterface client=retrofit.create(RetrofitInterface.class);
+    Observable<TestResult> call=client.sendTestResult(questionTestPaper1.getQuestionPaper().getId(), SharedPref.getStringPref(McqActivity.this,USERNAME_KEY),tr);
+    call.observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.newThread())
+            .subscribe(new Observer<TestResult>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(TestResult testResult) {
+                Log.d(TAG,"test Result sent");
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+    }
+
 
     @Override
     protected void onResume() {
@@ -463,5 +499,7 @@ public class McqActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        countDownTimer.cancel();
+
     }
 }

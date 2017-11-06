@@ -127,18 +127,18 @@ if(holder.progressBar.isIndeterminate()){
 
 
 
-
-        if(currProg!=null) {
-            switch (currProg.getStatus()) {
-                case "revision":holder.badgeOrange.setVisibility(View.VISIBLE);
-                    break;
-                case "new":holder.badgeBlue.setVisibility(View.VISIBLE);
-                    break;
-                case "completed":holder.badgeGreen.setVisibility(View.VISIBLE);
-                    break;
-
-            }
-        }
+//TODO BATCH SYSTEM SHIFTED
+//        if(currProg!=null) {
+//            switch (currProg.getStatus()) {
+//                case "revision":holder.badgeOrange.setVisibility(View.VISIBLE);
+//                    break;
+//                case "new":holder.badgeBlue.setVisibility(View.VISIBLE);
+//                    break;
+//                case "completed":holder.badgeGreen.setVisibility(View.VISIBLE);
+//                    break;
+//
+//            }
+//        }
 
 
 

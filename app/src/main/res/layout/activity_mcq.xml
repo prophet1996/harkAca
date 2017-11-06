@@ -11,7 +11,7 @@
 
    <include
        layout="@layout/layout_mcq_navigation"
-   android:layout_width="0dp"
+       android:layout_width="0dp"
        android:layout_height="match_parent"
        app:layout_constraintTop_toBottomOf="parent"
        app:layout_constraintBottom_toTopOf="parent"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-android:layout_weight="14"
+        android:layout_weight="14"
         android:id="@+id/layout_navigation_content"
         app:layout_constraintLeft_toRightOf="@+id/fragment_navigation_mcq"
 

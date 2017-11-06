@@ -15,6 +15,7 @@
     <color name="badge.green">#00C851</color>
     <color name="badge.orange">#ffbb33</color>
     <color name="badge.blue">#2196f3</color>
+    <color name="badge.bluedark">#1a80d1</color>
     <color name="onboarding.green">#00B584</color>
     <color name="onboarding.red">#f34336</color>
     <color name="onboarding.blue">#2195f2</color>
