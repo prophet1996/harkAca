@@ -5,136 +5,107 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    >
-
-    <android.support.v7.widget.CardView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintVertical_bias="0.05"
-    app:layout_constraintTop_toBottomOf="parent"
-    app:layout_constraintBottom_toTopOf="parent"
-    app:cardCornerRadius="5dp"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    app:layout_constraintLeft_toRightOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-
 
     >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cardview_light_background"
+        android:id="@+id/divider2"
+        app:layout_constraintTop_toBottomOf="@+id/profilephotoact"
+        app:layout_constraintBottom_toTopOf="@+id/profilephotoact"
+        />
+
+
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/profilephotoact"
         android:scaleType="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-
-
-
-
-
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
-</android.support.v7.widget.CardView>
-
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="20dp"
-    android:background="@drawable/header_nav_background1"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:id="@+id/mainCard"
-
-    app:cardBackgroundColor="#1e000000"
-
-    app:layout_constraintTop_toBottomOf="parent"
-    app:layout_constraintBottom_toTopOf="parent"
-    app:cardCornerRadius="5dp"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    app:layout_constraintLeft_toRightOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintVertical_bias="0.6"
-
-
-    >
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toBottomOf="@+id/profilephotoact"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+
+
 
         >
         <Button
-            android:layout_width="30dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
+            android:layout_width="90dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/profile_password"
             android:id="@+id/delete_user"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_delete_icon"/>
+            android:layout_height="wrap_content"
+            android:text="Logout"
+
+            android:textSize="8dp"
+            android:fontFamily="@font/montserrat"
+        android:drawableEnd="@drawable/ic_delete_icon"
+/>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Albert Einstien"
-            android:id="@+id/username"
-            android:layout_alignParentTop="true"
-
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/margin_large"
-            android:textStyle="bold"
+            android:id="@+id/username"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textColor="#000000"
+
+            android:fontFamily="@font/montserrat"
+
             />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/cardview_dark_background"
-            android:id="@+id/divider1"
-
-            android:layout_below="@+id/username"
-        />
-    <LinearLayout
-        android:id="@+id/info1"
-        android:layout_width="wrap_content"
-        android:visibility="invisible"
-        android:orientation="vertical"
-          android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium"
-
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/username"
-
-        >
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:text="Admission Date"
-    android:id="@+id/profil_email"
-    android:layout_margin="@dimen/margin_small"
-    />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:fontFamily="@font/montserrat"
+            android:text="Admission Date"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/profil_email"
+            android:layout_below="@+id/username"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:layout_below="@+id/profil_email"
             android:text="Admission Date"
             android:id="@+id/profile_password"
-            android:layout_margin="@dimen/margin_small"
 
             />
 
 
-    </LinearLayout>
+
 
 
 
     </RelativeLayout>
 
 
-</android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

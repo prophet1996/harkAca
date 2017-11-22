@@ -21,10 +21,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accademy.harvin.harvinacademy.utils.SharedPref;
 import com.accademy.harvin.harvinacademy.views.CircleTransform;
 import com.accademy.harvin.harvinacademy.views.CustomImageView;
 import com.bumptech.glide.Glide;
@@ -33,10 +35,16 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.w3c.dom.Text;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.BATCH_KEY;
+import static com.accademy.harvin.harvinacademy.utils.Constants.PASSWORD_KEY;
+import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
+
 public class UserProfile extends AppCompatActivity {
 
-    private static String ImageURL="http://www.rd.com/wp-content/uploads/sites/2/2016/02/02-train-cat-treats.jpg";
+    private static String ImageURL="http://45.55.154.27/images/user.png";
     private TextView username;
+    private TextView email_textView;
+    private TextView password_textView;
 
 
     ProgressDialog progressDoalog;
@@ -51,9 +59,18 @@ public class UserProfile extends AppCompatActivity {
 
         Button deleteUser =  findViewById(R.id.delete_user);
         username=findViewById(R.id.username);
+        email_textView=findViewById(R.id.profil_email);
+        password_textView=findViewById(R.id.profile_password);
+
         final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(UserProfile.this);
         String user=sharedPreferences.getString("username","N/A");
+        String email=sharedPreferences.getString(BATCH_KEY,"N/A");
+        String password=sharedPreferences.getString("password","N/A");
+
+        email_textView.setText(email);
+        password_textView.setText(password);
         username.setText(user);
+
 
 
         Glide
@@ -61,7 +78,7 @@ public class UserProfile extends AppCompatActivity {
                 .load(ImageURL)
                 .error(R.drawable.solidfill)// pass the image url// optional scaletype
                 .placeholder(R.drawable.solidfill) // optional placeholder
-
+                .transform(new CircleTransform(this))
                 .into(mProfilePhoto); // the ImageView to which the image is to be
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,8 +88,9 @@ public class UserProfile extends AppCompatActivity {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         SharedPreferences.Editor editor=sharedPreferences.edit();
-                        editor.remove("username");
-                        editor.remove("password");
+                        editor.remove(USERNAME_KEY);
+                        editor.remove(PASSWORD_KEY);
+                        editor.remove(BATCH_KEY);
                         editor.commit();
                         Log.d("login","removed");
 

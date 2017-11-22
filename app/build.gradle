@@ -66,6 +66,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
     compile 'android.arch.persistence.room:rxjava2:1.0.0-alpha5'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
 }
 
 

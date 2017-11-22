@@ -457,13 +457,13 @@ try {
     OkHttpClient okHttpClient=HTTPclient.getClient(McqActivity.this);
     Retrofit retrofit=RetrofitBuilder.getRetrofit(McqActivity.this,okHttpClient);
     RetrofitInterface client=retrofit.create(RetrofitInterface.class);
-    Observable<TestResult> call=client.sendTestResult(questionTestPaper1.getQuestionPaper().getId(), SharedPref.getStringPref(McqActivity.this,USERNAME_KEY),tr);
+    Observable<TestResult> call=client.sendTestResult(currentExamId, SharedPref.getStringPref(McqActivity.this,USERNAME_KEY),tr);
     call.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
             .subscribe(new Observer<TestResult>() {
                 @Override
                 public void onSubscribe(Disposable d) {
-
+                    Log.d(TAG,"test Result subsscribed");
                 }
 
                 @Override
@@ -473,6 +473,7 @@ try {
 
                 @Override
                 public void onError(Throwable e) {
+                    Log.d(TAG,"test Result error");
 
                 }
 

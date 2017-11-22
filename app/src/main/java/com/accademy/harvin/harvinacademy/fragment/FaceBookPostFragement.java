@@ -4,6 +4,7 @@ package com.accademy.harvin.harvinacademy.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,33 +45,43 @@ public class FaceBookPostFragement extends Fragment {
         View v= inflater.inflate(R.layout.fragment_face_book_post_fragement, container, false);
         mRecyclerView=(RecyclerView)v.findViewById(R.id.facebookpost_horizontal_recyclerview);
        mLinearLayoutManager= new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,true);
-        Thread th= new Thread(new Runnable() {
+       final  Handler hadler=new Handler();
+         Thread th= new Thread(new Runnable() {
             @Override
             public void run() {
 
-               try{ getFacebookPosts();}
+               try {
+                   getFacebookPosts();
+                   while(fb1[0]==null){}
+                   hadler.post(new Runnable() {
+                       @Override
+                       public void run() {
+                           setPost();
+                       }
+                   });
+
+               }
                catch (NullPointerException ne){
                    ne.printStackTrace();
                }
+               catch (IllegalStateException ise){ise.printStackTrace();}
             }
         });
         th.start();
-        try {
-            th.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if(fb1[0]!=null){
-        mFaceBookPostAdapter=new FacebookPostAdapter(fb1[0],mContext);
-
-       mRecyclerView.setAdapter(mFaceBookPostAdapter);
-       mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.scrollToPosition(mFaceBookPostAdapter.getItemCount()-1);}
+       setPost();}
         else {
 v.setBackground(mContext.getDrawable(R.drawable.oops));
          //   v.setLayoutParams(new CardView.LayoutParams(FrameLayout.LayoutParams.));
         }
         return v;
+    }
+   public void setPost(){
+        mFaceBookPostAdapter=new FacebookPostAdapter(fb1[0],mContext);
+
+        mRecyclerView.setAdapter(mFaceBookPostAdapter);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.scrollToPosition(mFaceBookPostAdapter.getItemCount()-1);
     }
     public static FaceBookPostFragement getInstance(Context mContext){
         FaceBookPostFragement.mContext=mContext;
@@ -103,7 +114,7 @@ v.setBackground(mContext.getDrawable(R.drawable.oops));
                         }
                     }
                 }
-        ).executeAndWait();
+        ).executeAsync();
 
         return fb1[0];
     }

@@ -53,13 +53,17 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
     private List<com.accademy.harvin.harvinacademy.model.File> files;
     private int chapterPosition;
     private ProgressCheckClickedListener progressCheckClickedListener;
+    private TopicDownloadListener topicDownloadListener;
+
+    public interface TopicDownloadListener{
+        void downloadCompleted();
+    }
     public interface ProgressCheckClickedListener{
         void onProgressClicked(int position,String topicId);
         void onProgressUnclicked(int position,String topicId);
     }
-    public void setProgressCheckClickedListener(ProgressCheckClickedListener progressCheckClickedListener){
-        this.progressCheckClickedListener=progressCheckClickedListener;
-    }
+    public void setDownloadCompletedListener(TopicDownloadListener topicDownloadListener){this.topicDownloadListener=topicDownloadListener;}
+    public void setProgressCheckClickedListener(ProgressCheckClickedListener progressCheckClickedListener){this.progressCheckClickedListener=progressCheckClickedListener;}
     public void removeProgressCheckClickedListener(){
         if(this.progressCheckClickedListener!=null)
             this.progressCheckClickedListener=null;
@@ -74,15 +78,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         downloading_progress_value= new Integer[this.topics.size()];
         checkPermission();
 
-        if(Internet.isAvailable(mContext)){
-            Log.d("internet","availabel");
+        if(Internet.isAvailable(mContext)){Log.d("internet","availabel");}
 
-        }
-
-        else {
-
-            Log.d("internet","not availabel");
-        }
+        else {Log.d("internet","not availabel");}
 
     }
 public void setTopics(List<Topic> topics){
@@ -276,7 +274,7 @@ holder.checkBox.setOnClickListener(new View.OnClickListener() {
 
                     downloading_progress[intentPosition]=false;
 
-
+                topicDownloadListener.downloadCompleted();
 int itemchangepos=intent.getIntExtra("topicpos",-1);
 
                 notifyItemChanged(itemchangepos);}

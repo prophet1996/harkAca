@@ -133,6 +133,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BatchSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
 
             />
         <activity

@@ -59,7 +59,7 @@ public interface RetrofitInterface {
     Observable<PAssignment> getAssignmentList(@Path("username")String username);
     @GET("assignment/{assignmentId}")
     Call<ResponseBody> downloadAssignment(@Path("assignmentId") String assignmentId);
-    @POST("exams/{questionPaperId}/{username}")
+    @POST("exams/{questionPaperId}/question-paper/{username}")
     Observable<TestResult> sendTestResult(@Path("questionPaperId")String questionPaperId,@Path("username")String username,@Body TestResult testResult);
 
 

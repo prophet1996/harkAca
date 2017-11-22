@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.accademy.harvin.harvinacademy.exceptionHandler.DefaultExceptionHandler;
 import com.accademy.harvin.harvinacademy.model.UserTest;
+import com.accademy.harvin.harvinacademy.model.user.Batch;
 import com.accademy.harvin.harvinacademy.model.user.UserDetails;
 import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
@@ -50,6 +51,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.accademy.harvin.harvinacademy.utils.Constants.BATCH_KEY;
 import static com.accademy.harvin.harvinacademy.utils.Constants.PASSWORD_KEY;
 import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
 
@@ -88,9 +90,9 @@ public class Login_Main extends AppCompatActivity {
         SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(Login_Main.this);
         setContentView(R.layout.activity_login__main);
        // Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler(Login_Main.this));
-        b1 = (Button) findViewById(R.id.login);
-        username = (TextView) findViewById(R.id.et_username);
-        password = (TextView) findViewById(R.id.et_password);
+        b1 =  findViewById(R.id.login);
+        username = findViewById(R.id.et_username);
+        password = findViewById(R.id.et_password);
         mRegister= findViewById(R.id.register);
         accountKitButton=findViewById(R.id.account_kit_email_login);
 
@@ -110,7 +112,14 @@ public class Login_Main extends AppCompatActivity {
         });
         if(sharedPreferences.getString("username","z").equals("z")&&sharedPreferences.getString("password","z").equals("z")){
 
-        }else{
+        }
+
+        else{
+               if(SharedPref.getStringPref(this,BATCH_KEY).equals('z')){
+                Intent i= new Intent(Login_Main.this, BatchSelectActivity.class);
+                startActivity(i);
+                finish();
+            }
             Log.d("login","from saved");
             done=true;
             logindone();
@@ -248,8 +257,8 @@ public class Login_Main extends AppCompatActivity {
     private void saveuser(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Login_Main.this);
         SharedPreferences.Editor editor=sharedPref.edit();
-        editor.putString("password",password.getText().toString());
-        editor.putString("username",username.getText().toString());
+        editor.putString(PASSWORD_KEY,password.getText().toString());
+        editor.putString(USERNAME_KEY,username.getText().toString());
         Log.d("login","saved");
         editor.commit();
 
@@ -321,6 +330,7 @@ public class Login_Main extends AppCompatActivity {
                 RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
 
                 //TODO
+
                 UserDetails currUser=new UserDetails();
                 currUser.setUsername(accountKitEmail);
                 Observable<UserDetails> call=retrofitInterface.loginWithEmail(currUser);
@@ -339,6 +349,7 @@ public class Login_Main extends AppCompatActivity {
                                 userD=userDetails;
                                 SharedPref.setPref(Login_Main.this,USERNAME_KEY,userDetails.getUsername());
                                 SharedPref.setPref(Login_Main.this,PASSWORD_KEY,userDetails.getPassword());
+                                SharedPref.setPref(Login_Main.this,BATCH_KEY,userDetails.getBatch());
 
                                 if(userDetails.getBatch().isEmpty()){
                                     //TODO Start the batch select activity

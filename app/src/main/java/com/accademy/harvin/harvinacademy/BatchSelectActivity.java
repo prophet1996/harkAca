@@ -1,5 +1,6 @@
 package com.accademy.harvin.harvinacademy;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.accademy.harvin.harvinacademy.network.HTTPclient;
 import com.accademy.harvin.harvinacademy.network.RetrofitBuilder;
 import com.accademy.harvin.harvinacademy.network.RetrofitInterface;
 import com.accademy.harvin.harvinacademy.utils.SharedPref;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class BatchSelectActivity extends AppCompatActivity {
     private AppCompatTextView batchesDescription;
     private AppCompatButton batchesButton;
     private UserDetails currUser;
+    private ProgressDialog progressDoalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class BatchSelectActivity extends AppCompatActivity {
         batchesButton.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View view) {
+                                                 showdailog();
                                                 currUser= getUserDetailsObject();
                                                  if(!currUser.getBatch().isEmpty()){
                                                      OkHttpClient okHttPclient=HTTPclient.getClient(BatchSelectActivity.this);
@@ -73,6 +77,8 @@ public class BatchSelectActivity extends AppCompatActivity {
                                                                  @Override
                                                                  public void onNext(@NonNull UserDetails userDetails) {
                                                                      if(!userDetails.getBatch().isEmpty()&&userDetails!=null) {
+                                                                         try{progressDoalog.dismiss();}
+                                                                         catch (Exception e){e.printStackTrace();}
                                                                          SharedPref.setPref(BatchSelectActivity.this, BATCH_KEY, userDetails.getBatch());
                                                                             Intent i=new Intent(BatchSelectActivity.this,MainActivity.class);
                                                                          startActivity(i);
@@ -84,6 +90,8 @@ public class BatchSelectActivity extends AppCompatActivity {
 
                                                                  @Override
                                                                  public void onError(@NonNull Throwable e) {
+                                                                     try{progressDoalog.dismiss();}
+                                                                     catch (Exception ex){ex.printStackTrace();}
 
                                                                  }
 
@@ -150,7 +158,11 @@ public class BatchSelectActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 batchesDescription.setText(currBatches.getBatches().get(i).getBatchDesc());
             if(currUser!=null)
+            try{
                 currUser.setBatch(currBatches.getBatches().get(i).getBatchName());
+
+                SharedPref.setPref(BatchSelectActivity.this,BATCH_KEY,currBatches.getBatches().get(i).getBatchName());}
+                catch (Exception e){e.printStackTrace();}
             }
 
             @Override
@@ -174,5 +186,15 @@ public class BatchSelectActivity extends AppCompatActivity {
         user.setPassword(SharedPref.getStringPref(BatchSelectActivity.this,PASSWORD_KEY));
         user.setBatch(batchesSpinner.getSelectedItem().toString());
         return user;
+    }
+
+    private void showdailog() {
+        progressDoalog =new ProgressDialog(BatchSelectActivity.this);
+        progressDoalog.setIndeterminate(true);
+        progressDoalog.setMessage("Loggin in....");
+        progressDoalog.setTitle("Harvin Academy Login");
+        progressDoalog.setCancelable(false);
+        progressDoalog.show();
+
     }
 }

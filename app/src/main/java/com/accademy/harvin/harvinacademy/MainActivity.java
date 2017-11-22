@@ -107,11 +107,11 @@ public class MainActivity extends AppCompatActivity
         tb.addOnTabSelectedListener(this);
         mSubjectList= new ArrayList<>();
         getProgressFromServer();
-        if(!addedTabs) {
-            addTabs();
-
-
-        }
+//        if(!addedTabs) {
+//            addTabs();
+//
+//
+//        }
         replaceFacebookPosts(FaceBookPostFragement.getInstance(this));
 
 
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                         sf.setProgress(progresses);
                         replaceFragment(sf);
 
-                        //   ProgressUtil.saveProgress(mSubjects.getProgresses(),MainActivity.this);
+
                     }
                     @Override
                     public void onError(@NonNull Throwable e) {

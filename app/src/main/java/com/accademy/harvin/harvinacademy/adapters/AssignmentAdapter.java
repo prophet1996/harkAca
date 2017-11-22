@@ -45,8 +45,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
     private Context context;
     private boolean downloadable=false;
     private boolean downloading_progress[];
+    private DownloadListener downloadCompletedListener;
     private Integer downloading_progress_value[];
-
+    public interface DownloadListener{
+        public void downloadCompleted();
+    }
+    public void setDownloadCompletedListener(DownloadListener downloadCompletedListener){this.downloadCompletedListener=downloadCompletedListener;}
     public AssignmentAdapter(){}
     public AssignmentAdapter(List<Assignment> assignmentList,Context context){
         this.assignmentList=assignmentList;
@@ -92,7 +96,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     Log.d("send intent","progress 100 intent recieved");
 
                     downloading_progress[intentPosition]=false;
-
+                    downloadCompletedListener.downloadCompleted();
 
                     int itemchangepos=intent.getIntExtra("topicpos",-1);
 

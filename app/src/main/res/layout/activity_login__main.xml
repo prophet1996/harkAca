@@ -107,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OR"
+                android:text="New here?"
                 android:layout_below="@+id/login"
                 android:layout_centerInParent="true"
                 android:id="@+id/dividing_or"
@@ -117,7 +117,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login With Email"
+                android:text="@string/signup"
                 android:padding="10dp"
                 android:backgroundTint="@color/onboarding.green"
                 style="@style/Widget.AppCompat.Button.Colored"

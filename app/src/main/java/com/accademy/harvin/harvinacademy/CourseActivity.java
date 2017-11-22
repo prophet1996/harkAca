@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +37,7 @@ import java.util.List;
 
 import static com.accademy.harvin.harvinacademy.utils.Constants.CHAPTER_KEY;
 
-public class CourseActivity extends AppCompatActivity {
+public class CourseActivity extends AppCompatActivity implements TopicAdapter.TopicDownloadListener{
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final int PERMISSION_REQUEST_CODE = 1;
     private static final String TAG="CourseActivity.class";
@@ -58,6 +59,7 @@ public class CourseActivity extends AppCompatActivity {
     private TextView chapterTextView;
     private Chapter currChapter;
     private Progress currProg;
+    private Snackbar snackbar;
 
 
 
@@ -77,7 +79,7 @@ public class CourseActivity extends AppCompatActivity {
         chapterProgressBar=findViewById(R.id.chapter_progress_progressbar);
         chapterProgressBar.setProgress(0);
         chapterTextView=findViewById(R.id.chapter_progress_textview);
-
+        snackbar=Snackbar.make(findViewById(R.id.coordinator),R.string.downloaded,Snackbar.LENGTH_SHORT);
 
         chapterCardTitle = chapterCard.findViewById(R.id.chapter_title);
         chapterCardNo = chapterCard.findViewById(R.id.chapter_no);
@@ -100,6 +102,7 @@ public class CourseActivity extends AppCompatActivity {
         topicAdapter= new TopicAdapter(topics,files,chapterPosition-1,chapterId,CourseActivity.this);
         Log.d("topics prob  2",topics.size()+"");
         topicAdapter.setTopics(topics);
+        topicAdapter.setDownloadCompletedListener(this);
     try {topicAdapter.setProgressForTopics(currProg.completedTopicsIds);}
     catch(NullPointerException ne){ne.printStackTrace();}
         topicAdapter.setProgressCheckClickedListener(new TopicAdapter.ProgressCheckClickedListener() {
@@ -137,7 +140,7 @@ public class CourseActivity extends AppCompatActivity {
 
         topicRecyclerView.setAdapter(topicAdapter);
         topicRecyclerView.scrollToPosition(0);
-        registerReceiver();
+
         if (!checkPermission())
             requestPermission();
 
@@ -170,29 +173,6 @@ public class CourseActivity extends AppCompatActivity {
 
 
 
-
-    private void registerReceiver(){
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MESSAGE_PROGRESS);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
-
-    }
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if(intent.getAction().equals(MESSAGE_PROGRESS)){
-
-                DownloadedPdf download = intent.getParcelableExtra("download");
-                if(download.getProgress()==100)
-                {                Toast.makeText(CourseActivity.this,"Downloaded...",Toast.LENGTH_SHORT).show();
-
-
-                }
-            }
-        }
-    };
     private boolean checkPermission(){
         int result = ContextCompat.checkSelfPermission(CourseActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -271,5 +251,10 @@ public class CourseActivity extends AppCompatActivity {
         super.onDestroy();
         topicAdapter.removeProgressCheckClickedListener();
         Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void downloadCompleted() {
+        snackbar.show();
     }
 }

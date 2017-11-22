@@ -1,17 +1,17 @@
 package com.accademy.harvin.harvinacademy;
 
-import android.*;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.accademy.harvin.harvinacademy.adapters.AssignmentAdapter;
 import com.accademy.harvin.harvinacademy.model.PAssignment;
@@ -31,11 +31,12 @@ import retrofit2.Retrofit;
 
 import static com.accademy.harvin.harvinacademy.utils.Constants.USERNAME_KEY;
 
-public class AssignmentActivity extends AppCompatActivity {
+public class AssignmentActivity extends AppCompatActivity implements AssignmentAdapter.DownloadListener {
     private static final String TAG="AssignmentActivity";
     private CollapsingToolbarLayout collapsingToolbarLayout=null;
     private String username="";
     private PAssignment pAssignment1;
+    Snackbar mySnackbar;
     private RecyclerView recyclerView;
     private boolean downloadable=false;
     private AssignmentAdapter assignmentAdapter;
@@ -51,7 +52,11 @@ public class AssignmentActivity extends AppCompatActivity {
 
         collapsingToolbarLayout= findViewById(R.id.collapsing_toolbar_layout);
         recyclerView=findViewById(R.id.assigment_recyclerView);
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        collapsingToolbarLayout.setTitle("Assignments");
+        mySnackbar = Snackbar.make(findViewById(R.id.coordinator),
+                R.string.downloaded, Snackbar.LENGTH_SHORT);
+
+
 
         getUsername();
         dynamicToolbarColor();
@@ -61,6 +66,18 @@ public class AssignmentActivity extends AppCompatActivity {
         if (!checkPermission())
             requestPermission();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     private boolean checkPermission(){
@@ -113,7 +130,9 @@ public class AssignmentActivity extends AppCompatActivity {
                         Log.d(TAG,"next");
                         if(pAssignment!=null){
                         pAssignment1=pAssignment;
-                            recyclerView.setAdapter(new AssignmentAdapter(pAssignment1.getAssignments(),AssignmentActivity.this));
+                            assignmentAdapter= new AssignmentAdapter(pAssignment1.getAssignments(),AssignmentActivity.this);
+                            assignmentAdapter.setDownloadCompletedListener(AssignmentActivity.this);
+                            recyclerView.setAdapter(assignmentAdapter);
                         }else{Log.d(TAG,"empty pAssignemnt object");}
                     }
                     @Override
@@ -122,5 +141,10 @@ public class AssignmentActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {Log.d(TAG,"completed");}
                 });
+    }
+
+    @Override
+    public void downloadCompleted() {
+        mySnackbar.show();
     }
 }

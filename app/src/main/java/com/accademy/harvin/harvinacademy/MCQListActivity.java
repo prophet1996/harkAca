@@ -4,12 +4,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.accademy.harvin.harvinacademy.adapters.MCQListAdapter;
 import com.accademy.harvin.harvinacademy.model.exam.Exam;
@@ -35,6 +37,7 @@ public class MCQListActivity extends AppCompatActivity {
     private List<Exam> examList;
     private String username;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class MCQListActivity extends AppCompatActivity {
         Toolbar toolbar=findViewById(R.id.toolbar);
         collapsingToolbarLayout=findViewById(R.id.collapsing_toolbar_layout);
         setSupportActionBar(toolbar);
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        collapsingToolbarLayout.setTitle("MCQ Exams");
         toolbarTextAppearence();
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -51,6 +54,7 @@ public class MCQListActivity extends AppCompatActivity {
         Log.d("getting progress",username);
         getExamList();
         questionListRecyclerView=findViewById(R.id.exam_list_recyclerView);
+
 
     }
     private void toolbarTextAppearence() {
@@ -103,6 +107,18 @@ public class MCQListActivity extends AppCompatActivity {
         Log.d("username",username);
         return username;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onDestroy() {
